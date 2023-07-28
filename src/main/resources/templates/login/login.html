@@ -1,0 +1,51 @@
+<head>
+    <!-- scale 조정 -->
+    <title>글 조회</title>
+    <link rel="stylesheet" href="/css/login/login.css" type="text/css"/>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<body>
+
+</body>
+
+<div id="login">
+    <div id="check">
+        <p id="loginText">LOGIN</p>
+    </div>
+    <form action="http://localhost:8080/login_proc" method="post" accept-charset="UTF-8" id="loginButton">
+        <input type="text" id="id"  name="username" value="username" onclick="eraseID()" class="once">
+
+        <input type="text" id="password" name="password" value="password" onclick="erasePassword()" class="once" >
+        <input type='submit' id="loginBtn" value='로그인'>
+    </form>
+    <div id="flex">
+        <a href="asdgadsdsa" id="findID">id 찾기</a>
+        <a href="asdgadsdsa" id="findPassword">비밀번호 찾기</a>
+    </div>
+    <div id="induce">계정을 가입하지 않으셨나요?</div>
+    <div id="induce2">지금
+        <a href="/join" id="join"> 가입 </a>
+        <div id="induce3" > 하세요 </div>
+    </div>
+    <!--
+    <div id="backgroundBtn" onclick="show('backgroundColor')" style="cursor:hand"> 배경색 </div>
+    <div id="mainBtn" onclick="show('mainColor')" style="cursor:hand"> 바탕색 </div>
+    <div id="apply" onclick="show3()" > 적용</div>
+    // 너무 느려서 삭제
+    -->
+    <div class="panel" id="naver">
+        <a href="/oauth2/authorization/naver">네이버 로그인</a>
+    </div>
+    <div class="panel" id="google">
+        <a href="/oauth2/authorization/google">google 로그인</a>
+    </div>
+</div>
+
+
+<!--
+<script src="/js/jscolor.js"></script>
+-->
+<script src="/js/login/babel-login-script.js"></script>
+
+</body>

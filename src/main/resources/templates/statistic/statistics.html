@@ -1,0 +1,299 @@
+<head>
+    <!-- scale 조정 -->
+    <title>글 조회</title>
+    <link rel="stylesheet" href="/css/statistics/statistic.css"  type="text/css" id="advertisementCss"/>
+
+    <meta charset="UTF-8"/>
+    <meta name="google" content="notranslate"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<body>
+<Header>
+    <div class="area21">
+        <input type="button" value="로그인" id="loginBox" class="container box" style="cursor:hand"
+               onclick="location.href ='/login'"/>
+        <input type="button" value="회원가입" id="joinBox" class="container box"  style="cursor:hand"
+               onclick="location.href ='/join'"/>
+        <!-- 도메인관련 작업, 복잡한 로직은 스프링에서 작업 -->
+        <img src="/image/homeicone8.png" width="80px" height="40px"alt="My github" id="home" class="container " style="cursor:hand">
+        <input type="button" value="글쓰기" id="writeBox" class="box" style="cursor:hand"
+               onclick="location.href ='/write'"/>
+        <input type="button" value="글 조회" id="readBox" class="box" style="cursor:hand"
+               onclick="location.href ='/?pageQuantity=1&boardQuantity=20'" />
+        <!-- get/ post 방식 떄문에 글 쓰기랑 조회도 스프링에서 작업 -->
+    </div>
+    <div class="marginBox">
+        <a href="https://github.com/xron2929">
+            <img src="/image/github2.png" width="30px" alt="My github" id="github"class="container">
+        </a>
+        <a href="https://hellocoding.tistory.com/">
+            <img src="/image/tistory2.png" width="40px" height="40px"alt="My github" id="tistory" class="container"  onclick=moveTistory()>
+            <!-- 얘네는 서버끼리 통신개념도 아니고 내부적으로 이동하는 것도 아니니까 굳이 get/post로 전달할 이유 -->
+        </a>
+        <a href="/alarm?page=1">
+            <img src="/image/email2.png" width="30px" height="35px"alt="My github" id="email" class="container">
+        </a>
+    </div>
+
+</Header>
+<section>
+    <div class="bodyHeader">
+        <div id="transChart"></div>
+        <div id="boardAccountChart"></div>
+        <div id="boardWriteLineChart"></div>
+    </div>
+
+    <!-- 페이지 -->
+</section>
+<footer>
+    <h2 id="footerText">간단한 게시판 만들기 - 정재광</h2>
+</footer>
+
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.2.2/dist/echarts.min.js"></script>
+
+<script>
+    let data = {
+        "method" : "GET"
+    }
+    let femaleCount;
+    let femalePercent;
+    let maleCount;
+    let malePercent;
+    let unSelectedCount;
+    let unSelectedPercent;
+    fetch("/static/trans/data",data)
+    .then(function (response) {
+        return response.json();
+    }).then(function(response) {
+        femaleCount = response.femaleCount;
+        femalePercent = response.femalePercent;
+        maleCount = response.maleCount;
+        malePercent = response.malePercent;
+        unSelectedCount = response.unSelectedCount
+        unSelectedPercent = response.unSelectedPercent;
+        console.log(response);
+        let transChart = echarts.init(document.getElementById('transChart'));
+        let transChartData = [
+            { name: '남성', value: maleCount,percentage:malePercent },
+            { name: '여성', value: femaleCount,percentage:femalePercent },
+            { name: '선택하지 않음', value: unSelectedCount,percentage:unSelectedPercent }
+        ];
+
+        // 차트 옵션 설정
+        let transChartOption = {
+            title: {
+                text: '성별 데이터 반환',
+                left: 'center', // 제목의 가로 위치 (기본값: 'center')
+                top: 'bottom', // 제목의 세로 위치 (기본값: 'top')
+                textStyle: {
+                    fontSize: 18, // 제목의 글꼴 크기
+                    fontWeight: 'bold' // 제목의 글꼴 두께
+                }
+
+            },
+            tooltip: {
+                trigger: 'item', // 마우스가 파이 차트의 아이템 위로 올라갈 때 툴팁이 나타납니다.
+                formatter: '{b} : {c} ({d}%)' // 툴팁의 텍스트 포맷을 설정합니다.
+                // 다른 툴팁 옵션들을 추가로 설정할 수 있습니다.
+            },
+            series: [
+                {
+                    type: 'pie',
+                    radius: '50%',
+                    data: transChartData
+                }
+            ]
+        };
+        transChart.setOption(transChartOption);
+    })
+    let oauthUserCount;
+    let oauthUserPercent;
+    let noneUserCount;
+    let noneUserPercent;
+    let siteUserCount;
+    let siteUserPercent;
+    fetch("/static/board/authority/data",data).then(function (response) {
+        return response.json();
+    }).then(function(response){
+        oauthUserCount = response.oauthUserCount;
+        oauthUserPercent = response.oauthUserPercent;
+        noneUserCount = response.noneUserCount;
+        noneUserPercent = response.noneUserPercent;
+        siteUserCount = response.siteUserCount;
+        siteUserPercent = response.siteUserPercent;let boardAccountChart = echarts.init(document.getElementById('boardAccountChart'));
+        let boardAccountChartData = [
+            { name: 'oauth 가입자', value: oauthUserCount,percentage: oauthUserPercent },
+            { name: 'site 가입자', value: siteUserCount,percentage: siteUserPercent },
+            { name: '비회원', value: noneUserCount,percentage: noneUserPercent }
+        ];
+
+        // 차트 옵션 설정
+        let boardAccountChartOption = {
+            title: {
+                text: 'board 작성자 유저 권한 비율',
+                left: 'center', // 제목의 가로 위치 (기본값: 'center')
+                top: 'bottom', // 제목의 세로 위치 (기본값: 'top')
+                textStyle: {
+                    fontSize: 18, // 제목의 글꼴 크기
+                    fontWeight: 'bold' // 제목의 글꼴 두께
+                }
+
+            },
+            tooltip: {
+                trigger: 'item', // 마우스가 파이 차트의 아이템 위로 올라갈 때 툴팁이 나타납니다.
+                formatter: '{b} : {c} ({d}%)' // 툴팁의 텍스트 포맷을 설정합니다.
+                // 다른 툴팁 옵션들을 추가로 설정할 수 있습니다.
+            },
+            series: [
+                {
+                    type: 'pie',
+                    radius: '50%',
+                    data: boardAccountChartData
+                }
+            ]
+        };
+
+        boardAccountChart.setOption(boardAccountChartOption);
+
+    })
+    let oauthUser = [0,0,0,0,0];
+    let siteUser = [0,0,0,0,0];
+    let noneUser = [0,0,0,0,0];
+    let currentAuthorityName;
+    let boardCount = 0;
+    fetch("/static/write/data",data).then(function (response) {
+        return response.json();
+    }).then(function(response) {
+        response.forEach(obj => {
+            Object.entries(obj).forEach(([key, value]) => {
+
+
+                if (key === 'authorityName') {
+                    currentAuthorityName = value;
+                    console.log("currentAuthorityName= "+currentAuthorityName);
+                }
+                if (key === 'boardCount') {
+                    boardCount = value;
+                    console.log("boardCount= "+boardCount)
+                }
+                if (key === 'localDateTime') {
+                    console.log("currentAuthorityName= "+currentAuthorityName + " boardCount= "+ boardCount );
+                    if(value==="현재") {
+                       setUserArray(currentAuthorityName,0,boardCount);
+                        boardCount = 0;
+                    }
+                    if(value==="1분전") {
+                        setUserArray(currentAuthorityName,1,boardCount);
+                        console.log("currentAuthorityName= "+currentAuthorityName + " boardCount= "+ boardCount );
+                        boardCount = 0;
+                    }
+                    if(value==="2분전") {
+                        setUserArray(currentAuthorityName,2,boardCount);
+                        console.log("currentAuthorityName= "+currentAuthorityName + " boardCount= "+ boardCount );
+                        boardCount = 0;
+                    }
+                    if(value==="3분전") {
+                        setUserArray(currentAuthorityName,3,boardCount);
+                        boardCount = 0;
+                    }
+                    if(value==="4분전") {
+                        setUserArray(currentAuthorityName,4,boardCount);
+                        boardCount = 0;
+                    }
+                }
+
+
+            });
+        });
+        let boardWriteLineChart = echarts.init(document.getElementById('boardWriteLineChart'));
+
+        // 그래프 데이터 설정
+        let boardWriteLineChartData = {
+            labels: ['현재까지', '1분전까지', '2분전까지', '3분전까지', '4분전까지'],
+            series: oauthUser,
+            series2: siteUser,
+            series3: noneUser
+        };
+
+        // 차트 옵션 설정
+        let boardWriteLineChartOption = {
+            title: {
+                text: 'board 작성자 유저 권한 비율',
+                left: 'center', // 제목의 가로 위치 (기본값: 'center')
+                top: 'bottom', // 제목의 세로 위치 (기본값: 'top')
+                textStyle: {
+                    fontSize: 18, // 제목의 글꼴 크기
+                    fontWeight: 'bold' // 제목의 글꼴 두께
+                }
+
+            },
+            tooltip: {
+                trigger: 'item', // 마우스가 파이 차트의 아이템 위로 올라갈 때 툴팁이 나타납니다.
+                formatter: '{{b}: {c}}' // 툴팁의 텍스트 포맷을 설정합니다.
+                // 다른 툴팁 옵션들을 추가로 설정할 수 있습니다.
+            },
+
+            xAxis: {
+                type: 'category',
+                data: boardWriteLineChartData.labels
+            },
+            yAxis: {
+                type: 'value'
+            },
+            legend: {
+                data: ['oauthUser', 'siteUser','noneUser']
+            },
+            series: [{
+                name: 'oauthUser',
+                type: 'line',
+                data: boardWriteLineChartData.series,
+                symbolSize: 15,
+                itemStyle: {
+                    color: 'red' // 라인의 색상 설정
+                },
+
+            },
+                {
+                    name: 'siteUser',
+                    type: 'line',
+                    data: boardWriteLineChartData.series2,
+                    symbolSize: 15,
+                    itemStyle: {
+                        color: 'blue' // 라인의 색상 설정
+                    },
+                },
+                {
+                    name: 'noneUser',
+                    type: 'line',
+                    data: boardWriteLineChartData.series3,
+                    symbolSize: 15,
+                    itemStyle: {
+                        color: 'yellow' // 라인의 색상 설정
+                    },
+                }
+
+            ]
+        };
+        boardWriteLineChart.setOption(boardWriteLineChartOption);
+    })
+    function setUserArray(key,position,value) {
+        if(key==="siteUser") {
+            siteUser[position]=value;
+        }
+        if(key==="oauthUser") {
+            oauthUser[position]=value;
+        }
+        if(key==="noneUser") {
+            noneUser[position]=value;
+        }
+
+    }
+
+    // 차트에 옵션 적용
+
+
+
+
+</script>

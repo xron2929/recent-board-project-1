@@ -1,0 +1,78 @@
+<!--
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>
+<meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>
+
+csrf 할꺼면 이거 키고 테스트 할꺼면 항상 꺼야 한다는 점
+-->
+
+
+<head>
+    <!-- scale 조정 -->
+    <title>글 조회</title>
+
+    <link rel="stylesheet" href="/css/board/write/user-write.css"  type="text/css" />
+    <link rel="stylesheet" href="/ckeditor/ckeditor-board-write.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+<body>
+
+<Header>
+    <div class="left">
+        <input type="button" value="로그인" id="loginBox" class="container box" style="cursor:hand"
+               onclick="location.href ='/login'"/>
+        <input type="button" value="회원가입" id="joinBox" class="container box" style="cursor:hand"
+               onclick="location.href ='/join'"/>
+        <!-- 도메인관련 작업, 복잡한 로직은 스프링에서 작업 -->
+        <img src="/image/homeicone8.png" width="80px" height="40px"alt="My github" id="home" class="container " style="cursor:hand">
+        <input type="button" value="글쓰기" id="writeBox" class="container box" style="cursor:hand"
+               onclick="location.href ='/write'"/>
+        <input type="button" value="글 조회" id="readBox" class="container box" style="cursor:hand"
+               onclick="location.href ='/?pageQuantity=1&boardQuantity=20'"/>
+        <!-- get/ post 방식 떄문에 글 쓰기랑 조회도 스프링에서 작업 -->
+    </div>
+</Header>
+<!-- 큰 ㅊ-->
+<section>
+    <div class="bodyHeader">
+        <form th:action="@{/}" enctype="multipart/form-data" th:object="${gallery}" id="inline">
+            <div class="item2">
+                <input type="text" name="username" value="이름" id="username" maxlength="255" class="once" readonly>\
+                <input type="text" name="title" value="제목" id="title" maxl multipleength="255" onclick=eraseTitle() class="once" >
+                <!-- model 값에 해당 글 제목 내용+ id + password 다 넘김
+                컨테이너에 글쓰기 분리하지말고 한 컨테이너 flex 이용해서 쓰기 -->
+                <div id="writeButton">글쓰기</div>
+            </div>
+        </form>
+    </div>
+
+    <textarea name="contents" class="form-control" id="contents"></textarea>
+    <!-- 나중에 @postMapping 쓰면 됨  https://donggu1105.tistory.com/61
+    put이나 delete은 링크 참조 저기다 @PutMapping 이렇게 쓰면 됨 -->
+    <!-- display inline으로 form으로 인한 들여쓰기 막기 가능-->
+    </div>
+
+    <!-- 검색 바 , 검색, 글쓰기-->
+    <article>
+
+    </article>
+
+
+    <!-- 페이지 -->
+</section>
+
+<footer>
+    <h2 id="footerText">간단한 게시판 만들기 - 정재광</h2>
+</footer>
+
+<!--<script src="/read-page5.js"></script>-->
+
+<!-- jquery 덜어내려고 지움 -->
+<!-- <script src="/js/jquery-3.6.0.min.js"></script>-->
+<!-- <script src="/js/bootstrap.min.js"></script> -->
+<script defer src="https://cdn.jsdelivr.net/npm/sockjs-client@1.5.0/dist/sockjs.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<script defer src="/ckeditor/ckeditor.js"></script>
+<script defer src = "/js/board/write/user-write-script.js"></script>
+
+</body>

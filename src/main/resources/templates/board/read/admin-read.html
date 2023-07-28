@@ -1,0 +1,83 @@
+<html lang="en"><head>
+  <style>body {transition: opacity ease-in 0.2s; }
+  body[unresolved] {opacity: 0; display: block; overflow: hidden; position: relative; }
+  </style>
+  <!--<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>-->
+  <meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-eval' http://www.google.com https://cdn.jsdelivr.net/npm/ https://cdnjs.cloudflare.com/ajax/libs/ websocket-src 'self'" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!--     socket만 CSP 추가함-->
+  <meta charset="UTF-8" />
+  <title>Title</title>
+  <link rel="stylesheet" href="/css/board/read/admin-read.css" type="text/css" />
+</head>
+<body>
+
+<div id="background">
+  <div style="display: flex;justify-content: space-around;">
+    <div id="   top">
+      <div id="childTitle">제목</div>
+    </div>
+  </div>
+
+
+  <div style="display: flex; justify-content: space-evenly; ">
+    <section style="width: 90%;" id="section">
+      <!-- js로 해당 게시글 봐서 삽입 시켜야됨 GETMAPPING 글 id 받아서 -->
+      <div id="author">글쓴이</div>
+    </section>
+  </div>
+  <div id="boardTool">
+    <div id="feedback">
+      <div id="up">
+        <div>좋아요</div>
+        <div id="likeCount">11</div>
+      </div>
+      <div id="down">
+        <div>싫어요</div>
+        <div id="disLikeCount">5</div>
+      </div>
+    </div>
+    <div id="manage">
+      <div id="delete">삭제</div>
+      <div id="edit">수정</div>
+    </div>
+  </div>
+</div>
+<div id="comment">댓글</div><hr class="x">
+<div id="commentGroup">
+
+  <!--
+  <div class="comment5">
+      <div class="flex3">이름</div>
+  </div>
+  <div class="childComment" style="height: 335px;"></div>
+  -->
+  <!--<div id="addReadComment">더보기</div>-->
+  <!-- div 텍스트 코드가 아니라 area로 잡아서 설정함-->
+</div>
+<div id="flex">
+  <div id="commentWriteNameArea1">
+    <div class="commentWrite1" id="commentWriteName1">이름</div>
+  </div>
+
+</div>
+<textarea class="parentWriteComment"  id="parentWriteComment1"
+          style="height: 335px;"></textarea>
+<div class="parentCommentSubmitArea" id="parentWriteCommentSubmit1">
+  <div class="parentCommentSubmit" >전송</div>
+</div>
+<div id="white"></div>
+<script defer src="https://cdn.jsdelivr.net/npm/sockjs-client@1.5.0/dist/sockjs.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<script defer src="/js/board/read/admin-read-script.js"></script>
+
+<!--
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+-->
+
+
+
+
+
+
+</body></html>
