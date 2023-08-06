@@ -20,7 +20,7 @@ public class CrossOriginConfig {
         CorsConfiguration config = new CorsConfiguration();
 
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(List.of("http://localhost:3001"));
+        config.setAllowedOrigins(List.of("http://localhost:3001","https://web-tip-17xqnr2algm9dni8.sel3.cloudtype.app"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setExposedHeaders(List.of("*"));
