@@ -61,7 +61,7 @@ public class EmailController {
                                       @RequestParam String userId,
                                       @RequestParam String changePassword,
                                       @RequestParam String email) {
-        System.out.println("changePasswordEmail - emailTemplate.emailGetRedisTime(\"비밀번호 바꾸기\"+ certificationCode)" + emailTemplate.emailGetRedisTime("비밀번호 바꾸기"+ email));
+        System.out.println("changePasswordEmail - emailTemplate.emailGetRedisTime(\"비밀번호 바꾸기\"+ email)" + emailTemplate.emailGetRedisTime("비밀번호 바꾸기"+ email));
         if(certificationCode.equals(emailTemplate.emailGetRedisTime("비밀번호 바꾸기"+ email))) {
             // 비밀번호 변경 로직 실행
             userService.changeUserPasswordByEmailAndUserId(changePassword,email,userId);
