@@ -9,6 +9,7 @@ import com.example.demo.security.service.PrincipalOauth2UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -41,6 +42,8 @@ import java.io.IOException;
 @EnableGlobalMethodSecurity(securedEnabled = true,prePostEnabled = true)
 @Slf4j
 public class SecurityConfig {
+    @Value("${front.domain.url}")
+    private String frontDomainUrl;
 
     @Autowired
     ObjectPostProcessor objectPostProcessor;
@@ -96,7 +99,7 @@ public class SecurityConfig {
                                 Cookie refreshTokenCookie = new Cookie("refreshToken", jwtManager.getRefreshToken(request));
                                 response.addCookie(accessTokenCookie);
                                 response.addCookie(refreshTokenCookie);
-                                response.sendRedirect("http://localhost:3001/");
+                                response.sendRedirect(frontDomainUrl);
                             }
                         })
                 .failureUrl("/first/oauth/join");;
@@ -117,7 +120,7 @@ public class SecurityConfig {
                     @Override
                     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
                         System.out.println("exception = " + exception);
-                        response.sendRedirect("http://localhost:3001/login");
+                        response.sendRedirect(frontDomainUrl+"/login");
                     }
                 })
                 .and()
