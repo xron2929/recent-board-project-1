@@ -49,6 +49,13 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         registry.addEndpoint("/my-websocket-endpoint2")
                 .setAllowedOrigins("http://localhost:3001")
                 .withSockJS();
+        registry.addEndpoint("/my-websocket-endpoint")
+                .setAllowedOrigins("https://web-tip-17xqnr2algm9dni8.sel3.cloudtype.app")
+                .withSockJS();
+        //setAllowedOrigins() 로 cors 허용
+        registry.addEndpoint("/my-websocket-endpoint2")
+                .setAllowedOrigins("https://web-tip-17xqnr2algm9dni8.sel3.cloudtype.app")
+                .withSockJS();
 
     }
 

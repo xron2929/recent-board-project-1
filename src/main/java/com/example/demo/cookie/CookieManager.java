@@ -13,6 +13,7 @@ public class CookieManager {
         cookie.setSecure(true);
         cookie.setHttpOnly(true);
         cookie.setPath("/");
+
         response.addCookie(cookie);
     }
     public void makeSecurityCookie(String key, String value,int second, HttpServletResponse response) {
