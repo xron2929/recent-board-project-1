@@ -105,7 +105,7 @@ window.onload = function() {
                 email
             })
         }
-        let url = domainUri + "email";
+        let url = domainUri + "email/join";
         fetch(url, params)
             .then(function (response) {
                     //  console.log(response.json());

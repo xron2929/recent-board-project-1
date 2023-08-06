@@ -119,7 +119,7 @@ public class JoinController {
         SiteMember user = UserRequestDto.from(userRequestDto,trans);
         user.setGender(gender);
         Authority authority = new Authority("ROLE_SITE_USER");
-        String emailData = emailTemplate.getRedisTime(joinDto.getEmail());
+        String emailData = emailTemplate.emailGetRedisTime("회원가입"+joinDto.getEmail());
         if(emailData == null) {
             throw new IsNotExistenceEmailContentException("해당 이메일로 데이터를 요청한 기록이 없거나 요청이 만료되었습니다");
         }

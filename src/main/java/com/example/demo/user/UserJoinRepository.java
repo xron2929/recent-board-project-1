@@ -22,6 +22,7 @@ import java.util.List;
 import static com.example.demo.authority.QAuthority.authority;
 import static com.example.demo.board.QBoard.board;
 import static com.example.demo.user.defaultuser.QDefaultMember.defaultMember;
+import static com.example.demo.user.siteuser.QSiteMember.siteMember;
 import static com.example.demo.userAuthority.QUserAuthority.userAuthority;
 import static com.querydsl.core.types.dsl.Expressions.constant;
 
@@ -53,10 +54,10 @@ UserJoinRepository {
     public SiteMember findBySiteMemberId(String memberId) {
         JPAQueryFactory queryFactory = new JPAQueryFactory(em);
         return queryFactory
-                .select(QSiteMember.siteMember)
-                .from(QSiteMember.siteMember)
-                .innerJoin(QSiteMember.siteMember.userAuthorities, userAuthority)
-                .where(QSiteMember.siteMember.userId.eq(memberId))
+                .select(siteMember)
+                .from(siteMember)
+                .innerJoin(siteMember.userAuthorities, userAuthority)
+                .where(siteMember.userId.eq(memberId))
                 .fetchOne();
     }
 
@@ -146,6 +147,13 @@ UserJoinRepository {
                 .innerJoin(board.member, defaultMember)
                 .where(board.id.eq(boardId)).fetchOne();
     }
+    public String findUserIdByEmail(String email) {
+        JPAQueryFactory queryFactory = new JPAQueryFactory(em);
+        return queryFactory.select(siteMember.userId)
+                .from(siteMember)
+                .where(siteMember.email.eq(email)).fetchOne();
+    }
+
 
     public String findByPhoneNumberOrNickname(String phoneNumber, String nickname) {
         JPAQueryFactory queryFactory = new JPAQueryFactory(em);
@@ -164,7 +172,12 @@ UserJoinRepository {
                 .where(QDefaultMember.defaultMember.phoneNumber.eq(phoneNumber).or(QDefaultMember.defaultMember.nickname.eq(nickname)))
                 .fetchOne();
     }
+    public void changeUserPasswordByEmailAndUserId(String changePassword,String email,String userId) {
+        JPAQueryFactory queryFactory = new JPAQueryFactory(em);
+        queryFactory.update(siteMember).set(siteMember.password,changePassword)
+                .where(siteMember.userId.eq(userId).and(siteMember.email.eq(email))).execute();
 
+    }
 
 
 }

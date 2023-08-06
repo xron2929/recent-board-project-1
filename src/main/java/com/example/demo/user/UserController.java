@@ -87,5 +87,16 @@ public class UserController {
         System.out.println("isAdmin - userId = " + userId);
         return userService.isAdmin(userId);
     }
+    @GetMapping("/find/id")
+    @ApiOperation("userId 찾기 뷰 반환")
+    public String getUserIdView() {
+        return "find/findId";
+    }
+    @GetMapping("/change/password")
+    @ApiOperation("userId 찾기 뷰 반환")
+    public String getChangingPasswordView() {
+        return "change/changePassword";
+    }
+
 
 }

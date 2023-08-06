@@ -49,8 +49,6 @@ public class SecurityConfig {
     @Autowired
     CookieManager cookieManager;
     @Autowired
-    CustomUserDetailsService userService;
-    @Autowired
     CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
     @Autowired
     JwtManager jwtManager;
