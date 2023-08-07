@@ -1,6 +1,7 @@
 package com.example.demo.socket;
 
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
@@ -32,6 +33,8 @@ import org.springframework.web.socket.config.annotation.WebSocketTransportRegist
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
+    @Value("${front.domain.url}")
+    private String frontDomainUrl;
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
@@ -43,11 +46,11 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/my-websocket-endpoint")
-                .setAllowedOrigins("http://localhost:3001","https://web-tip-17xqnr2algm9dni8.sel3.cloudtype.app")
+                .setAllowedOrigins(frontDomainUrl)
                 .withSockJS();
         //setAllowedOrigins() 로 cors 허용
         registry.addEndpoint("/my-websocket-endpoint2")
-                .setAllowedOrigins("http://localhost:3001","https://web-tip-17xqnr2algm9dni8.sel3.cloudtype.app")
+                .setAllowedOrigins(frontDomainUrl)
                 .withSockJS();
 
     }
