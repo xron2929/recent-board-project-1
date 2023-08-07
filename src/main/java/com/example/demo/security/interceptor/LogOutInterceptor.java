@@ -13,8 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @Component
 public class LogOutInterceptor implements HandlerInterceptor {
-    @Value("${domain.url}")
-    private String domainUrl;
+
     @Autowired
     CookieManager cookieManager;
     @Autowired

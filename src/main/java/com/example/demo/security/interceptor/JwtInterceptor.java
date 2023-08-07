@@ -15,8 +15,7 @@ import java.util.UUID;
 
 @Component
 public class JwtInterceptor implements HandlerInterceptor {
-    @Value("${domain.url}")
-    private String domainUrl;
+
     @Autowired
     CookieManager cookieManager;
     @Autowired
