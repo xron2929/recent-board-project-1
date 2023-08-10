@@ -9,12 +9,14 @@ import com.example.demo.security.jwt.TokenStatus;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.io.IOException;
 
 @Controller
@@ -23,6 +25,9 @@ public class JwtExpirationTimeController {
     JwtManager jwtManager;
     @Autowired
     AuthenticationManager authenticationManager;
+    @Value("${front.domain.url}")
+    private String frontDomainUrl;
+
     @Autowired
     CookieManager cookieManager;
     @Autowired
@@ -54,8 +59,9 @@ public class JwtExpirationTimeController {
     public void setJwtManager(HttpServletRequest request, HttpServletResponse response) throws IOException {
         cookieManager.makeZeroSecondCookie("refreshToken",response);
         cookieManager.makeZeroSecondCookie("accessToken",response);
-        response.addHeader("Location", "/login");
-        response.setStatus(302);
+        response.sendRedirect(frontDomainUrl);
+        // response.addHeader("Location", "/login");
+        // response.setStatus(302);
         // 다시 로그인 해야됨
     }
 
