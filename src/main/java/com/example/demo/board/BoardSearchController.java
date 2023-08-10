@@ -8,6 +8,8 @@ import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
@@ -21,6 +23,7 @@ public class BoardSearchController {
     @ApiOperation("board searchScript 뷰 반환")
     // @Trace
     public String view2(BoardSearchDTO boardSearchDTO) {
+        System.out.println(" ??? view2");
         System.out.println("boardSearchDTO.getKeyword() = " + boardSearchDTO.getKeyword());
         System.out.println("boardSearchDTO.getBoardQuantity() = " + boardSearchDTO.getBoardQuantity());
         System.out.println("boardSearchDTO.getPageQuantity() = " + boardSearchDTO.getPageQuantity());
@@ -30,9 +33,9 @@ public class BoardSearchController {
     @ApiOperation("해당 검색어에 맞는 BOARD 데이터들 반환")
     @ResponseBody
     @Trace
-    List<BoardSearchDataDto> searchFindBoard(BoardSearchDTO boardSearchDTO) {
-        List<BoardSearchDataDto> boardSearchDataDtos = boardSearchService.boardSearch(boardSearchDTO.getPageQuantity(), boardSearchDTO.getBoardQuantity(),
-                boardSearchDTO.getKeyword());
+    List<BoardSearchDataDto> searchFindBoard(@RequestParam Long pageQuantity, @RequestParam Long boardQuantity, @RequestParam String keyword) {
+        System.out.println(" ??? searchFindBoard");
+        List<BoardSearchDataDto> boardSearchDataDtos = boardSearchService.boardSearch( pageQuantity,boardQuantity,keyword);
         System.out.println("boardSearchDataDtos.size() = " + boardSearchDataDtos.size());
         return boardSearchDataDtos;
     }
@@ -40,8 +43,8 @@ public class BoardSearchController {
     @ResponseBody
     @ApiOperation("다음에 나타날 페이지 갯수, 다음 페이지랑 이전 페이지 번호 반환")
     @Trace
-    BoardPageApiDTO searchFindBoardCount(BoardSearchDTO boardSearchDTO) {
-        return boardSearchService.boardSearchPage(boardSearchDTO.getPageQuantity(),boardSearchDTO.getBoardQuantity(),boardSearchDTO.getKeyword());
+    BoardPageApiDTO searchFindBoardCount(@RequestParam Long pageQuantity,@RequestParam Long boardQuantity,@RequestParam String keyword) {
+        return boardSearchService.boardSearchPage( pageQuantity,boardQuantity,keyword);
     }
     @Data
     static class BoardSearchDTO {

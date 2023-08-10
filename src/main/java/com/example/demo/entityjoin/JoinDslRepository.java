@@ -63,7 +63,9 @@ public class JoinDslRepository {
     }
     public List<BoardSearchDataDto> selectFindById(Long PageNumber, Long BoardQuantity, String str) {
         JPAQueryFactory queryFactory = new JPAQueryFactory(em);
-
+        System.out.println("str = " + str);
+        System.out.println("PageNumber = " + PageNumber);
+        System.out.println("BoardQuantity = " + BoardQuantity);
         return queryFactory
                 .select(Projections.constructor(BoardSearchDataDto.class,
                         board.id, board.title,
