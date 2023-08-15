@@ -1,12 +1,16 @@
 package com.example.demo.cookie;
 
 
+import org.springframework.beans.factory.annotation.Value;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 
 public class CookieManager {
+    @Value("${front.domain.url}")
+    private String frontDomainUrl;
 
     public void makeSessionSecurityCookie(String key, String value, HttpServletResponse response) {
         response.setHeader("Access-Control-Max-Age", "0");
@@ -14,7 +18,7 @@ public class CookieManager {
         cookie.setSecure(true);
         cookie.setHttpOnly(true);
         cookie.setPath("/");
-
+        cookie.setDomain(frontDomainUrl);
         response.addCookie(cookie);
     }
     public void makeSecurityCookie(String key, String value,int second, HttpServletResponse response) {
@@ -24,6 +28,7 @@ public class CookieManager {
         cookie.setSecure(true);
         cookie.setHttpOnly(true);
         cookie.setPath("/");
+        cookie.setDomain(frontDomainUrl);
         response.addCookie(cookie);
     }
     public void makeNotSecurityCookie(String key, String value,int second, HttpServletResponse response) {
@@ -34,7 +39,7 @@ public class CookieManager {
         cookie.setSecure(true);
         cookie.setHttpOnly(false);
         cookie.setPath("/");
-
+        cookie.setDomain(frontDomainUrl);
         response.addCookie(cookie);
     }
     public void makeZeroSecondCookie(String key,HttpServletResponse response) {
@@ -44,6 +49,7 @@ public class CookieManager {
         cookie.setSecure(true);
         cookie.setHttpOnly(true);
         cookie.setPath("/");
+        cookie.setDomain(frontDomainUrl);
         response.addCookie(cookie);
     }
     public String getUUidCookie(HttpServletRequest request) {
