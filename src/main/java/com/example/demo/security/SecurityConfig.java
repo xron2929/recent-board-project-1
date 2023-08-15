@@ -129,6 +129,8 @@ public class SecurityConfig {
                 response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
                 response.setHeader("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With, remember-me, Origin,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization");
                 response.setHeader("Access-Control-Allow-Credentials",  "true");
+                response.setHeader("Set-Cookie", "SameSite=None; Secure"); // Adjust to your needs
+
             });
 
         return http.build();
