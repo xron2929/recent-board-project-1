@@ -1,12 +1,3 @@
-let domainUri;
-const cookies = document.cookie.split(';'); // 모든 쿠키 가져오기
-for (let i = 0; i < cookies.length; i++) {
-    const cookie = cookies[i].trim();
-    if (cookie.startsWith('domainUrl=')) {
-        domainUri = cookie.substring('domainURI='.length, cookie.length);
-        break;
-    }
-}
 
 let allCommentId = 1;
 let isAddCommentClick = false;
@@ -25,13 +16,13 @@ function x() {
     let content;
     let form = document.createElement('div');
     form.setAttribute('method', 'post'); //POST 메서드 적용
-    let url = domainUri+"boards/"+borderNumber+"/data";
+    let url = +"/boards/"+borderNumber+"/data";
     // form.setAttribute('action', url);	// 데이터를 전송할 url
     // json 리다이렉트 vs form 전송 받기 근데 이경우는 form 이동으로ㅓ 해버리면 로직이 되게 복잡해짐
     let form2 = document.createElement('form');
 
     form2.setAttribute('method', 'get'); //POST 메서드 적용
-    let url2 = domainUri+"404page";
+    let url2 = +"/404page";
     form2.setAttribute('action', url2);	// 데이터를 전송할 url
     let requestData = {
         method: "GET",
@@ -124,12 +115,12 @@ function updateDisLikeCount(disLikeCount,boardId,userId) {
 
 function editBoard() {
     let param = document.location.href.split("boards/")[1];
-    window.location.href=domainUri+"boards/edit/"+param;
+    window.location.href="/boards/edit/"+param;
 }
 
 function removeBoard() {
     let param = document.location.href.split("boards/")[1];
-    let url = domainUri+"board/admin/"+ param;
+    let url = "/board/admin/"+ param;
     // 데이터를 전송할 url
     let requestData = {
         method: "DELETE",
@@ -139,7 +130,7 @@ function removeBoard() {
         }}
     fetch(url, requestData)
         .then(function (response) {
-            window.location.href=domainUri+"?pageQuantity=1&boardQuantity=20";
+            window.location.href="/?pageQuantity=1&boardQuantity=20";
         });
 }
 
@@ -158,7 +149,7 @@ function addComment(isAddCommentClick) {
     let textarea;
     let commentId = 1;
 
-    let url = domainUri+"comment/"+boardId+"?startId="+allCommentId;
+    let url = "/comment/"+boardId+"?startId="+allCommentId;
     let data= {
         method: 'get' // 통신할 방식
     }
@@ -246,7 +237,7 @@ function submitComment(commentSubmitButton,isAddCommentClick) {
     content.addEventListener("keyup",resize);
     // console.log(commentId);
     // /user/comment/1 유저는 따로 만들어야되긴함
-    let url = domainUri+"user/comment/"+boardId;
+    let url = "/user/comment/"+boardId;
     let data = {
         method: "POST",
         headers: {
@@ -285,7 +276,7 @@ setUrl().then(function(data) {
     let data = {
         "METHOD" : "GET"
     }
-    return fetch(domainUri+"user/account",data);
+    return fetch("/user/account",data);
 }).then(function(response) {
     return response.text();
 }).then(function(response) {
@@ -309,7 +300,7 @@ function connect() {
 function setUrl() {
     boardId = location.href.split("boards/")[1];
 
-    let url = domainUri+"user-noneuser/account";
+    let url = "/user-noneuser/account";
     console.log(url);
     let accountData = {
         "method" : "GET"

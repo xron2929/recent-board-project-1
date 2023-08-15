@@ -1,12 +1,3 @@
-let domainUri;
-const cookies = document.cookie.split(';'); // 모든 쿠키 가져오기
-for (let i = 0; i < cookies.length; i++) {
-    const cookie = cookies[i].trim();
-    if (cookie.startsWith('domainUrl=')) {
-        domainUri = cookie.substring('domainURI='.length, cookie.length);
-        break;
-    }
-}
 
 let allCommentId = 1;
 let likeCountNumber;
