@@ -90,11 +90,6 @@ public class SecurityConfig {
                 .successHandler(new AuthenticationSuccessHandler() {
                             @Override
                             public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-                                response.setHeader("Access-Control-Allow-Origin", "http://localhost:3001/");
-                                response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
-                                response.setHeader("Access-Control-Max-Age", "3600");
-                                response.setHeader("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With, remember-me, Origin,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization");
-                                response.setHeader("Access-Control-Allow-Credentials",  "true");
                                 Cookie accessTokenCookie = new Cookie("accessToken", jwtManager.getAccessToken(request));
                                 Cookie refreshTokenCookie = new Cookie("refreshToken", jwtManager.getRefreshToken(request));
                                 response.addCookie(accessTokenCookie);
@@ -127,7 +122,15 @@ public class SecurityConfig {
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/members/logout"))
                 .logoutSuccessUrl("/");
-        http.cors();
+            http.cors();
+            http.headers().addHeaderWriter((request, response) -> {
+                response.setHeader("Access-Control-Max-Age", "3600");
+                response.setHeader("Access-Control-Allow-Origin", frontDomainUrl);
+                response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+                response.setHeader("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With, remember-me, Origin,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization");
+                response.setHeader("Access-Control-Allow-Credentials",  "true");
+            });
+
         return http.build();
     }
 
