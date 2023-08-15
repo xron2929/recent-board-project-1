@@ -113,3 +113,6 @@ domain:
 front:
   domain:
     url: ${FRONT_DOMAIN_URL}
+cookie:
+  domain:
+    url: ${COOKIE_DOMAIN_URL}
