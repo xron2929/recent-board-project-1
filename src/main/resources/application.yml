@@ -30,7 +30,7 @@ spring:
     console:
       enabled: true
   datasource:
-    url: jdbc:mariadb://svc.gksl2.cloudtype.app:32660/asdfgh
+    url: jdbc:mariadb://svc.sel3.cloudtype.app:32123/test
     username: root
     password: ${DATABASE_PASSWORD}
   servlet:

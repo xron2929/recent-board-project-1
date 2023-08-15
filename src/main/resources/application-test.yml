@@ -5,9 +5,9 @@ spring:
       authentication-database: admin
       # uri : mongodb://svc.sel3.cloudtype.app:31273
       host: svc.sel3.cloudtype.app
-      port: 31273
+      port: 32123
       username: root
-      password: 1234
+      password: test
       database: test
   batch:
     jdbc:
@@ -27,7 +27,7 @@ spring:
     console:
       enabled: true
   datasource:
-    url: jdbc:mariadb://svc.gksl2.cloudtype.app:32660/asdfgh
+    url: jdbc:mariadb://svc.sel3.cloudtype.app:32123/test
     username: root
     password: test
   servlet:
