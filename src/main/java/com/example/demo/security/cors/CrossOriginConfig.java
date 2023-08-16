@@ -15,7 +15,7 @@ import java.util.List;
 
 @Configuration
 public class CrossOriginConfig {
-    @Value("${front.domain.url}")
+    @Value("${port.domain.url}")
     private String frontDomainUrl;
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {

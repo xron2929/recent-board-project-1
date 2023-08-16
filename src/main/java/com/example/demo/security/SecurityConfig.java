@@ -42,9 +42,10 @@ import java.io.IOException;
 @EnableGlobalMethodSecurity(securedEnabled = true,prePostEnabled = true)
 @Slf4j
 public class SecurityConfig {
+    @Value("${port.domain.url}")
+    private String portDomainUrl;
     @Value("${front.domain.url}")
     private String frontDomainUrl;
-
     @Autowired
     ObjectPostProcessor objectPostProcessor;
     @Autowired
@@ -125,7 +126,7 @@ public class SecurityConfig {
             http.cors();
             http.headers().addHeaderWriter((request, response) -> {
                 response.setHeader("Access-Control-Max-Age", "3600");
-                response.setHeader("Access-Control-Allow-Origin", frontDomainUrl);
+                response.setHeader("Access-Control-Allow-Origin", portDomainUrl);
                 response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
                 response.setHeader("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With, remember-me, Origin,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization");
                 response.setHeader("Access-Control-Allow-Credentials",  "true");

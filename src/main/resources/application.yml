@@ -113,6 +113,6 @@ domain:
 front:
   domain:
     url: ${FRONT_DOMAIN_URL}
-cookie:
+port:
   domain:
-    url: ${COOKIE_DOMAIN_URL}
+    url: ${PORT_DOMAIN_URL}

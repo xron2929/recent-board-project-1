@@ -35,6 +35,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Value("${front.domain.url}")
     private String frontDomainUrl;
+    @Value("${port.domain.url}")
+    private String portDomainUrl;
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
@@ -46,11 +48,11 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/my-websocket-endpoint")
-                .setAllowedOrigins(frontDomainUrl)
+                .setAllowedOrigins(frontDomainUrl,portDomainUrl)
                 .withSockJS();
         //setAllowedOrigins() 로 cors 허용
         registry.addEndpoint("/my-websocket-endpoint2")
-                .setAllowedOrigins(frontDomainUrl)
+                .setAllowedOrigins(frontDomainUrl,portDomainUrl)
                 .withSockJS();
 
     }
