@@ -59,7 +59,7 @@ public class JwtExpirationTimeController {
     public void setJwtManager(HttpServletRequest request, HttpServletResponse response) throws IOException {
         cookieManager.makeZeroSecondCookie("refreshToken",response);
         cookieManager.makeZeroSecondCookie("accessToken",response);
-        response.sendRedirect(frontDomainUrl);
+        response.sendRedirect(frontDomainUrl+"/login");
         // response.addHeader("Location", "/login");
         // response.setStatus(302);
         // 다시 로그인 해야됨

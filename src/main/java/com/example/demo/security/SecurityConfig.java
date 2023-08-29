@@ -46,6 +46,9 @@ public class SecurityConfig {
     private String portDomainUrl;
     @Value("${front.domain.url}")
     private String frontDomainUrl;
+    @Value("${domain.url}")
+    private String serverUrl;
+
     @Autowired
     ObjectPostProcessor objectPostProcessor;
     @Autowired
@@ -85,7 +88,7 @@ public class SecurityConfig {
         http
                 .oauth2Login()
                 // .successHandler(new OauthSuccessHandler())
-                .loginPage("/login")
+                .loginPage(serverUrl+"/login")
                 .userInfoEndpoint()
                 .userService(principalOauth2UserService)
                 .and()
@@ -99,18 +102,18 @@ public class SecurityConfig {
                                 response.sendRedirect(frontDomainUrl);
                             }
                         })
-                .failureUrl("/first/oauth/join");;
+                .failureUrl(serverUrl+"/first/oauth/join");;
 
 
         http
                 .formLogin()
-                .loginPage("/login")
+                .loginPage(serverUrl+"/login")
                 // .defaultSuccessUrl("/home")
-                .loginProcessingUrl("/login_proc")
+                .loginProcessingUrl(serverUrl+"/login_proc")
                 .successHandler(new AuthenticationSuccessHandler() {
                     @Override
                     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-                        response.sendRedirect("/principal");
+                        response.sendRedirect(serverUrl+"/principal");
                     }
                 })
                 .failureHandler(new AuthenticationFailureHandler() {
@@ -122,9 +125,11 @@ public class SecurityConfig {
                 })
                 .and()
                 .logout()
-                .logoutRequestMatcher(new AntPathRequestMatcher("/members/logout"))
+                .logoutRequestMatcher(new AntPathRequestMatcher(serverUrl+"/members/logout"))
                 .logoutSuccessUrl("/");
-            http.cors();
+            http
+            	.headers()
+                .frameOptions().sameOrigin();
             http.headers().addHeaderWriter((request, response) -> {
                 response.setHeader("Access-Control-Max-Age", "3600");
                 response.setHeader("Access-Control-Allow-Origin", portDomainUrl);
