@@ -29,10 +29,12 @@ spring:
   h2:
     console:
       enabled: true
+
   datasource:
     url: jdbc:mariadb://svc.sel3.cloudtype.app:32123/test
     username: root
     password: ${DATABASE_PASSWORD}
+
   servlet:
     multipart:
       maxFileSize: 10MB
@@ -46,6 +48,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
+        dialect: org.hibernate.dialect.MariaDBDialect
     show-sql: true
   security:
     oauth2:
