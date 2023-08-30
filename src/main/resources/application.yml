@@ -26,9 +26,9 @@ spring:
   redis:
     host: svc.sel4.cloudtype.app
     port: 31803
-  h2:
-    console:
-      enabled: true
+  #h2:
+   # console:
+    #  enabled: true
 
   datasource:
     url: jdbc:mariadb://svc.sel3.cloudtype.app:32123/test

@@ -23,9 +23,9 @@ spring:
   redis:
     host: svc.gksl2.cloudtype.app
     port: 32610
-  h2:
-    console:
-      enabled: true
+  #h2:
+   # console:
+    #  enabled: true
   datasource:
     url: jdbc:mariadb://svc.sel3.cloudtype.app:32123/test
     username: root
