@@ -88,7 +88,7 @@ public class SecurityConfig {
         http
                 .oauth2Login()
                 // .successHandler(new OauthSuccessHandler())
-                .loginPage(serverUrl+"/login")
+                .loginPage(serverUrl+"login")
                 .userInfoEndpoint()
                 .userService(principalOauth2UserService)
                 .and()
@@ -102,18 +102,18 @@ public class SecurityConfig {
                                 response.sendRedirect(frontDomainUrl);
                             }
                         })
-                .failureUrl(serverUrl+"/first/oauth/join");;
+                .failureUrl(serverUrl+"first/oauth/join");;
 
 
         http
                 .formLogin()
-                .loginPage(serverUrl+"/login")
+                .loginPage(serverUrl+"login")
                 // .defaultSuccessUrl("/home")
-                .loginProcessingUrl(serverUrl+"/login_proc")
+                .loginProcessingUrl(serverUrl+"login_proc")
                 .successHandler(new AuthenticationSuccessHandler() {
                     @Override
                     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-                        response.sendRedirect(serverUrl+"/principal");
+                        response.sendRedirect(serverUrl+"principal");
                     }
                 })
                 .failureHandler(new AuthenticationFailureHandler() {
@@ -125,7 +125,7 @@ public class SecurityConfig {
                 })
                 .and()
                 .logout()
-                .logoutRequestMatcher(new AntPathRequestMatcher(serverUrl+"/members/logout"))
+                .logoutRequestMatcher(new AntPathRequestMatcher(serverUrl+"members/logout"))
                 .logoutSuccessUrl("/");
             http
             	.headers()
