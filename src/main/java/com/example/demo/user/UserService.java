@@ -54,24 +54,10 @@ public class UserService {
     BoardDslRepository boardJpaRepository;
     @Autowired
     NoneMemberRepository noneMemberRepository;
-    public DefaultMember save(DefaultMember user) {
-        return userRepository.save(user);
-    }
-    @Cacheable(value = "User", key = "#id",cacheManager = "testCacheManager")
-    public Optional<DefaultMember> findUserByIdCache(Long id) {
-        return userRepository.findById(id);
-    }
-    @CacheEvict(value = "User", key = "#id", cacheManager = "testCacheManager")
-    public void deleteUserCache(Long id) {
-        DefaultMember user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("Order Not Found"));
-        userRepository.delete(user);
-    }
+
     // 키 넣을 때 parameter를 꼭 id에 맞춰넣어야됨
     // User 넣고 캐시 조사하는 이런건 안됨
-    @CacheEvict(value = "User", key = "#id", cacheManager = "testCacheManager")
-    public DefaultMember updateUserCache(String id, DefaultMember user) {
-        return userRepository.save(user);
-    }
+
     public DefaultMember createUser(DefaultMember user) {
         return userRepository.save(user);
     }

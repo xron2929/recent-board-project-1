@@ -6,6 +6,7 @@ import com.example.demo.authority.Authority;
 import com.example.demo.cookie.CookieManager;
 import com.example.demo.entityjoin.NoneUserBoardSaveDataDto;
 import com.example.demo.entityjoin.UserBoardSaveDataDto;
+import com.example.demo.request.RequestIpApi;
 import com.example.demo.role.RoleStatus;
 import com.example.demo.security.jwt.JwtManager;
 import com.example.demo.security.jwt.UserRequestDto;
@@ -33,6 +34,8 @@ public class EditBoardMapper {
     JwtManager jwtManager;
     @Autowired
     MemberApi memberApi;
+    @Autowired
+    RequestIpApi requestIpApi;
     public void setNoneuserBoardUpdateDataDto(NoneUserBoardSaveDataDto noneuserBoardSaveDataDto) {
         DefaultMember user = DefaultMember.builder().userId(noneuserBoardSaveDataDto.getUsername())
                 .password(noneuserBoardSaveDataDto.getPassword()).build();
@@ -77,7 +80,7 @@ public class EditBoardMapper {
         NoneMember member = NoneMember.builder()
                 .userId(userBoardSaveDataDto.getUsername())
                 .password(userBoardSaveDataDto.getPassword())
-                .ip(request.getRemoteAddr())
+                .ip(requestIpApi.getClientIpAddr(request))
                 .uuid(cookieManager.getUUidCookie(request))
                 .userAuthorities(userAuthorities)
                 .build();
