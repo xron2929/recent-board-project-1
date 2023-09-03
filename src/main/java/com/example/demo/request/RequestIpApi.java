@@ -4,7 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 public class RequestIpApi {
 
-    public static String getClientIpAddr(HttpServletRequest request) {
+    public String getClientIpAddr(HttpServletRequest request) {
         String ip = request.getHeader("X-Forwarded-For");
         System.out.println("RequestIpApi.getClientIpAddr() client ip = " + ip);
 
