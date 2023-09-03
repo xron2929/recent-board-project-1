@@ -52,6 +52,7 @@ public class Demo4Application {
     AuthorityRepository authorityRepository;
     @Autowired
     NoneMemberRepository noneMemberRepository;
+
     public static void main(String[] args) {
         SpringApplication. run(Demo4Application.class, args);
     }
