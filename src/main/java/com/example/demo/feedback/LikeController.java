@@ -24,8 +24,11 @@ public class LikeController {
     @ResponseBody
     public Long updateNoneUserLikeCount(@RequestBody JoinStatusIdDto joinStatusIdDto,
                                         HttpServletRequest request) {
+        String ip =requestIpApi.getClientIpAddr(request);
+        System.out.println("LikeController.updateNoneUserLikeCount()");
+        System.out.println("LikeController.updateNoneUserLikeCount() client Ip"+ip);
         return feedBackCountApi.isExistenceLike(JoinStatus.BOARD, joinStatusIdDto.getJoinStatusId(),
-                requestIpApi.getClientIpAddr(request));
+                ip);
     }
     @ApiOperation("게시판 싫어요 처리")
     @PutMapping("/board/dislike")

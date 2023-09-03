@@ -6,7 +6,8 @@ public class RequestIpApi {
 
     public String getClientIpAddr(HttpServletRequest request) {
         String ip = request.getHeader("X-Forwarded-For");
-        System.out.println("RequestIpApi.getClientIpAddr() client ip = " + ip);
+        System.out.println("RequestIpApi.getClientIpAddr()");
+        System.out.println("RequestIpApi.getClientIpAddr() client Ip"+ip);
 
         if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("Proxy-Client-IP");
