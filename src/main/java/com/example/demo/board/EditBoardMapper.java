@@ -59,6 +59,7 @@ public class EditBoardMapper {
                 userBoardSaveViewDto.getContent(),userBoardSaveViewDto.isSecret());
         boardService.updateBoard(board);
         userService.updateUser(user);
+
     }
     public void insertUserBoard(BoardEditUserDto boardEditUserDto, UserRequestDto userRequestDto) {
         // Member user = new Member(boardSaveDataDto.getId(),boardSaveDataDto.getAuthor(), boardSaveDataDto.getPassword());
