@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <input type="text" placeholder="이메일" id="email"/>
+    <button onclick="getEmail()">전송</button>
+    <p id="timer">00:00</p>
+    <input type="text" placeholder="인증번호"  id="certificationCode"/>
+    <button onclick="getUserId()">확인</button>
+</body>
+</html>
+<script>
+    let domainUri = "http://localhost:8080";
+    let email = document.getElementById("email");
+    let certificationCode = document.getElementById("certificationCode");
+    const getEmail = () => {
+        let params = {
+            method: "POST",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json"
+            },
+            // enctype : "multipart/form-data",
+            body: JSON.stringify({
+                "email":email.value
+            })
+        }
+        let url = domainUri + "/email/findId";
+        fetch(url, params)
+            .then(function (response) {
+                //  console.log(response.json());
+                if (response.status === 500) {
+                    throw new Error("데이터 없음");
+                }
+                return response.json();
+            })
+            .then(function (data) {
+                let email = data;
+                console.log(email);
+                return;
+
+            }).catch(function (e) {
+            console.log(e);
+        });
+        document.getElementById("timer").textContent = "00:00";
+        count = 181;
+        setInterval("myTimer()", 1000);
+    };
+
+
+    function myTimer() {
+
+        count = count - 1; // 타이머 선택 숫자에서 -1씩 감산함(갱신되기 때문)
+        let minute = Math.floor(count / 60);
+        if (minute < 10) {
+            minute = "0" + minute;
+        }
+        let second = count % 60;
+        if (second < 10) {
+            second = "0" + second;
+        }
+        // console.log("m="+minute);
+        // console.log("s="+second);
+        console.log("count=" + count);
+        document.getElementById("timer").innerHTML
+            = minute + ":" + second;
+        if (count == 0) {
+            clearInterval(time);	// 시간 초기화
+            alert("시간이 완료되었습니다.");
+        }
+    }
+    function getUserId() {
+        let data = {
+            method: "GET",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json"
+            }
+        }
+        fetch("/email/certificate/userId?certificationCode="+certificationCode.value+"&email="+email.value,data).then(function(response) {
+            return response.json();
+        }).then(function (data) {
+            if(data==="fail") {
+                alert("실패");
+            }
+            else alert(data);
+        })
+
+    }
+
+</script>

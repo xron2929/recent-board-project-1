@@ -1,47 +1,54 @@
 
+
 spring:
   data:
     mongodb:
       authentication-database: admin
       # uri : mongodb://svc.sel3.cloudtype.app:31273
       host: svc.sel3.cloudtype.app
-      port: 32123
+      port: 31273
       username: root
-      password: test
+      password: 1234
       database: test
   batch:
     jdbc:
       initialize-schema: always
+  properties:
+    hibernate:
+      default_batch_fetch_size: 100
   sql:
     init:
       mode: always
   mvc:
-    hiddenmethod:
-      filter:
-        enabled: true
-        # form으로 완전히 이동하기 위해 사용
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
   redis:
-    host: svc.gksl2.cloudtype.app
-    port: 32610
+    host: svc.sel4.cloudtype.app
+    port: 31803
   #h2:
    # console:
     #  enabled: true
+
   datasource:
     url: jdbc:mariadb://svc.sel3.cloudtype.app:32123/test
     username: root
-    password: test
+    password: ${DATABASE_PASSWORD}
+
   servlet:
     multipart:
       maxFileSize: 10MB
       maxRequestSize: 10MB
   jpa:
-    defer-datasource-initialization: true
+    defer-datasource-initialization: false
     hibernate:
       ddl-auto: create-drop
+
     open-in-view: false
     properties:
       hibernate:
         format_sql: true
+        dialect: org.hibernate.dialect.MariaDBDialect
     show-sql: true
   security:
     oauth2:
@@ -67,7 +74,7 @@ spring:
               - email
             client-name: Naver
             authorization-grant-type: authorization_code
-            redirect-uri: http://localhost:8080/login/oauth2/code/naver
+            redirect-uri: ${URL}login/oauth2/code/naver
         provider:
           naver:
             authorization-uri: https://nid.naver.com/oauth2.0/authorize
@@ -78,20 +85,21 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: xron2929@gmail.com
-    password: pnxwtttbtvqxmmdu
+    username: ${EMAIL}
+    password: ${PASSWORD}
     properties:
       mail:
         smtp:
           auth: true
           starttls:
             enable: true
+
   main:
     allow-circular-references: true
 jwt.secretkey: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK
 logging.level:
   org.hibernate.SQL: debug
-redirect-url: http://localhost:8080/oauth2/authorization/
+redirect-url: ${URL}oauth2/authorization/
 
 cloud:
   aws:
@@ -103,4 +111,11 @@ cloud:
     s3:
       endpoint: https://s3.ap-northeast-2.amazonaws.com
       bucket: s3-fastcampus
-domain.url: http://localhost:8080/
+domain:
+  url: ${URL}
+front:
+  domain:
+    url: ${FRONT_DOMAIN_URL}
+port:
+  domain:
+    url: ${PORT_DOMAIN_URL}

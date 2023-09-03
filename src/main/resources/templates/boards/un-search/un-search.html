@@ -1,0 +1,110 @@
+<head>
+    <!-- scale 조정 -->
+    <title>글 조회</title>
+    <link rel="stylesheet" href="/css/boards/advertise/advertise-boards.css"  type="text/css" id="advertisementCss"/>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="google" content="notranslate"/>
+
+</head>
+<body>
+<Header>
+    <div class="area21">
+        <input type="button" value="로그인" id="loginBox" class="container box" style="cursor:hand"
+               onclick="location.href ='/login'"/>
+        <input type="button" value="회원가입" id="joinBox" class="container box"  style="cursor:hand"
+               onclick="location.href ='/join'"/>
+        <!-- 도메인관련 작업, 복잡한 로직은 스프링에서 작업 -->
+        <img src="/image/homeicone8.png" width="80px" height="40px"alt="My github" id="home" class="container " style="cursor:hand">
+        <input type="button" value="글쓰기" id="writeBox" class="box" style="cursor:hand"
+               onclick="location.href ='/write'"/>
+        <input type="button" value="글 조회" id="readBox" class="box" style="cursor:hand"
+               onclick="location.href ='/?pageQuantity=1&boardQuantity=20'" />
+    </div>
+    <div class="marginBox">
+        <a href="https://github.com/xron2929">
+            <img src="/image/github2.png" width="30px" alt="My github" id="github"class="container">
+        </a>
+        <a href="https://hellocoding.tistory.com/">
+            <img src="/image/tistory2.png" width="40px" height="40px"alt="My github" id="tistory" class="container"  onclick=moveTistory()>
+            <!-- 얘네는 서버끼리 통신개념도 아니고 내부적으로 이동하는 것도 아니니까 굳이 get/post로 전달할 이유 -->
+        </a>
+        <a href="/alarm?page=1">
+            <img src="/image/email2.png" width="30px" height="35px"alt="My github" id="email" class="container">
+        </a>
+    </div>
+
+</Header>
+<section>
+    <div class="bodyHeader">
+        <form action="http://localhost:8080/board/search" accept-charset="utf-8" method="get" id="inline" >
+            <input type="text" name="pageQuantity" value="1" hidden>
+            <input type="text" name="boardQuantity" value="20" hidden>
+            <input type="text" name="keyword" value="검색" id="textarea" maxlength="255" onclick=searchScript() >
+
+            <input type="submit" id="searchButton" value="검색" style="cursor:hand">
+            <!--     text-shadow: -1px 0 gray, 0 1px gray, 1px 0 gray, 0 -1px gray;
+                    왼쪽 그림자, 오른쪽 그림자 윗쪽 그림자 아랫쪽 그림자
+                    각각 가로(음수면 왼쪽, 양수면 오른쪽), 세로(음수면 위, 양수면 아래), 색상까지있고 (색상 전에 번짐 정도 정할 수 있다)
+            -->
+        </form>
+        <form action="http://localhost:8080/edit" th:action="@{/write}" accept-charset="utf-8" method="get" class="inline">
+            <input type="submit" id="writeButton" value="글쓰기" style="cursor:hand">
+        </form>
+        <!-- 나중에 @postMapping 쓰면 됨  https://donggu1105.tistory.com/61
+        put이나 delete은 링크 참조 저기다 @PutMapping 이렇게 쓰면 됨 -->
+        <!-- display inline으로 form으로 인한 들여쓰기 막기 가능-->
+    </div>
+    <!-- 검색 바 , 검색, 글쓰기-->
+    <article>
+        <table>
+            <thead>
+            <th class="th-id">번호</th>
+            <th class="th-title">제목</th>
+            <th class="th-author">글쓴이</th>
+            <th class="th-date">날짜</th>
+            </thead>
+            <tbody id="tbody">
+            </tbody>
+        </table>
+    </article>
+<!-- 내일 출발할 생각이긴 해 -->
+    <div class="container2">
+        <div class="itema" id="item1">처음</div>
+        <div class="itema disappear" id="item2">1</div>
+        <div class="itema disappear" id="item3">2</div>
+        <div class="itema disappear" id="item4">3</div>
+        <div class="itema disappear" id="item5">4</div>
+        <div class="itema disappear" id="item6">5</div>
+        <div class="itema disappear" id="item7">6</div>
+        <div class="itema disappear" id="item8">7</div>
+        <div class="itema disappear" id="item9">8</div>
+        <div class="itema disappear" id="item10">9</div>
+        <div class="itema disappear" id="item11">10</div>
+        <div class="itema disappear" id="item12">다음</div>
+    </div>
+
+
+    <!-- 페이지 -->
+</section>
+<aside>
+    <img id="advertisement" src="/image/inflearn.png" />
+
+    <img id="exit" src="/image/endend.png" style="cursor:hand" onclick=eraseAdvertisement() />
+</aside>
+<footer>
+    <h2 id="footerText">간단한 게시판 만들기 - 정재광</h2>
+</footer>
+
+
+<script defer src="https://cdn.jsdelivr.net/npm/sockjs-client@1.5.0/dist/sockjs.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<script defer src="/js/boards/un-search/un-search-script.js"></script>
+
+<!-- 여기서 media query 추가로 만들면 될 것 같다 -->
+
+<!-- 1~10 페이지단위 디시인사이드처럼 가져다 쓰기 개당 10개 정도만
+    빨간색 뜨는 건 어캄? 그건 타임리프로 조정해야지? 어떻게? js로 하던가 타임리프로 하던가 만약 page=15이면 빨간색 텍스트 가져와라
+    이런느낌? ㅇㅋㅇㅋ
+    나중에 sendMail() 함수 작성
+-->
