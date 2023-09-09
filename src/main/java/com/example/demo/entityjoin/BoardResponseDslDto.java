@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 public class BoardResponseDslDto {
     private Long id;
     private String title;
-    private String boardWriterId;
+    private String boardWriterName;
     private String contents;
     private LocalDateTime createdDate;
     private LocalDateTime lastModifiedDate;
@@ -22,12 +22,12 @@ public class BoardResponseDslDto {
     }
     @Builder
     public BoardResponseDslDto(@NonNull Long id, @NonNull String title,
-                               @NonNull String boardWriterId, @NonNull String contents,
+                               @NonNull String boardWriterName, @NonNull String contents,
                                @NonNull LocalDateTime createdDate, @NonNull LocalDateTime lastModifiedDate,
                                @NonNull String likeCount,@NonNull String disLikeCount) {
         this.id = id;
         this.title = title;
-        this.boardWriterId = boardWriterId;
+        this.boardWriterName = boardWriterName;
         this.contents = contents;
         this.createdDate = createdDate;
         this.lastModifiedDate = lastModifiedDate;

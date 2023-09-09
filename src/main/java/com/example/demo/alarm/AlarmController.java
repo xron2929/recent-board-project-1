@@ -112,6 +112,9 @@ public class AlarmController {
         // 그래도 보이는 건 일단 막아야될듯
         NoneUserUuidANdTitleAndPasswordDto noneUserDto =
                 boardService.findNoneUserDto(noneUserAlarmSaveDto.getBoardId());
+
+        String uuidCookie = cookieManager.getUUidCookie(request);
+        System.out.println("AlarmController - setNoneUserAlarm() uuidCookie = "+uuidCookie);
         Alarm alarm = NoneUserAlarm.builder()
                 // boardId -> userId -> uuid 정도로 노출
                 .userName(noneUserDto.getUserId())
@@ -120,7 +123,8 @@ public class AlarmController {
                 .boardId(noneUserAlarmSaveDto.getBoardId())
                 .isVisited(noneUserAlarmSaveDto.getIsVisited())
                 .summaryCommentContent(noneUserAlarmSaveDto.getSummaryCommentContent())
-                .commentWriter(noneUserAlarmSaveDto.getCommentWriter())
+                .boardWriterId(noneUserAlarmSaveDto.getBoardWriterId())
+                .commentWriter(uuidCookie)
                 .build();
         alarmService.saveAlarm(alarm);
         return "ok";

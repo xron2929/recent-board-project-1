@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 public class BoardResponseDto {
     private Long id;
     private String title;
-    private String boardWriterId;
+    private String boardWriterName;
     private String contents;
     private LocalDateTime createdDate;
     private LocalDateTime lastModifiedDate;
@@ -20,12 +20,12 @@ public class BoardResponseDto {
         this.id = id;
     }
     public BoardResponseDto(Long id, String title,
-                            String boardWriterId, String contents,
+                            String boardWriterName, String contents,
                             LocalDateTime createdDate, LocalDateTime lastModifiedDate
                             ) {
         this.id = id;
         this.title = title;
-        this.boardWriterId = boardWriterId;
+        this.boardWriterName = boardWriterName;
         this.contents = contents;
         this.createdDate = createdDate;
         this.lastModifiedDate = lastModifiedDate;

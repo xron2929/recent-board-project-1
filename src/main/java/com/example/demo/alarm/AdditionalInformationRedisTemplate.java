@@ -35,9 +35,9 @@ public class AdditionalInformationRedisTemplate {
         redisTemplate.opsForList().rightPushAll(userId, objectData);
     }
 
-    public void setAlarm(String uuid, Alarm alarm) throws JsonProcessingException {
+    public void setAlarm(String alarmTarget, Alarm alarm) throws JsonProcessingException {
         String data = objectMapper.writeValueAsString(alarm);
-        redisTemplate.opsForList().leftPush(uuid, data);
+        redisTemplate.opsForList().leftPush(alarmTarget, data);
     }
 
     public List<Alarm> getAlarms(long startId, long endId, String boardWriterId) {

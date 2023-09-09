@@ -1,4 +1,13 @@
-
+let domainUri;
+const cookies = document.cookie.split(';'); // 모든 쿠키 가져오기
+for (let i = 0; i < cookies.length; i++) {
+    const cookie = cookies[i].trim();
+    if (cookie.startsWith('domainUrl=')) {
+        domainUri = cookie.substring('domainURI='.length, cookie.length);
+        console.log(domainUri);
+        break;
+    }
+}
 let sessionId;
 let stompClient;
 let stompClient2;

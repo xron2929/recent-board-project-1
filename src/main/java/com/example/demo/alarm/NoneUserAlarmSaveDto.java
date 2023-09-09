@@ -12,17 +12,16 @@ public class NoneUserAlarmSaveDto {
     @Builder
     public NoneUserAlarmSaveDto(@NonNull Long boardId, @NonNull String summaryCommentContent,
                                 @NonNull String userName,
-                                @NonNull String commentWriter, @NonNull Boolean isVisited) {
+                                @NonNull String boardWriterId, @NonNull Boolean isVisited) {
         this.boardId = boardId;
         this.summaryCommentContent = summaryCommentContent;
-        this.commentWriter = commentWriter;
+        this.boardWriterId = boardWriterId;
         this.userName = userName;
         this.isVisited = isVisited;
     }
-
+    @NonNull private String boardWriterId;
     @NonNull private Long boardId;
     @NonNull private String summaryCommentContent;
-    @NonNull private String commentWriter;
     @NonNull private Boolean isVisited;
     @NonNull private String userName;
 }

@@ -80,7 +80,7 @@ public class BoardReadController {
                 .id(boardResponseDto.getId())
                 .title(boardResponseDto.getTitle())
                 .contents(boardResponseDto.getContents())
-                .boardWriterId(boardResponseDto.getBoardWriterId())
+                .boardWriterName(boardResponseDto.getBoardWriterName())
                 .createdDate(boardResponseDto.getCreatedDate())
                 .lastModifiedDate(boardResponseDto.getLastModifiedDate())
                 .likeCount(feedBackCount.getLikeCount())

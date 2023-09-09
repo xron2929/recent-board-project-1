@@ -1,5 +1,6 @@
 package com.example.demo.board;
 
+import com.example.demo.cookie.CookieManager;
 import com.example.demo.entityjoin.NoneUserBoardSaveDataDto;
 import com.example.demo.role.RoleStatus;
 import com.example.demo.security.authentication.AuthenticationManager;
@@ -29,7 +30,8 @@ public class BoardWriteController {
     @Autowired
     BoardService boardService;
 
-
+    @Autowired
+    CookieManager cookieManager;
     @GetMapping("/write")
     @ApiOperation("board-write 뷰 반환")
     public String write(HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
@@ -61,6 +63,7 @@ public class BoardWriteController {
         System.out.println("accessToken = " + accessToken);
         if(accessToken == "null") {
             System.out.println("성공");
+
             System.out.println("boardEditUserDto.getId() = " + boardEditUserDto.getId());
             System.out.println("boardEditUserDto.getContent() = " + boardEditUserDto.getContent());
             System.out.println("boardEditUserDto.getTitle() = " + boardEditUserDto.getTitle());
@@ -72,6 +75,8 @@ public class BoardWriteController {
                     .username(boardEditUserDto.getUsername())
                     .password(boardEditUserDto.getPassword())
                     .isSecret(boardEditUserDto.isSecret()).build();
+            String uuidCookie = cookieManager.getUUidCookie(request);
+            System.out.println("BoardWriteController - writeNoneUser() uuidCookie = "+uuidCookie);
             editBoardMapper.insertNoneUserBoard(request,userBoardSaveDataDto);
             return "ok";
         }

@@ -24,6 +24,7 @@ public class CrossOriginConfig {
         config.setAllowCredentials(true);
         config.setAllowedOrigins(List.of("http://localhost:3001",frontDomainUrl));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
+        // config.setAllowedMethods(List.of("*"));
         config.setAllowedHeaders(List.of("*"));
         config.setExposedHeaders(List.of("*"));
 

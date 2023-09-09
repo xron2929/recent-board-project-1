@@ -75,6 +75,7 @@ public class EditBoardMapper {
     }
     public void insertNoneUserBoard(HttpServletRequest request,NoneUserBoardSaveDataDto userBoardSaveDataDto) {
         System.out.println("UserBoardSaveDataDto - userBoardSaveDataDto.getUsername() = " + userBoardSaveDataDto.getUsername());
+        System.out.println(" EditBoardMapper.insertNoneUserBoard() uuidCookie = " + cookieManager.getUUidCookie(request));
         System.out.println("boardRequestDto.getUsername() = " + userBoardSaveDataDto.getContent());
         List<UserAuthority> userAuthorities = new ArrayList<>();
         userAuthorities.add(new UserAuthority(new Authority(RoleStatus.ROLE_ANONYMOUS.name())));
