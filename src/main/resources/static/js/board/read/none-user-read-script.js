@@ -1,4 +1,13 @@
-
+let domainUri;
+const cookies = document.cookie.split(';'); // 모든 쿠키 가져오기
+for (let i = 0; i < cookies.length; i++) {
+    const cookie = cookies[i].trim();
+    if (cookie.startsWith('domainUrl=')) {
+        domainUri = cookie.substring('domainURI='.length, cookie.length);
+        console.log(domainUri);
+        break;
+    }
+}
 let allCommentId = 1;
 let likeCountNumber;
 let disLikeCountNumber;
@@ -41,7 +50,7 @@ function x() {
         })
         .then(function (datas) {
 
-            boardWriterId = datas["boardWriterId"];
+            boardWriterId = datas["boardWriterName"];
             console.log(datas["contents"]);
             content = datas["contents"];
             likeCountNumber = datas['likeCount'];
@@ -290,7 +299,7 @@ setUrl().then(function(data) {
 
 function connect() {
 
-    const socket = new SockJS('/my-websocket-endpoint');
+    const socket = new SockJS('http://localhost:8080/my-websocket-endpoint');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function(frame) {
         console.log('Connected: ' + frame);
