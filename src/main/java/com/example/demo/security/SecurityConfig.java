@@ -29,7 +29,10 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.CorsUtils;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -60,7 +63,7 @@ public class SecurityConfig {
     CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
     @Autowired
     JwtManager jwtManager;
-    @Autowired CrossOriginConfig crossOriginConfig;
+    // @Autowired CrossOriginConfig crossOriginConfig;
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> {
@@ -74,7 +77,10 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         System.out.println("http.sessionManagement() = " + http.sessionManagement());
-        http.cors();
+        // http.cors() 대신 바꿈
+
+        http.httpBasic().disable().cors();
+
         http
                 .authorizeRequests()
                 // .mvcMatchers("/user2").hasAnyRole("ROLE_USER")
@@ -110,13 +116,13 @@ public class SecurityConfig {
 
         http
                 .formLogin()
-                .loginPage(serverUrl+"login")
+                .loginPage("/login")
                 // .defaultSuccessUrl("/home")
-                .loginProcessingUrl(serverUrl+"login_proc")
+                .loginProcessingUrl("/login_proc")
                 .successHandler(new AuthenticationSuccessHandler() {
                     @Override
                     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-                        response.sendRedirect(serverUrl+"principal");
+                        response.sendRedirect("/principal");
                     }
                 })
                 .failureHandler(new AuthenticationFailureHandler() {
@@ -136,7 +142,6 @@ public class SecurityConfig {
             http.headers().addHeaderWriter((request, response) -> {
                 response.setHeader("Access-Control-Max-Age", "3600");
                 response.setHeader("Access-Control-Allow-Origin", portDomainUrl);
-                response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
                 response.setHeader("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With, remember-me, Origin,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization");
                 response.setHeader("Access-Control-Allow-Credentials",  "true");
             });

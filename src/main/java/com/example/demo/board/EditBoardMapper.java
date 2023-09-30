@@ -37,7 +37,7 @@ public class EditBoardMapper {
     @Autowired
     RequestIpApi requestIpApi;
     public void setNoneuserBoardUpdateDataDto(NoneUserBoardSaveDataDto noneuserBoardSaveDataDto) {
-        DefaultMember user = DefaultMember.builder().userId(noneuserBoardSaveDataDto.getUsername())
+        DefaultMember user = DefaultMember.builder().id(noneuserBoardSaveDataDto.getId()).userId(noneuserBoardSaveDataDto.getUsername())
                 .password(noneuserBoardSaveDataDto.getPassword()).build();
         Board board = new Board(noneuserBoardSaveDataDto.getId(), noneuserBoardSaveDataDto.getTitle(),
                 noneuserBoardSaveDataDto.getContent(),noneuserBoardSaveDataDto.isSecret());

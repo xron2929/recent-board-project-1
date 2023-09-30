@@ -121,6 +121,9 @@ public class UserService {
     }
 
     public void updateUser(DefaultMember user) {
+        System.out.println("Userservice.updateUser - user.getId()  = " + user.getId());
+        System.out.println("Userservice.updateUser - user.getUserId() = " + user.getUserId());
+        System.out.println("Userservice.updateUser - user.getPassword() = " + user.getPassword());
         userJoinRepository.saveMember(user.getId(),user.getUserId(),user.getPassword());
     }
     public boolean isAdmin(String userId) {

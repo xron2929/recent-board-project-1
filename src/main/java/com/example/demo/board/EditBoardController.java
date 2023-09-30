@@ -14,11 +14,13 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.header.Header;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.net.http.HttpHeaders;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -82,6 +84,7 @@ public class EditBoardController {
     public String editUserBoardData(@RequestBody UserBoardSaveViewDto userBoardSaveViewDto,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
         System.out.println("?Sfadsfas");
+
         String refreshToken = jwtManager.getRefreshToken(request);
         UserBoardSaveDataDto userBoardSaveDataDto = boardService.findUserPasswordBoard(userBoardSaveViewDto.getBoardId());
         boardMapper.setUserBoardUpdateDataDto(userBoardSaveViewDto,userBoardSaveDataDto,refreshToken);

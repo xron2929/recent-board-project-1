@@ -90,7 +90,8 @@ function replace() {
         title.value = data.title;
         CKEDITOR.instances.contents.setData(data.contents);
         console.log(data.contents);
-        username.value = data.boardWriterId;
+        alert(username.value);
+        username.value = data.boardWriterName;
         return content;
     }).then(function isErrorRetry(content) {
         console.log(CKEDITOR.instances.contents.getData(content));

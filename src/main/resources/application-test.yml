@@ -112,7 +112,7 @@ cloud:
       endpoint: https://s3.ap-northeast-2.amazonaws.com
       bucket: s3-fastcampus
 domain:
-  url: http://localhost:3001
+  url: ${SERVER_URL}
 front:
   domain:
     url: http://localhost:3001
