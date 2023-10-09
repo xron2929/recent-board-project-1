@@ -8,13 +8,12 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class AuthenticationConfig {
-    @Autowired
-    ObjectMapper objectMapper;
+
     @Autowired
     JwtManager jwtManager;
     @Bean
     public AuthenticationManager authenticationManager() {
-        return new AuthenticationManager(jwtManager,objectMapper);
+        return new AuthenticationManager(jwtManager);
     }
 }
 

@@ -51,7 +51,7 @@ public class BoardReadController {
 
         System.out.println("readController - authenticationManager = " + authenticationManager);
         String refreshToken = jwtManager.getRefreshToken(request);
-        TokenStatus isSafeJwt = jwtManager.validaition(refreshToken);
+        TokenStatus isSafeJwt = jwtManager.validation(refreshToken);
         if(isSafeJwt == TokenStatus.NONE) {
             return magnageUrlMap.get(RoleStatus.ROLE_ANONYMOUS.name());
         }
@@ -101,6 +101,14 @@ public class BoardReadController {
         if(accessToken == null && userAuthority.equals(RoleStatus.ROLE_ANONYMOUS.name())) {
             System.out.println("ReadController -  유저 아님 " );
             return "ok";
+        }
+        if(accessToken == null && userAuthority.equals(RoleStatus.ROLE_OAUTH_USER.name())) {
+            System.out.println("ReadController -  조회자는 비회원 글 작성자는 oauth 회원" );
+            return "다른 사용자";
+        }
+        if(accessToken == null && userAuthority.equals(RoleStatus.ROLE_SITE_USER.name())) {
+            System.out.println("ReadController -  조회자는 비회원 글 작성자는 site 회원" );
+            return "다른 사용자";
         }
         String authorityName = jwtManager.getAuthorityName(accessToken);
         if(authorityName == null && userAuthority.equals(RoleStatus.ROLE_ANONYMOUS.name())) {

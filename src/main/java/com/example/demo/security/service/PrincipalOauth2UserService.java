@@ -60,6 +60,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
     UserService userService;
     @Autowired
     JwtManager jwtManager;
+
     @Value("${redirect-url}")
     private String redirectUrl;
 
@@ -89,6 +90,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         Oauth2UserInfo oauth2UserInfo = null;
         String url = null;
         CookieManager cookieManager = new CookieManager();
+        TransApi transApi = new TransApi();
         if(userRequest.getClientRegistration().getRegistrationId().equals("google")) {
             System.out.println(" 구글 로그인 요청 ");
             System.out.println("oAuth2User.getAttributes() = " + oAuth2User.getAttributes());
@@ -146,27 +148,47 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         if(stringAge != null) {
             age = Long.valueOf(stringAge);
         }
+
         String phoneNumber = Arrays.stream(request.getCookies())
                 .filter(cookie -> cookie.getName().equals("phoneNumber"))
+                .map(cookie -> cookie.getValue()).findFirst().orElse( null);
+        String trans = Arrays.stream(request.getCookies())
+                .filter(cookie -> cookie.getName().equals("trans"))
                 .map(cookie -> cookie.getValue()).findFirst().orElse( null);
         String nickname = Arrays.stream(request.getCookies())
                 .filter(cookie -> cookie.getName().equals("nickname"))
                 .map(cookie -> cookie.getValue()).findFirst().orElse(null);
-        // accessToken이 이시기에 만료 되었다면 ?
+        cookieManager.makeZeroSecondCookie("trans",response);
+        cookieManager.makeZeroSecondCookie("nickname",response);
+        // 한글 텍스트를 쿠키 상태로 가지고 있으면 인터셉터에 걸려서 끊기는 경우가 많아서 그냥 바로 삭제
         // 다시 생성
         // 만약 있다면 그대로 반환
         String accessToken = new String();
         log.info("loadUser");
         accessToken = jwtManager.getAccessToken(request);
-        UserRequestDto userRequestDto = UserRequestDto.builder().userId(username).password(password).userAuthorities(userAuthorities).build();
+        log.info("accessToken = {}",accessToken);
+        UserRequestDto userRequestDto = UserRequestDto
+                .builder()
+                .email(email)
+                .age(age)
+                .trans(trans)
+                .userId(username)
+                .password(password)
+                .nickname(nickname)
+                .phoneNumber(phoneNumber)
+                .userAuthorities(userAuthorities)
+                .build();
         userRequestDto.getUserAuthorities().stream().map(userAuthority1 -> userAuthority1.getAuthority())
                 .map(authority1 -> authority1.getAuthorityName())
                 .forEach(authorityName -> log.info("authorityName = {}",authorityName));
 
         try {
             String refreshToken = jwtManager.getRefreshToken(request);
+            log.info("refreshToken = {}",refreshToken);
             if(refreshToken == null || refreshTokenManager.validaition(refreshToken,key) == false) {
+                log.info("success2");
                 System.out.println("userRequestDto = " + userRequestDto);
+                log.info("PrincipalOauth2UserService - refreshToken = {}",refreshToken);
                 accessToken = jwtManager.setAccessToken(request,response,userRequestDto);
                 refreshToken = jwtManager.setRefreshToken(request,response,userRequestDto);
             }
@@ -218,6 +240,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         userEntity = OauthMember
                 .builder()
                 .userId(username)
+                .gender(new Gender(transApi.getTrans(trans)))
                 .nickname(nickname)
                 .password(password)
                 .email(email)

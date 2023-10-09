@@ -48,6 +48,7 @@ public class JwtManager {
                 .filter(cookie ->cookie.getName().equals("accessToken"))
                 .map(Cookie::getValue)
                 .findFirst().orElse(null);
+
         return accessToken;
     }
     public String setAccessToken(HttpServletRequest request, HttpServletResponse response,
@@ -74,7 +75,8 @@ public class JwtManager {
     public String setRefreshToken(HttpServletRequest request,HttpServletResponse response,
                                   UserRequestDto userRequestDto) throws JsonProcessingException {
         Date now = (new Date());
-        System.out.println("setRefreshToken userRequestDto.getPassword() = " + userRequestDto.getPassword());
+
+
         String userRequestDtoJson = objectMapper.writeValueAsString(userRequestDto);
         String jwtToken = Jwts.builder()
                 .setHeaderParam(Header.TYPE, Header.JWT_TYPE) // 헤더에 JWT 타입 나타내는 거인듯
@@ -83,6 +85,7 @@ public class JwtManager {
                 .claim("userRequestDto", userRequestDtoJson) // (5)
                 .signWith(key, SignatureAlgorithm.HS256) // 암호화(압축화)
                 .compact(); // 이걸로 response 추가하는듯?
+        System.out.println("jwtManger - setRefreshToken() jwtToken = " + jwtToken);
         cookieManager.makeSecurityCookie("refreshToken",jwtToken,30 * 24 * 60 * 60,response);
         return jwtToken;
     }
@@ -132,7 +135,7 @@ public class JwtManager {
         return userRequestDto;
     }
     public long getLocalDateTimeSecond(String token) throws JsonProcessingException {
-        System.out.println("getLocalDateTimeSecond");
+        System.out.println("JwtManager - getLocalDateTimeSecond");
         Claims claims = Jwts
                 .parserBuilder()
                 .setSigningKey(key) // 전자서명
@@ -142,11 +145,12 @@ public class JwtManager {
         long expirationTime = claims.getExpiration().getTime();
         long now = System.currentTimeMillis();
         long remainingSeconds = (expirationTime - now) / 1000;
-        System.out.println("remainingSeconds = " + remainingSeconds);
+        System.out.println("JwtManager - remainingSeconds = " + remainingSeconds);
         // UserRequestDto userRequestDto = claims.get("userRequestDto", UserRequestDto.class);
         return remainingSeconds;
     }
-    public TokenStatus validaition(String refreshToken) throws JsonProcessingException {
+    public TokenStatus validation(String refreshToken) throws JsonProcessingException {
+        System.out.println("JwtManager - validation refreshToken " + refreshToken);
         if(refreshToken == null) {
             return TokenStatus.NONE;
         }

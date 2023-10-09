@@ -4,6 +4,7 @@ import com.example.demo.board.FirstBoardException;
 import com.example.demo.join.IsNotExistenceEmailContentException;
 import com.example.demo.join.SpecialSymbolException;
 import com.example.demo.join.IsNotEqualEmailException;
+import com.example.demo.join.isExistenceUserDataException;
 import com.example.demo.statistics.ConvertNameException;
 import com.example.demo.statistics.TimerException;
 import org.springframework.http.HttpStatus;
@@ -17,7 +18,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ControllerAdvice
 public class ExceptionAdvise {
     @ExceptionHandler({IsNotEqualEmailException.class, SpecialSymbolException.class,
-            IsNotExistenceEmailContentException.class, FirstBoardException.class, TimerException.class, ConvertNameException.class})
+            IsNotExistenceEmailContentException.class, FirstBoardException.class,
+            TimerException.class, ConvertNameException.class, isExistenceUserDataException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
     public ResponseEntity<ErrorResponse> clientDataException(Exception e) {

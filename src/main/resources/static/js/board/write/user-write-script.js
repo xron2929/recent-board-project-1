@@ -55,20 +55,26 @@ fetch(domainUri+"board/finalId", requestData)
     let btnSave = document.getElementById("writeButton");
     let url = domainUri + "user/account";
     let accountData = {
-        "method": "GET"
+        "method": "GET",
+        headers: {
+            "Content-Type": "application/json"
+        }
     }
     fetch(url, accountData).then(function findUsername(response) {
-        return response.text();
-    }).then(function(data){
-        username = document.getElementById("username");
-        return data;
-    }).then(function setUsername(data) {
-        console.log("account = "+data);
-        username.value = data;
-    }).then(function setButtonSaveEvent() {
-        btnSave.addEventListener("click",() => {
-            saveGallery();
-        });
+            return response.json();
+        }).then(function (response) {
+            return response.userId;
+        }).then(function(data){
+            username = document.getElementById("username");
+            return data;
+        }).then(function setUsername(data) {
+            console.log("account = "+data);
+            username.value = data;
+        }).then(function setButtonSaveEvent() {
+            btnSave.addEventListener("click",() => {
+                saveGallery();
+            });
+
     });
 
 

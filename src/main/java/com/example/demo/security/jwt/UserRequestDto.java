@@ -19,7 +19,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserRequestDto {
-    @Autowired TransApi transApi;
     private String userId; // spring-security의 username
     private Long age; // 나중에 long 으로 바꿀지 Long 할지 결정(DTO 타입말하는 거임)
     private String nickname;
@@ -41,19 +40,26 @@ public class UserRequestDto {
         this.password = password;
     }
 
-    public UserRequestDto(String userId, Long age, String nickname,
-                          String password, LocalDateTime localDateTime) {
+    public UserRequestDto(String userId, Long age, String nickname, String email,
+                          String phoneNumber,  String password,List<UserAuthority>userAuthorities) {
         this.userId = userId;
         this.age = age;
         this.nickname = nickname;
-        this.password = password;
-        this.localDateTime = localDateTime;
-    }
-
-    public UserRequestDto(String userId,String password,List<UserAuthority>userAuthorities) {
-        this.userId = userId;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
         this.password = password;
         this.userAuthorities = userAuthorities;
+    }
+
+    public static UserRequestDto of(SiteMember user) {
+        return new UserRequestDto(
+                user.getUserId(),
+                user.getAge(),
+                user.getNickname(),
+                user.getEmail(),
+                user.getPhoneNumber(),
+                user.getPassword(),
+                user.getUserAuthorities());
     }
 
     public static final SiteMember from(UserRequestDto userRequestDto,Trans trans) {
@@ -71,33 +77,7 @@ public class UserRequestDto {
 
     }
 
-    public UserRequestDto(String userId, Long age, String nickname, String password) {
-        this.userId = userId;
-        this.age = age;
-        this.nickname = nickname;
-        this.password = password;
-    }
 
-    public UserRequestDto(String userId, Long age, String nickname, String email,
-                          String phoneNumber, String password,List<UserAuthority>userAuthorities) {
-        this.userId = userId;
-        this.age = age;
-        this.nickname = nickname;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
-        this.password = password;
-        this.userAuthorities = userAuthorities;
-    }
-    public static UserRequestDto of(SiteMember user,String emailCode) {
-        return new UserRequestDto(
-                user.getUserId(),
-                user.getAge(),
-                user.getNickname(),
-                user.getEmail(),
-                user.getPhoneNumber(),
-                user.getPassword(),
-                user.getUserAuthorities());
-    }
 
 
 

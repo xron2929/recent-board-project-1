@@ -1,39 +1,42 @@
 package com.example.demo.api;
 
+import com.example.demo.board.UserBoardSaveViewDto;
+import com.example.demo.entityjoin.UserBoardSaveDataDto;
+import com.example.demo.role.RoleStatus;
 import com.example.demo.security.jwt.JwtManager;
-import com.example.demo.security.jwt.TokenStatus;
 import com.example.demo.security.jwt.UserRequestDto;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import com.example.demo.user.defaultuser.DefaultMember;
+import com.example.demo.userAuthority.UserAuthority;
+
+import javax.management.relation.Role;
+import java.util.List;
 
 public class MemberApi {
-    private JwtManager jwtManager;
-    @Autowired
-    public MemberApi(JwtManager jwtManager) {
-        this.jwtManager = jwtManager;
-    }
 
-    public Boolean checkUserId(String userId, String checkUserId) {
+    public JwtManager jwtManager;
+    public boolean checkUserId(String userId,String checkUserId) {
         if(userId.equals(checkUserId)) {
-            return true;
+            System.out.println("CheckStatus.SAME_USER.getCheckMessage() = " + CheckStatus.SAME_USER.getCheckMessage());
+            return CheckStatus.SAME_USER.getCheckMessage();
         }
-        return false;
+        System.out.println("CheckStatus.UN_SAME_USER.getCheckMessage(); = " + CheckStatus.UN_SAME_USER.getCheckMessage());
+        return CheckStatus.UN_SAME_USER.getCheckMessage();
     }
-    public Boolean checkPassword(String refreshToken) throws JsonProcessingException {
-        if(jwtManager.validaition(refreshToken).equals(TokenStatus.TIME_SAFE)) {
-            return true;
+    public boolean checkAuthority(DefaultMember boardChangeTrialUser, UserBoardSaveDataDto boardAuthorityUser) {
+        if(!checkUserId(boardChangeTrialUser.getUserId(), boardAuthorityUser.getUserId())) {
+            List<UserAuthority> boardChangeTrialUserAuthorities = boardChangeTrialUser.getUserAuthorities();
+            for(UserAuthority boardChangeTrialUserAuthority: boardChangeTrialUserAuthorities) {
+                System.out.println("boardChangeTrialUserAuthority.getAuthority().getAuthorityName() = " + boardChangeTrialUserAuthority.getAuthority().getAuthorityName());
+                boolean b = (boardChangeTrialUserAuthority.getAuthority().getAuthorityName() == RoleStatus.ROLE_ADMIN.name());
+                if(boardChangeTrialUserAuthority.getAuthority().getAuthorityName().equals(RoleStatus.ROLE_ADMIN.name())) {
+
+                    System.out.println("MemberApi - checkAuthority() - CheckStatus.UN_SAME_USER_BUT_ADMIN_TRY.getCheckMessage(); = " + CheckStatus.UN_SAME_USER_BUT_ADMIN_TRY.getCheckMessage());
+                    return CheckStatus.UN_SAME_USER_BUT_ADMIN_TRY.getCheckMessage();
+                }
+            }
+            System.out.println("CheckStatus.UN_SAME_USER_AND_UN_ADMIN_TRY.getCheckMessage(); = " + CheckStatus.UN_SAME_USER_AND_UN_ADMIN_TRY.getCheckMessage());
+            return CheckStatus.UN_SAME_USER_AND_UN_ADMIN_TRY.getCheckMessage();
         }
-        return false;
-    }
-    public Boolean checkUserIdAndPassword(String refreshToken,String checkUserId) throws JsonProcessingException {
-        UserRequestDto userRequestDto = jwtManager.getUserRequestDto(refreshToken);
-        if(!checkUserId(userRequestDto.getUserId(), checkUserId)) {
-            return false;
-        }
-        if(!checkPassword(refreshToken)) {
-            return false;
-        }
-        return true;
+        return CheckStatus.SAME_USER.getCheckMessage();
     }
 }

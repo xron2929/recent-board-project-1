@@ -38,7 +38,7 @@ public class JoinDslRepository {
     public List<MemberBoardQueryDTO>findByUserIds(Long startId,Long boardQuantity) {
         JPAQueryFactory queryFactory = new JPAQueryFactory(em);
         return queryFactory.select(Projections.constructor(MemberBoardQueryDTO.class,
-                        board.id, board.title,board.content, defaultMember.userId,
+                        board.id, board.title,board.content, defaultMember.nickname,
                         board.createdDate,board.lastModifiedDate))
                 .where(board.isSecret.eq(false))
                 .from(board)
@@ -69,7 +69,7 @@ public class JoinDslRepository {
         return queryFactory
                 .select(Projections.constructor(BoardSearchDataDto.class,
                         board.id, board.title,
-                        board.member.userId,
+                        board.member.nickname,
                         board.createdDate))
                 .from(board)
                 .innerJoin(board.member, defaultMember)
@@ -84,8 +84,8 @@ public class JoinDslRepository {
 
         return queryFactory
                 .select(Projections.constructor(NoneUserBoardSaveDataDto.class,
-                        board.id, board.title, board.content,
-                        board.member.userId, board.member.password,board.isSecret))
+                        board.id,board.member.userId, board.title, board.content,
+                        board.member.nickname, board.member.password,board.isSecret))
                 .from(board)
                 .innerJoin(board.member, defaultMember)
                 .where(board.id.eq(boardId).and(board.isSecret.eq(false)))
@@ -142,7 +142,7 @@ public class JoinDslRepository {
         // password랑 Id 검증 먼저 해야되는 거 아닌가?
         JPAQueryFactory queryFactory = new JPAQueryFactory(em);
         return queryFactory
-                .select(Projections.constructor(NoneUserUuidANdTitleAndPasswordDto.class, noneMember.uuid,
+                .select(Projections.constructor(NoneUserUuidANdTitleAndPasswordDto.class, defaultMember.userId,
                         board.title,
                         noneMember.userId
                         ,noneMember.password))
@@ -155,7 +155,7 @@ public class JoinDslRepository {
         JPAQueryFactory queryFactory = new JPAQueryFactory(em);
         return queryFactory
                 .select(Projections.constructor(BoardResponseDto.class,
-                        board.id, board.title, defaultMember.userId,
+                        board.id, board.title, defaultMember.nickname,
                         board.content, board.createdDate, board.lastModifiedDate))
                 .from(board)
                 .leftJoin(board.member, defaultMember)
@@ -167,7 +167,7 @@ public class JoinDslRepository {
         commentId.forEach(comment-> System.out.println("comment = " + comment));
         JPAQueryFactory queryFactory = new JPAQueryFactory(em);
         return queryFactory.select(Projections.constructor(CommentReadDataDto.class,
-                        parentComment.member.userId,parentComment.content))
+                        parentComment.member.nickname,parentComment.content,parentComment.member.nickname))
                 .from(parentComment)
                 .leftJoin(parentComment.member, QDefaultMember.defaultMember)
                 .where(parentComment.id.in(commentId))

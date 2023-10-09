@@ -61,8 +61,8 @@ spring:
               - public_profile
               - email
           google:
-            client-id: ${GOOGLE_CLIENT_ID}
-            client-secret: ${GOOGLE_CLIENT_SECRET}
+            client-id: 1
+            client-secret: 1
             scope:
               - profile
               - email
@@ -85,8 +85,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: ${EMAIL}
-    password: ${PASSWORD}
+    username: xron2929@gmail.com
+    password: pnxwtttbtvqxmmdu
     properties:
       mail:
         smtp:
@@ -111,11 +111,14 @@ cloud:
     s3:
       endpoint: https://s3.ap-northeast-2.amazonaws.com
       bucket: s3-fastcampus
-domain:
-  url: ${SERVER_URL}
+server:
+  domain:
+    url: http://localhost:8080
 front:
   domain:
     url: http://localhost:3001
 port:
   domain:
     url: http://localhost:3001
+domain:
+  url: http://localhost:8080

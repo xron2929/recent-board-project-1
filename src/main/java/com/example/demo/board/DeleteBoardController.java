@@ -66,6 +66,7 @@ public class DeleteBoardController {
         String authorityName = jwtManager.getAuthorityName(accessToken);
         System.out.println("deleteAdminBoard - authorityName.equals(RoleStatus.ROLE_ADMIN.name()) = " + authorityName.equals(RoleStatus.ROLE_ADMIN.name()));
         if(authorityName.equals(RoleStatus.ROLE_ADMIN.name())) {
+            System.out.println("delete 처리 됨");
             imageService.deleteBoard(boardId);
         }
 

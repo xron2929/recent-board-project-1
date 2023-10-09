@@ -21,14 +21,15 @@ public class CommentMapper {
     @Autowired
     BoardService boardService;
     // mapper vs 서비스
-    public ParentComment saveMemberAndComment(CommentSaveViewDto commentViewDto) throws Exception {
+    public ParentComment saveMemberAndComment(CommentSaveViewDto commentViewDto,String uuidCookie) throws Exception {
         // 여기서 ParentComment 데이터 등록하기
         // 그거 끝나면 ChildComment도 등록하고 글 수정,삭제,업데이트 다 올려야됨
         // 그거 끝나면 다 대규모 트래픽 고려해서도 n개에 대한 처리 짜야될꺼고...
         // 리액트도 올려야됨 그래서 되게 바쁨 ㅇㅇ..
         DefaultMember user = DefaultMember
                 .builder()
-                .userId(commentViewDto.getUserId())
+                .userId(uuidCookie)
+                .nickname(commentViewDto.getNickname())
                 .password(commentViewDto.getPassword())
                 .build();
         DefaultMember saveUser = userService.saveUser(user);
@@ -49,7 +50,11 @@ public class CommentMapper {
     public List<ParentComment> saveCommendDtos(List<CommentSaveViewDto> commentViewDtos) throws Exception {
         List<ParentComment> parentComments = new ArrayList<>();
         for (CommentSaveViewDto commentViewDto:commentViewDtos){
-            DefaultMember user = DefaultMember.builder().userId(commentViewDto.getUserId()).password(commentViewDto.getPassword()).build();
+            DefaultMember user = DefaultMember.builder()
+                    .nickname(commentViewDto.getNickname())
+                    .userId(commentViewDto.getUserId())
+                    .password(commentViewDto.getPassword())
+                    .build();
             DefaultMember saveUser = userService.saveUser(user);
             System.out.println("saveUser.getPassword() = " + saveUser.getPassword());
             Board board = boardService.findAllByImageId(commentViewDto.getBoardId());

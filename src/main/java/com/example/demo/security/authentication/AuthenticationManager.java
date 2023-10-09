@@ -15,11 +15,11 @@ import java.util.Map;
 
 @Slf4j
 public class AuthenticationManager {
-    private final Map<String, String> managerUrlMap = new HashMap<>();
+
     private JwtManager jwtManager;
 
     @Autowired
-    public AuthenticationManager(JwtManager jwtManager, ObjectMapper objectMapper) {
+    public AuthenticationManager(JwtManager jwtManager) {
         this.jwtManager = jwtManager;
     }
 
@@ -31,7 +31,8 @@ public class AuthenticationManager {
         System.out.println("jwtManager = " + jwtManager);
         String accessToken = jwtManager.getAccessToken(request);
         String refreshToken = jwtManager.getRefreshToken(request);
-
+        log.info("accessToken={}",accessToken);
+        log.info("refreshToken={}",refreshToken);
         // log.info("authentication = " + authentication.getCredentials());
         //
         if (refreshToken == null) {
@@ -48,6 +49,8 @@ public class AuthenticationManager {
     }
 
     public String getAuthenticationView(HttpServletRequest request, HttpServletResponse response, Map<String, String> managerUrlMap) throws JsonProcessingException {
+        log.info("AuthenticationManager -getAuthenticationView() - managerUrlMap = {} " , managerUrlMap);
+        log.info("AuthenticationManager -getAuthenticationView() - managerUrlMap.accessToken= {} " + managerUrlMap.get("accessToken"));;
         String accessToken = checkAuthenticationManager(request, response);
         if (accessToken == "null") {
             return managerUrlMap.get("ROLE_ANONYMOUS");

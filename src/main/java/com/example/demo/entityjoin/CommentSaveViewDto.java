@@ -8,6 +8,7 @@ import lombok.*;
 @Builder
 public class CommentSaveViewDto {
     @NonNull
+    private String nickname;
     private String userId;
     @NonNull @Setter private Long boardId;
     @NonNull private String content;

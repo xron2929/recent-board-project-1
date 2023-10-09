@@ -19,7 +19,8 @@ import javax.persistence.*;
 // @DiscriminatorValue("OAUTH") // 엔티티를 저장
 public class OauthMember extends DefaultMember {
 
-
+    private String phoneNumber;
+    private long age;
     @Setter private String email;
     @OneToOne(cascade = CascadeType.ALL)
     private Gender gender;

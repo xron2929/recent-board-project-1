@@ -37,7 +37,7 @@ csrf 할꺼면 이거 키고 테스트 할꺼면 항상 꺼야 한다는 점
     <div class="bodyHeader">
         <form th:action="@{/}" enctype="multipart/form-data" th:object="${gallery}" id="inline">
             <div class="item2">
-                <input type="text" name="username" value="이름" id="username" maxlength="255" class="once" readonly>\
+                <input type="text" name="username" value="이름" id="username" maxlength="255" class="once" readonly>
                 <input type="text" name="title" value="제목" id="title" maxl multipleength="255" onclick=eraseTitle() class="once" >
                 <!-- model 값에 해당 글 제목 내용+ id + password 다 넘김
                 컨테이너에 글쓰기 분리하지말고 한 컨테이너 flex 이용해서 쓰기 -->

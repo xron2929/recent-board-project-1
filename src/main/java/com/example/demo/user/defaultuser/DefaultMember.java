@@ -45,8 +45,7 @@ public class DefaultMember implements Serializable {
     protected String userId;
     protected String nickname;
     protected String password;
-    protected String phoneNumber;
-    protected long age;
+
     @LastModifiedDate
     protected LocalDateTime ModifiedAt;
 

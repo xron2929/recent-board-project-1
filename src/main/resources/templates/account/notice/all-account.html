@@ -7,8 +7,10 @@
 <body>
     <p th:each="role : ${collect}" th:text="${role}"></p>
 
-    <a th:href="@{/?pageQuantity=1&boardQuantity=20}" method="get" >돌아가기</a>
-    <div th:value ="${@environment.getProperty('PORT_DOMAIN_URL')}" th:text=""></div>
+    <a th:href ="${@environment.getProperty('PORT_DOMAIN_URL')}" >돌아가기</a>
+    <script>
+
+    </script>
 </body>
 
 </html>

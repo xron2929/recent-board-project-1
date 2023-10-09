@@ -81,6 +81,7 @@ public class ImageService {
         List<ImageBoardDto> imageBoardDtos = imageDataRepository.findImage(boardId);
         deleteData(imageBoardDtos);
     }
+
     private void deleteData(List<ImageBoardDto>imageBoardDtos) {
         System.out.println("images.size() = " + imageBoardDtos.size());
         Set<Long> deleteBoardImages = new HashSet<>();
@@ -93,11 +94,14 @@ public class ImageService {
             if(imageBoardDto.getFilePath()!=null) {
                 files.add(imageBoardDto.getFilePath());
             }
+            System.out.println("imageBoardDto.getBoardId() = " + imageBoardDto.getBoardId());
+
             deleteBoardImages.add(imageBoardDto.getBoardId());
         }
 
         commentDslRepository.delete(deleteBoardImages);
         imageDataRepository.delete(deleteBoardImages);
+
         boardRepository.deleteAllByIdInBatch(deleteBoardImages);
         fileDeleter.deleteFiles(files);
 

@@ -28,6 +28,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.firewall.HttpStatusRequestRejectedHandler;
+import org.springframework.security.web.firewall.RequestRejectedHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -71,6 +73,13 @@ public class SecurityConfig {
         };
     }
 
+    // sometimes, spring security mute doubted url
+    // so, I cancle this function
+
+    @Bean
+    RequestRejectedHandler requestRejectedHandler() {
+        return new HttpStatusRequestRejectedHandler();
+    }
 
 
     @Bean
@@ -93,6 +102,7 @@ public class SecurityConfig {
                 // .authenticated();
                 .permitAll();
         http.csrf().disable();
+
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); //jwt사용을 위해 session해제
         http
                 .oauth2Login()
@@ -104,11 +114,9 @@ public class SecurityConfig {
                 .successHandler(new AuthenticationSuccessHandler() {
                             @Override
                             public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-                                Cookie accessTokenCookie = new Cookie("accessToken", jwtManager.getAccessToken(request));
-                                Cookie refreshTokenCookie = new Cookie("refreshToken", jwtManager.getRefreshToken(request));
-                                response.addCookie(accessTokenCookie);
-                                response.addCookie(refreshTokenCookie);
-                                response.sendRedirect(frontDomainUrl);
+                                // cookieManager.makeSessionSecurityCookie("accessToken",jwtManager.getAccessToken(request),response);
+                                // cookieManager.makeSessionSecurityCookie("refreshToken",jwtManager.getRefreshToken(request),response);
+                                response.sendRedirect(serverUrl+"principal");
                             }
                         })
                 .failureUrl(serverUrl+"first/oauth/join");;

@@ -13,18 +13,20 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class NoneUserBoardSaveDataDto {
     private Long id;
+    private String userId;
     private String title;
     private String content;
-    private String username;
+    private String nickname;
     private String password;
     private boolean isSecret;
     @Builder
     @NonNull
-    public NoneUserBoardSaveDataDto(Long id, String title, String content, String username, String password,boolean isSecret) {
+    public NoneUserBoardSaveDataDto(Long id,String userId, String title, String content, String nickname, String password,boolean isSecret) {
         this.id = id;
+        this.userId = userId;
         this.title = title;
         this.content = content;
-        this.username = username;
+        this.nickname = nickname;
         this.password = password;
         this.isSecret = isSecret;
     }
@@ -33,7 +35,7 @@ public class NoneUserBoardSaveDataDto {
         this.id = board.getId();
         this.title = board.getTitle();
         this.content = board.getContent();
-        this.username = board.getMember().getUserId();
+        this.nickname = board.getMember().getNickname();
         this.password = board.getMember().getPassword();
         this.isSecret = board.isSecret();
     }

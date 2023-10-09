@@ -11,10 +11,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 public class ApiConfig {
-    @Autowired
-    JwtManager jwtManager;
+
     @Bean
     public MemberApi memberApi() {
-        return new MemberApi(jwtManager);
+        return new MemberApi();
     }
 }

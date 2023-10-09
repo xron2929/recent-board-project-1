@@ -144,7 +144,15 @@ public class UserService {
         return false;
     }
     public String findByPhoneNumberOrNickname(String phoneNumber,String nickname) {
-        return userJoinRepository.findByPhoneNumberOrNickname(phoneNumber,nickname);
+        List<String> duplicatePhoneNumberAndNicknameResults = userJoinRepository.findByPhoneNumberOrNickname(phoneNumber, nickname);
+
+        for (String duplicatePhoneNumberAndNicknameResult:duplicatePhoneNumberAndNicknameResults) {
+            if (!duplicatePhoneNumberAndNicknameResult.equals(null) && !duplicatePhoneNumberAndNicknameResult.isBlank()) {
+                System.out.println("duplicatePhoneNumberAndNicknameResult = " + duplicatePhoneNumberAndNicknameResult);
+                return duplicatePhoneNumberAndNicknameResult;
+            }
+        }
+        return null;
     }
     public String findUserIdByEmail(String email) {
         return userJoinRepository.findUserIdByEmail(email);

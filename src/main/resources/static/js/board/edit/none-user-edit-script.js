@@ -35,12 +35,20 @@ function connect() {
 function setUrl() {
     let url = domainUri+"user-noneuser/account";
     let accountData = {
-        "method" : "GET"
+        "method" : "GET",
+        headers: {
+            "Content-Type": "application/json"
+        },
+
     }
 
     return fetch(url,accountData).then(function findUsername(response) {
-        return response.text();
-    });
+        return response.json();
+    }).then(function (response) {
+        return response.nickname;
+        // 나중에 userId랑 닉네임 적용해야됨 userId는 소켓 통신을 할 떄 필요한 정보이고
+        // nickname은 게시판 같은거 글 쓰거나 할 때 닉네임
+    })
 }
 function disconnect() {
     if (stompClient !== null) {

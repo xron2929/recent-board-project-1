@@ -32,7 +32,13 @@ public class CommentApiController {
         List<CommentSaveViewDto> commentSaveViewDtos = new ArrayList<>();
         for (int i = 0; i < pathComment; i++) {
             CommentSaveViewDto commentReadViewDto =
-                    new CommentSaveViewDto("sdf",boardId, UUID.randomUUID().toString(),"sdfsd");
+                    CommentSaveViewDto.builder()
+                            .nickname("sdf")
+                            .boardId(boardId)
+                            .userId(UUID.randomUUID().toString())
+                            .password("sdf")
+                            .content("랜덤으로 생성").build();
+
             //commentService.saveParentComment(commentReadViewDto);
             commentSaveViewDtos.add(commentReadViewDto);
         }
@@ -48,7 +54,12 @@ public class CommentApiController {
         for (int i = 0; i < pathComment; i++) {
             long boardId = (i % boardCount)+1l;
             CommentSaveViewDto commentReadViewDto =
-                    new CommentSaveViewDto("sdf",boardId, UUID.randomUUID().toString(),"sdfsd");
+                    CommentSaveViewDto.builder()
+                            .nickname("sdf")
+                            .boardId(boardId)
+                            .userId(UUID.randomUUID().toString())
+                            .password("sdf")
+                            .content("랜덤으로 생성").build();
             //commentService.saveParentComment(commentReadViewDto);
             commentSaveViewDtos.add(commentReadViewDto);
         }

@@ -34,10 +34,11 @@ public class CommentController {
     @PostMapping("/comment/{boardId}")
     @ApiOperation("해당 BoardId에 comment 등록함")
     @ResponseBody
-    public SuccessDto getBoard(@PathVariable Long boardId, @RequestBody CommentSaveViewDto commentDto) throws Exception {
+    public SuccessDto getBoard(@PathVariable Long boardId, @RequestBody CommentSaveViewDto commentDto,HttpServletRequest request) throws Exception {
+
         commentDto.setBoardId(boardId);
         // 10개 데이터 불러오기
-        commentService.saveParentComment(commentDto);
+        commentService.saveParentComment(commentDto,request);
 
         return new SuccessDto("ok");
     }
@@ -80,7 +81,7 @@ public class CommentController {
         List<CommentReadDataDto> commentReadDataDtos = commentService.readTenParentComment(commentDto);
         System.out.println("commentReadDataDtos.size() = " + commentReadDataDtos.size());
         commentReadDataDtos.forEach(commentReadDataDto -> {
-                    System.out.println("commentReadDataDto.getUserName() = " + commentReadDataDto.getUserName());
+                    System.out.println("commentReadDataDto.getNickname() = " + commentReadDataDto.getNickname());
                     System.out.println("commentReadDataDto.getContent() = " + commentReadDataDto.getContent());
                 }
         );

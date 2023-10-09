@@ -150,12 +150,17 @@ function getUserId(currentPageNum) {
 
     let data = {
         method : "GET",
+        headers: {
+            "Content-Type": "application/json"
+        },
 
     }
     fetch("/user-noneuser/account",data)
-        .then(function(reseponse) {
-             return reseponse.text();
-        })
+        .then(function(response) {
+             return response.json();
+        }).then(function(response) {
+            return response.userId;
+    })
         .then(function(response){
             return setData(currentPageNum,response)
         })

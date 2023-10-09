@@ -45,6 +45,8 @@ public class CustomUserDetailsService implements UserDetailsService {
         System.out.println(" ??? username =" + username);
         log.info("load");
         SiteMember user = userJoinRepository.findBySiteMemberId(username);
+        System.out.println("CustomUserDetailsService - loadUserByUsername: user.getPhoneNumber() = " + user.getPhoneNumber());
+        System.out.println("CustomUserDetailsService - loadUserByUsername: user.getEmail() = " + user.getEmail());
 
         user.getUserAuthorities()
                 .stream().map(UserAuthority::getAuthority)
@@ -63,7 +65,9 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         // DefaultMember roleSiteUser = roleProcessService.getRoleMember(user.getId(), "ROLE_SITE_USER");
         Map<String,Object> attributes = new HashMap<>();
-        UserRequestDto userRequestDto = UserRequestDto.of((SiteMember) user,null);
+        UserRequestDto userRequestDto = UserRequestDto.of((SiteMember) user);
+        System.out.println("CustomUserDetailsService - createUser(): userRequestDto = " + userRequestDto);
+        System.out.println("CustomUserDetailsService - createUser(): userRequestDto.getPhoneNumber() = " + userRequestDto.getPhoneNumber());
 
         try {
             String accessToken = jwtManager.setAccessToken(request, response, userRequestDto);

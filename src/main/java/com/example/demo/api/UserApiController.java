@@ -53,20 +53,25 @@ public class UserApiController {
 
     @GetMapping("/user-noneuser/account")
     @ApiOperation(value = "board를 가져올 때 user랑 NoneUser에 맞게 각각 처리")
-    public String getUserAndNoneUserBoard(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public UserIdAndNickname getUserAndNoneUserBoard(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         String isExistence = authenticationManager.checkAuthenticationManager(request, response);
         if(isExistence == "null") {
-            return cookieManager.getUUidCookie(request);
+            return UserIdAndNickname.builder().userId(cookieManager.getUUidCookie(request))
+                    .nickname(cookieManager.getUUidCookie(request)).build();
         }
         String accessToken = jwtManager.getAccessToken(request);
         UserRequestDto userRequestDto = jwtManager.getUserRequestDto(accessToken);
-        return userRequestDto.getUserId();
+        System.out.println("userApiController - getUserAndNoneUserBoard() - userRequestDto = " + userRequestDto);
+        return  UserIdAndNickname.builder()
+                .userId(userRequestDto.getUserId())
+                .nickname(userRequestDto.getNickname()).build();
+
     }
 
     @GetMapping("/user/account")
     @ApiOperation(value = "해당 사용자가 유저일 때만 데이터 가져옴")
-    public String getUserDto(HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
+    public UserIdAndNickname getUserDto(HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
         String isExistence = authenticationManager.checkAuthenticationManager(request, response);
         if(isExistence == "null") {
             return null;
@@ -77,7 +82,9 @@ public class UserApiController {
         System.out.println("//dsfsdf");
         System.out.println("accessToken = " + accessToken);
         UserRequestDto userRequestDto = jwtManager.getUserRequestDto(accessToken);
-        return userRequestDto.getUserId();
+        return UserIdAndNickname.builder()
+                .userId(userRequestDto.getUserId())
+                .nickname(userRequestDto.getNickname()).build();
     }
 
     @GetMapping("/none/user/account")
@@ -86,7 +93,12 @@ public class UserApiController {
         return cookieManager.getUUidCookie(request);
     }
     // 만약 업데이트 안되는 거면 그거 까먹지 마리
-
+    @GetMapping("/user/logout")
+    @ApiOperation(value = "해당 사용자가 일반 유저가 아닐 경우에만 데이터 가져옴")
+    public void logOut(HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
+        cookieManager.makeZeroSecondCookie("accessToken",response);
+        cookieManager.makeZeroSecondCookie("refreshToken",response);
+    }
 
     @NoArgsConstructor
     @AllArgsConstructor

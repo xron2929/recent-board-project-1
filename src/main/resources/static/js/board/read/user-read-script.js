@@ -143,12 +143,17 @@ function setUrl() {
     let url = domainUri+"user-noneuser/account";
     console.log(url);
     let accountData = {
-        "method" : "GET"
+        "method" : "GET",
+        headers: {
+            "Content-Type": "application/json"
+        }
     }
 
     return fetch(url,accountData).then(function findUsername(response) {
-        return response.text();
-    });
+        return response.json();
+    }).then(function (response) {
+        return response.userId;
+    })
 }
 // return sendMessage(boardId,content.value,userId.textContent);
 function sendMessage(boardId,summaryCommentContent,commentWriter) {

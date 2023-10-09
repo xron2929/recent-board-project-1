@@ -12,6 +12,7 @@ public class BoardResponseDto {
     private Long id;
     private String title;
     private String boardWriterName;
+
     private String contents;
     private LocalDateTime createdDate;
     private LocalDateTime lastModifiedDate;

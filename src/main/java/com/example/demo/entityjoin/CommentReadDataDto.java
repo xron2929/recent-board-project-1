@@ -7,12 +7,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class CommentReadDataDto {
-    private String userName;
+    private String userId;
     private String content;
+    private String nickname;
 
-    public CommentReadDataDto(String userName, String content) {
-        this.userName = userName;
+    public CommentReadDataDto(String userId, String content,String nickname) {
+        this.userId = userId;
         this.content = content;
+        this.nickname = nickname;
     }
 
 }

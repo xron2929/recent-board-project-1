@@ -1,6 +1,7 @@
 package com.example.demo.user;
 
 import com.example.demo.board.QBoard;
+import com.example.demo.join.JoinDto;
 import com.example.demo.user.defaultuser.DefaultMember;
 import com.example.demo.user.defaultuser.QDefaultMember;
 import com.example.demo.user.noneuser.NoneMember;
@@ -22,6 +23,7 @@ import java.util.List;
 import static com.example.demo.authority.QAuthority.authority;
 import static com.example.demo.board.QBoard.board;
 import static com.example.demo.user.defaultuser.QDefaultMember.defaultMember;
+import static com.example.demo.user.oauthuser.QOauthMember.oauthMember;
 import static com.example.demo.user.siteuser.QSiteMember.siteMember;
 import static com.example.demo.userAuthority.QUserAuthority.userAuthority;
 import static com.querydsl.core.types.dsl.Expressions.constant;
@@ -43,7 +45,7 @@ UserJoinRepository {
     public String  findNoneMemberByBoardId(Long boardId) {
         JPAQueryFactory queryFactory = new JPAQueryFactory(em);
         return queryFactory
-                .select(QNoneMember.noneMember.uuid)
+                .select(QNoneMember.noneMember.userId)
                 .from(QNoneMember.noneMember)
                 .rightJoin(QNoneMember.noneMember.boards,QBoard.board)
                 // 멤버끼리 연결하려고 하지말고
@@ -89,6 +91,9 @@ UserJoinRepository {
                 .where(QNoneMember.noneMember.userId.eq(memberId))
                 .limit(limitCount)
                 .fetch();
+    }
+    public JoinDto getJoinDto() {
+        return null;
     }
     public long getAdminCount(String userId) {
         System.out.println("getAdminCount - userId = " + userId);
@@ -155,23 +160,72 @@ UserJoinRepository {
     }
 
 
-    public String findByPhoneNumberOrNickname(String phoneNumber, String nickname) {
+    public List<String> findByPhoneNumberOrNickname(String phoneNumber, String nickname) {
+        JPAQueryFactory queryFactory = new JPAQueryFactory(em);
+        Expression<String> duplicatePhoneNumber = constant("해당 계정으로 가입한 전화번호가 이미 존재합니다");
+        Expression<String> duplicateNickname = constant("중복된 닉네임이 이미 존재합니다");
+        Expression<String> duplicatePhoneNumberAndNickname = constant("해당 계정으로 가입한 전화번호와 중복된 닉네임이 이미 존재합니다");
+        return queryFactory
+                .select(
+                        Expressions.cases()
+                                .when(siteMember.phoneNumber.eq(phoneNumber).and(siteMember.nickname.eq(nickname))).then(duplicatePhoneNumberAndNickname)
+                                .when(oauthMember.phoneNumber.eq(phoneNumber).and(oauthMember.nickname.eq(nickname))).then(duplicatePhoneNumberAndNickname)
+                                .when(siteMember.phoneNumber.eq(phoneNumber)).then(duplicatePhoneNumber)
+                                .when(siteMember.nickname.eq(nickname)).then(duplicateNickname)
+                                .when(oauthMember.phoneNumber.eq(phoneNumber)).then(duplicatePhoneNumber)
+                                .when(oauthMember.nickname.eq(nickname)).then(duplicateNickname)
+                                .otherwise("")
+                )
+                .from(defaultMember)
+                .leftJoin(siteMember).on(defaultMember.id.eq(siteMember.id))
+                .leftJoin(oauthMember).on(defaultMember.id.eq(oauthMember.id))
+                .fetch();
+
+
+
+    }
+    /*
+    아래는 작동안함
+     */
+    public List<String> findByPhoneNumberOrNickname2(String phoneNumber, String nickname) {
         JPAQueryFactory queryFactory = new JPAQueryFactory(em);
         Expression<String> duplicatePhoneNumber = constant("duplicatePhoneNumber");
         Expression<String> duplicateNickname = constant("duplicateNickname");
         Expression<String> duplicatePhoneNumberAndNickname = constant("duplicatePhoneNumberAndNickname");
-
         return queryFactory
                 .select(
                         Expressions.cases()
-                                .when(QDefaultMember.defaultMember.phoneNumber.eq(phoneNumber).and(QDefaultMember.defaultMember.nickname.eq(nickname))).then(duplicatePhoneNumberAndNickname)
-                                .when(QDefaultMember.defaultMember.phoneNumber.eq(phoneNumber)).then(duplicatePhoneNumber)
+                                .when(siteMember.phoneNumber.eq(phoneNumber).and(siteMember.nickname.eq(nickname))).then(duplicatePhoneNumberAndNickname)
+                                .when(oauthMember.phoneNumber.eq(phoneNumber).and(oauthMember.nickname.eq(nickname))).then(duplicatePhoneNumberAndNickname)
+                                .when(siteMember.phoneNumber.eq(phoneNumber)).then(duplicatePhoneNumber)
+                                .when(siteMember.nickname.eq(nickname)).then(duplicateNickname)
+                                .when(oauthMember.phoneNumber.eq(phoneNumber)).then(duplicatePhoneNumber)
+                                .when(oauthMember.nickname.eq(nickname)).then(duplicateNickname)
+                                .otherwise("")
+                )
+                .from(defaultMember)
+                .join(siteMember).on(defaultMember.id.eq(siteMember.id))
+                .join(oauthMember).on(defaultMember.id.eq(oauthMember.id))
+                .fetch();
+
+
+
+    }
+    /*
+    return queryFactory
+                .select(
+                        Expressions.cases()
+                                .when(defaultMember.phoneNumber.eq(phoneNumber).and(defaultMember.nickname.eq(nickname))).then(duplicatePhoneNumberAndNickname)
+                                .when(defaultMember.phoneNumber.eq(phoneNumber)).then(duplicatePhoneNumber)
                                 .otherwise(duplicateNickname)
                 )
-                .from(QDefaultMember.defaultMember)
+                .from(defaultMember)
                 .where(QDefaultMember.defaultMember.phoneNumber.eq(phoneNumber).or(QDefaultMember.defaultMember.nickname.eq(nickname)))
                 .fetchOne();
-    }
+        defaultMember에서 phoneNum username 동일한거 있는지 확인하고 처음부터 없으면 where에서 Null
+        아니면 Expresssions.case인데
+        defaultMember가 아니라 SiteMember나 OauthMember에서 각각 검출할 예정임
+     */
     public void changeUserPasswordByEmailAndUserId(String changePassword,String email,String userId) {
         JPAQueryFactory queryFactory = new JPAQueryFactory(em);
         queryFactory.update(siteMember).set(siteMember.password,changePassword)

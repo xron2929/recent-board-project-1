@@ -13,7 +13,7 @@ public class CookieManager {
 
 
     public void makeSessionSecurityCookie(String key, String value, HttpServletResponse response) {
-        response.setHeader("Access-Control-Max-Age", "0");
+
         Cookie cookie = new Cookie(key,value);
         cookie.setSecure(true);
         cookie.setHttpOnly(true);
@@ -22,7 +22,7 @@ public class CookieManager {
         response.addCookie(cookie);
     }
     public void makeSecurityCookie(String key, String value,int second, HttpServletResponse response) {
-        response.setHeader("Access-Control-Max-Age", "0");
+
         Cookie cookie = new Cookie(key,value);
         cookie.setMaxAge(second);
         cookie.setSecure(true);

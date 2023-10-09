@@ -98,6 +98,7 @@ public class Demo4Application {
         NoneMember noneMember = NoneMember
                 .builder()
                 .userId("234324")
+                .nickname("234324")
                 .password("fdsfs")
                 .ip("1.2.3.4")
                 .userAuthorities(userAuthorities)

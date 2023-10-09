@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 import java.io.IOException;
 
 @Controller
@@ -40,7 +39,7 @@ public class JwtExpirationTimeController {
         if(refreshToken == null) {
             return noneUserProcess();
         }
-        TokenStatus isSafeJwt = jwtManager.validaition(refreshToken);
+        TokenStatus isSafeJwt = jwtManager.validation(refreshToken);
         if(isSafeJwt == TokenStatus.TOKEN_ERROR) {
             return jwtExpirationProcess(response);
         }

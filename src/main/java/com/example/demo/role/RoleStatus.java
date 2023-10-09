@@ -6,4 +6,5 @@ public enum RoleStatus {
     ROLE_OAUTH_USER,
     ROLE_ADMIN
 
+
 }

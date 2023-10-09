@@ -24,8 +24,10 @@
             <option>성별을 알리고 싶지 않습니다.</option>
             </select>
         </div>
-        <input type="hidden" id="transData" name="trans"/>
+
         <input type="text" name="nickname" id="nickname" placeholder="닉네임" />
+        <input type="text" id="transData" name="trans"
+               style="border: 0;margin: 0;padding: 0; height: 0;width: 0"/>
         <!-- csrf 때문에 form action 쓰지말고 무조건 form th:action으로 적용시켜야 된다는 점-->
         <input type="button" onclick="addDataTimer()" value="입력" />
     </form>
@@ -40,6 +42,7 @@
     function addData() {
         let nickname = document.getElementById("nickname");
         let age = document.getElementById("age");
+
         let phoneNumber = document.getElementById("phoneNumber");
         checkPhoneNumberAndNickname(phoneNumber,nickname).then(function(isValid) {
             if(isValid === false) {
@@ -55,9 +58,13 @@
             }
 
             transData.value = trans.value;
+            alert("transData.value = "+transData.value);
             addSession.submit();
         })
 
+
+    }
+    function setTransData() {
 
     }
     function isPhoneNumber(args) {
@@ -67,9 +74,9 @@
         return false;
     }
     function checkPhoneNumberAndNickname(phoneNumber,nickname) {
-        alert(phoneNumber.value);
-        alert(nickname.value);
-        let url = "/oauth/check?phoneNumber="+phoneNumber.value+"&nickname="+nickname.value;
+        // alert(phoneNumber.value);
+        // alert(nickname.value);
+        let url = "/oauth/check?phoneNumber="+phoneNumber.value+"&nickname="+nickname.value+"&trans="+transData.value;
         let param = {
             "method" : "GET",
             headers: {
@@ -79,18 +86,9 @@
         };
         return fetch(url,param).then(function(response) {
             return response.text();
-        }).then(function(data) {
-            alert(data);
-            if(data === "duplicatePhoneNumber") {
-                alert("이미 사전에 등록한 전화번호가 존재합니다");
-                return false;
-            }
-            if(data === "duplicateNickname") {
-                alert("동일한 닉네임이 이미 존재합니다");
-                return false;
-            }
-            if(data === "duplicatePhoneNumberAndNickname") {
-                alert("사전에 등록한 전화번호와 동일한 닉네임이 이미 존재합니다");
+        }).then(function (response) {
+            alert(response)
+            if (response !== "ok") {
                 return false;
             }
             return true;

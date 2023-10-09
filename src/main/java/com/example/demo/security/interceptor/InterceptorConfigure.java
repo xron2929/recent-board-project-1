@@ -20,7 +20,7 @@ public class InterceptorConfigure implements WebMvcConfigurer {
                 .order(0);
         registry.addInterceptor(jwtInterceptor)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/login/**")
+                .excludePathPatterns("/login/**","/principal/**")
                 .order(1);
         registry.addInterceptor(logOutInterceptor)
                 .addPathPatterns("/login/**","/join/**")

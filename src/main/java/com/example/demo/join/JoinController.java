@@ -52,15 +52,11 @@ public class JoinController {
     }
 
     @GetMapping("/oauth/check")
+    @ApiOperation("oauth 계정 추가할 때 nickname이나 phoneNumber가 이미 존재하는지 유효성 검사")
     @ResponseBody
     public String isAllowedJoin(@RequestParam(value = "phoneNumber", required = true) String phoneNumber,
-                                 @RequestParam(value = "nickname", required = true) String nickname) {
-        String byPhoneNumberOrNickname  = userService.findByPhoneNumberOrNickname(phoneNumber, nickname);
-        if(byPhoneNumberOrNickname == null) {
-            return "ok";
-        }
-        System.out.println("byPhoneNumberOrNickname = " + byPhoneNumberOrNickname);
-        return byPhoneNumberOrNickname;
+                                 @RequestParam(value = "nickname", required = true) String nickname) throws isExistenceUserDataException {
+        return isExistencePhoneNumberOrNickname(phoneNumber,nickname);
     }
     @PostMapping("/add/session")
     @ApiOperation("oauth 추가할 때 age랑 phoneNumber도 같이 추가")
@@ -73,10 +69,11 @@ public class JoinController {
         long age = responseOauthDto.getAge();
         String phoneNumber = responseOauthDto.getPhoneNumber();
         String nickname = responseOauthDto.getNickname();
+        String trans = responseOauthDto.getTrans();
         response.addCookie(getCookie("age",String.valueOf(age),10* 60));
         response.addCookie(getCookie("phoneNumber",phoneNumber,10* 60));
         response.addCookie(getCookie("nickname",nickname,10* 60));
-
+        response.addCookie(getCookie("trans",trans,10*60));
         String url = Arrays.stream(request.getCookies())
                 .filter(cookie -> cookie.getName().equals("url"))
                 .map(cookie -> cookie.getValue()).findFirst().orElse(null);
@@ -129,6 +126,11 @@ public class JoinController {
         if(isIncludingSpecialSymbolInUserId(joinDto.getUserId())) {
             throw new SpecialSymbolException("userId에 특수문자가 포함되어 있습니다");
         }
+        String existencePhoneNumberOrNickname = isExistencePhoneNumberOrNickname(joinDto.getPhoneNumber(), joinDto.getNickname());
+
+        if(existencePhoneNumberOrNickname!="ok") {
+            throw new isExistenceUserDataException(existencePhoneNumberOrNickname);
+        }
 
         // emailVaildator.validation(emailData,joinDto);
         UserAuthority userAuthority = new UserAuthority(authority);
@@ -137,6 +139,7 @@ public class JoinController {
         user.setUserAuthorities(userAuthorities);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         SiteMember findUser = userService.saveSiteMember(user);
+
         userAuthority.setUserId(findUser);
         userAuthorityService.saveAuthority(userAuthority);
 
@@ -149,6 +152,15 @@ public class JoinController {
             }
         }
         return false;
+    }
+
+    public String isExistencePhoneNumberOrNickname(String phoneNumber,String nickname) throws isExistenceUserDataException {
+        String byPhoneNumberOrNickname  = userService.findByPhoneNumberOrNickname(phoneNumber, nickname);
+        System.out.println("JoinController - isAllowedJoin() - byPhoneNumberOrNickname = " + byPhoneNumberOrNickname);
+        if(byPhoneNumberOrNickname == null || byPhoneNumberOrNickname == "") {
+            return "ok";
+        }
+        throw new isExistenceUserDataException(byPhoneNumberOrNickname);
     }
 
 

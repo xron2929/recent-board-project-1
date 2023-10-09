@@ -5,7 +5,6 @@ import com.example.demo.cookie.CookieManager;
 import com.example.demo.security.jwt.JwtManager;
 import com.example.demo.security.jwt.TokenStatus;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -22,8 +21,11 @@ public class JwtInterceptor implements HandlerInterceptor {
     JwtManager jwtManager;
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+
         String refreshToken = jwtManager.getRefreshToken(request);
-        TokenStatus isSafeJwt = jwtManager.validaition(refreshToken);
+        System.out.println("JwtInterceptor - preHandle() refreshToken= " + refreshToken);
+        TokenStatus isSafeJwt = jwtManager.validation(refreshToken);
+        System.out.println("JwtInterceptor isSafeJwt = " + isSafeJwt);
         if(isSafeJwt == TokenStatus.TOKEN_ERROR) {
             cookieManager.makeZeroSecondCookie("accessToken",response);
             cookieManager.makeZeroSecondCookie("refreshToken",response);

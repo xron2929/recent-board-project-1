@@ -16,15 +16,15 @@ import java.util.List;
 
 @Configuration
 public class CrossOriginConfig {
-    @Value("${port.domain.url}")
-    private String frontDomainUrl;
+    @Value("${server.domain.url}")
+    private String serverDomainUrl;
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
 
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(Arrays.asList("http://localhost:3001", frontDomainUrl));
+        config.setAllowedOrigins(Arrays.asList("http://localhost:3001", serverDomainUrl));
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
 
         // config.setAllowedMethods(List.of("*"));

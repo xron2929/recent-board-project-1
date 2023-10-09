@@ -11,12 +11,11 @@ function x() {
     let likeCountNumber;
     let disLikeCountNumber;
     let x= "<p>h1</p>";
-    let hrefArrays = document.location.href.split("boards/");
-    let borderNumber = hrefArrays[1];
+    let borderNumber = document.location.href.split("boards/")[1];
     let content;
     let form = document.createElement('div');
     form.setAttribute('method', 'post'); //POST 메서드 적용
-    let url = +"/boards/"+borderNumber+"/data";
+    let url = "/boards/"+Number(borderNumber)+"/data";
     // form.setAttribute('action', url);	// 데이터를 전송할 url
     // json 리다이렉트 vs form 전송 받기 근데 이경우는 form 이동으로ㅓ 해버리면 로직이 되게 복잡해짐
     let form2 = document.createElement('form');
@@ -274,14 +273,17 @@ setUrl().then(function(data) {
     commentSubmitButtons = document.getElementById("parentWriteCommentSubmit1");
     username = document.getElementById("commentWriteName1");
     let data = {
-        "METHOD" : "GET"
+        "METHOD" : "GET",
+        headers: {
+            "Content-Type": "application/json"
+        }
     }
     return fetch("/user/account",data);
 }).then(function(response) {
-    return response.text();
+    return response.json();
 }).then(function(response) {
     console.log(response);
-    username.textContent = response;
+    username.textContent = response.username;
     isAddCommentClick = commentSubmitButtons.addEventListener("click",()=>submitComment(commentSubmitButtons,isAddCommentClick));
 })
 
@@ -303,12 +305,17 @@ function setUrl() {
     let url = "/user-noneuser/account";
     console.log(url);
     let accountData = {
-        "method" : "GET"
+        "method" : "GET",
+        headers : {
+            "Content-Type": "application/json"
+        }
     }
 
     return fetch(url,accountData).then(function findUsername(response) {
-        return response.text();
-    });
+        return response.json();
+    }).then(function(response) {
+        return response.userId;
+    })
 }
 function sendMessage(boardId,summaryCommentContent,commentWriter) {
     let data = {

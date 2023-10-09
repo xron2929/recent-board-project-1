@@ -103,11 +103,16 @@ function saveGallery() {
         let name;
         let url = domainUri + "user/account";
         let accountData = {
-            "method": "GET"
+            "method": "GET",
+            headers: {
+                "Content-Type": "application/json"
+            },
         }
 
         fetch(url, accountData).then(function findUsername(response) {
-            return response.text();
+            return response.json();
+        }).then(function(response) {
+            return response.nickname;
         }).then(function setUsername(data) {
             name = data;
         }).then(function () {

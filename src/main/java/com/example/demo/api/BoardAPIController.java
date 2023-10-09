@@ -39,7 +39,7 @@ public class BoardAPIController {
     @Trace
     public String addBoard(@PathVariable Long boardQuantity, HttpServletRequest request) throws Exception {
         String refreshToken = jwtManager.getRefreshToken(request);
-        TokenStatus tokenStatus = jwtManager.validaition(refreshToken);
+        TokenStatus tokenStatus = jwtManager.validation(refreshToken);
         System.out.println("tokenStatus = " + tokenStatus);
         if(!tokenStatus.equals(TokenStatus.TIME_SAFE)) {
             return "토큰 에러";

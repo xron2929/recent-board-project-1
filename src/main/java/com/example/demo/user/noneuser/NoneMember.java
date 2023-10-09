@@ -14,6 +14,6 @@ import javax.persistence.Entity;
 @Getter
 public class NoneMember extends DefaultMember {
     private String ip;
-    private String uuid;
+
 }
 

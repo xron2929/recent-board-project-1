@@ -16,9 +16,11 @@ import com.example.demo.user.noneuser.NoneMember;
 import com.example.demo.userAuthority.UserAuthority;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,13 +33,19 @@ public class EditBoardMapper {
     @Autowired
     CookieManager cookieManager;
     @Autowired
+    PasswordEncoder passwordEncoder;
+    @Autowired
     JwtManager jwtManager;
     @Autowired
     MemberApi memberApi;
     @Autowired
     RequestIpApi requestIpApi;
-    public void setNoneuserBoardUpdateDataDto(NoneUserBoardSaveDataDto noneuserBoardSaveDataDto) {
-        DefaultMember user = DefaultMember.builder().id(noneuserBoardSaveDataDto.getId()).userId(noneuserBoardSaveDataDto.getUsername())
+    public void setNoneUserBoardUpdateDataDto(NoneUserBoardSaveDataDto noneuserBoardSaveDataDto) {
+
+        DefaultMember user = DefaultMember.builder()
+                .id(noneuserBoardSaveDataDto.getId())
+                .userId(noneuserBoardSaveDataDto.getUserId())
+                .nickname(noneuserBoardSaveDataDto.getNickname())
                 .password(noneuserBoardSaveDataDto.getPassword()).build();
         Board board = new Board(noneuserBoardSaveDataDto.getId(), noneuserBoardSaveDataDto.getTitle(),
                 noneuserBoardSaveDataDto.getContent(),noneuserBoardSaveDataDto.isSecret());
@@ -45,20 +53,20 @@ public class EditBoardMapper {
         userService.updateUser(user);
     }
 
-    public void setUserBoardUpdateDataDto(UserBoardSaveViewDto userBoardSaveViewDto, UserBoardSaveDataDto userBoardSaveDataDto,String refreshToken) throws JsonProcessingException {
+    public void setUserBoardUpdateDataDto(UserBoardSaveViewDto userBoardSaveViewDto, UserBoardSaveDataDto userBoardSaveDataDto, String refreshToken, HttpServletResponse response) throws JsonProcessingException {
+
         UserRequestDto userRequestDto = jwtManager.getUserRequestDto(refreshToken);
-        if(!memberApi.checkUserIdAndPassword(refreshToken, userBoardSaveDataDto.getUserId())) {
-            System.out.println("EditBoardMapper - setUserBoardUpdateDataDto 검증에 실패하였습니다 = ");
-            return;
+        DefaultMember userByUserId = userService.findUserByUserId(userRequestDto.getUserId());
+        boolean testData = memberApi.checkAuthority(userByUserId, userBoardSaveDataDto);
+        System.out.println(" EditBoardMapper - setUserBoardUpdateDataDto() testData = "+testData);
+        if(testData) {
+            // Member user = new Member(boardSaveDataDto.getId(),boardSaveDataDto.getAuthor(), boardSaveDataDto.getPassword());
+            Board board = new Board(userBoardSaveViewDto.getBoardId(),
+                    userBoardSaveViewDto.getTitle(),
+                    userBoardSaveViewDto.getContent(),
+                    userBoardSaveViewDto.isSecret());
+            boardService.updateBoard(board);
         }
-        // Member user = new Member(boardSaveDataDto.getId(),boardSaveDataDto.getAuthor(), boardSaveDataDto.getPassword());
-        DefaultMember user = DefaultMember.builder().id(userBoardSaveViewDto.getBoardId())
-                .userId(userRequestDto.getUserId())
-                .password(userRequestDto.getPassword()).build();
-        Board board = new Board(userBoardSaveViewDto.getBoardId(), userBoardSaveViewDto.getTitle(),
-                userBoardSaveViewDto.getContent(),userBoardSaveViewDto.isSecret());
-        boardService.updateBoard(board);
-        userService.updateUser(user);
 
     }
     public void insertUserBoard(BoardEditUserDto boardEditUserDto, UserRequestDto userRequestDto) {
@@ -74,16 +82,16 @@ public class EditBoardMapper {
         System.out.println("board1.getContent() = " + board1.getContent());
     }
     public void insertNoneUserBoard(HttpServletRequest request,NoneUserBoardSaveDataDto userBoardSaveDataDto) {
-        System.out.println("UserBoardSaveDataDto - userBoardSaveDataDto.getUsername() = " + userBoardSaveDataDto.getUsername());
+        System.out.println("UserBoardSaveDataDto - userBoardSaveDataDto.getNickname() = " + userBoardSaveDataDto.getNickname());
         System.out.println(" EditBoardMapper.insertNoneUserBoard() uuidCookie = " + cookieManager.getUUidCookie(request));
         System.out.println("boardRequestDto.getUsername() = " + userBoardSaveDataDto.getContent());
         List<UserAuthority> userAuthorities = new ArrayList<>();
         userAuthorities.add(new UserAuthority(new Authority(RoleStatus.ROLE_ANONYMOUS.name())));
         NoneMember member = NoneMember.builder()
-                .userId(userBoardSaveDataDto.getUsername())
+                .nickname(userBoardSaveDataDto.getNickname())
+                .userId(cookieManager.getUUidCookie(request))
                 .password(userBoardSaveDataDto.getPassword())
                 .ip(requestIpApi.getClientIpAddr(request))
-                .uuid(cookieManager.getUUidCookie(request))
                 .userAuthorities(userAuthorities)
                 .build();
         userService.userAndUserAuthoritySave(member);

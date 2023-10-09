@@ -30,7 +30,8 @@ public class SiteMember extends DefaultMember {
                 '}';
     }
 
-
+    private String phoneNumber;
+    private long age;
     private String email;
     @OneToOne(cascade = CascadeType.ALL)
     private Gender gender;

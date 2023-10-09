@@ -43,7 +43,7 @@ public class BoardWriteController {
 
         System.out.println("readController - authenticationManager = " + authenticationManager);
         String refreshToken = jwtManager.getRefreshToken(request);
-        TokenStatus isSafeJwt = jwtManager.validaition(refreshToken);
+        TokenStatus isSafeJwt = jwtManager.validation(refreshToken);
         if(isSafeJwt == TokenStatus.NONE) {
             return magnageUrlMap.get(RoleStatus.ROLE_ANONYMOUS.name());
         }
@@ -68,14 +68,17 @@ public class BoardWriteController {
             System.out.println("boardEditUserDto.getContent() = " + boardEditUserDto.getContent());
             System.out.println("boardEditUserDto.getTitle() = " + boardEditUserDto.getTitle());
             System.out.println("writeUser - userName = " + boardEditUserDto.getUsername());
+
+            String uuidCookie = cookieManager.getUUidCookie(request);
             NoneUserBoardSaveDataDto userBoardSaveDataDto = NoneUserBoardSaveDataDto.builder()
                     .id(boardEditUserDto.getId())
+                    .userId(uuidCookie)
                     .title(boardEditUserDto.getTitle())
                     .content(boardEditUserDto.getContent())
-                    .username(boardEditUserDto.getUsername())
+                    .nickname(boardEditUserDto.getUsername())
                     .password(boardEditUserDto.getPassword())
                     .isSecret(boardEditUserDto.isSecret()).build();
-            String uuidCookie = cookieManager.getUUidCookie(request);
+
             System.out.println("BoardWriteController - writeNoneUser() uuidCookie = "+uuidCookie);
             editBoardMapper.insertNoneUserBoard(request,userBoardSaveDataDto);
             return "ok";

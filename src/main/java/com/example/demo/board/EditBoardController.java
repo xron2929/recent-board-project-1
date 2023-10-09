@@ -1,26 +1,22 @@
 package com.example.demo.board;
 
 
-import com.example.demo.api.MemberApi;
 import com.example.demo.role.RoleStatus;
 import com.example.demo.entityjoin.NoneUserBoardSaveDataDto;
 import com.example.demo.entityjoin.UserBoardSaveDataDto;
 import com.example.demo.security.authentication.AuthenticationManager;
 import com.example.demo.security.jwt.JwtManager;
 import com.example.demo.security.jwt.TokenStatus;
-import com.example.demo.security.jwt.UserRequestDto;
 import com.example.demo.user.UserService;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.header.Header;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.net.http.HttpHeaders;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,8 +35,7 @@ public class EditBoardController {
     AuthenticationManager authenticationManager;
     @Autowired
     PasswordEncoder passwordEncoder;
-    @Autowired
-    MemberApi memberApi;
+
     // @Trace
     @GetMapping("/boards/edit/{boardId}")
     @ApiOperation("유저의 권한에 따라 다른 뷰 반환")
@@ -52,7 +47,7 @@ public class EditBoardController {
         magnageUrlMap.put(RoleStatus.ROLE_OAUTH_USER.name(),"board/edit/user-edit");
         magnageUrlMap.put(RoleStatus.ROLE_ADMIN.name(),"board/edit/user-edit");
         String refreshToken = jwtManager.getRefreshToken(request);
-        TokenStatus isSafeJwt = jwtManager.validaition(refreshToken);
+        TokenStatus isSafeJwt = jwtManager.validation(refreshToken);
         if(isSafeJwt == TokenStatus.NONE) {
             return magnageUrlMap.get(RoleStatus.ROLE_ANONYMOUS.name());
         }
@@ -70,7 +65,7 @@ public class EditBoardController {
         System.out.println("findBoard.getPassword() = " + findBoard.getPassword());
         System.out.println("boardSaveDataDto.getPassword() = " + noneuserBoardSaveDataDto.getPassword());
         if(findBoard.getPassword().equals(noneuserBoardSaveDataDto.getPassword())) {
-            boardMapper.setNoneuserBoardUpdateDataDto(noneuserBoardSaveDataDto);
+            boardMapper.setNoneUserBoardUpdateDataDto(noneuserBoardSaveDataDto);
             System.out.println("success editBoardData");
             return "ok";
         }
@@ -87,10 +82,9 @@ public class EditBoardController {
 
         String refreshToken = jwtManager.getRefreshToken(request);
         UserBoardSaveDataDto userBoardSaveDataDto = boardService.findUserPasswordBoard(userBoardSaveViewDto.getBoardId());
-        boardMapper.setUserBoardUpdateDataDto(userBoardSaveViewDto,userBoardSaveDataDto,refreshToken);
+        boardMapper.setUserBoardUpdateDataDto(userBoardSaveViewDto,userBoardSaveDataDto,refreshToken,response);
+        return "ok";
 
-        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-        throw new RuntimeException("데이터가 다릅니다");
     }
 
 
