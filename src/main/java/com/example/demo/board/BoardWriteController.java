@@ -51,6 +51,7 @@ public class BoardWriteController {
         // accessToken,refresh 토큰 null 일 떄 처리 로직
         // null이 아니면 아래서 검출
         String authenticationView = authenticationManager.getAuthenticationView(request, response, magnageUrlMap);
+        
         return authenticationView;
     }
     @PostMapping("/board/none-user")

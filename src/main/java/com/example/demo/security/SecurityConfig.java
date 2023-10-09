@@ -150,6 +150,7 @@ public class SecurityConfig {
             http.headers().addHeaderWriter((request, response) -> {
                 response.setHeader("Access-Control-Max-Age", "3600");
                 response.setHeader("Access-Control-Allow-Origin", portDomainUrl);
+                response.setHeader("Access-Control-Allow-Methods", "POST, GET,PUT, PATCH,OPTIONS, DELETE");
                 response.setHeader("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With, remember-me, Origin,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization");
                 response.setHeader("Access-Control-Allow-Credentials",  "true");
             });
