@@ -16,7 +16,7 @@ public class StatisticController {
     @ApiOperation("통계 뷰 반환")
     @GetMapping("/static")
     public String getView() {
-        return "static/statics";
+        return "statistic/statistics";
     }
     @ApiOperation("성별 데이터 반환")
     @GetMapping("/static/trans/data")
