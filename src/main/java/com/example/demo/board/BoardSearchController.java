@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
@@ -34,6 +35,8 @@ public class BoardSearchController {
     @ResponseBody
     @Trace
     List<BoardSearchDataDto> searchFindBoard(@RequestParam Long pageQuantity, @RequestParam Long boardQuantity, @RequestParam String keyword) {
+
+
         System.out.println(" ??? searchFindBoard");
         List<BoardSearchDataDto> boardSearchDataDtos = boardSearchService.boardSearch( pageQuantity,boardQuantity,keyword);
         System.out.println("boardSearchDataDtos.size() = " + boardSearchDataDtos.size());

@@ -126,7 +126,7 @@ setUrl().then(function(data) {
 
 function connect() {
 
-    const socket = new SockJS('/my-websocket-endpoint');
+    const socket = new SockJS(domainUri+'my-websocket-endpoint');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function(frame) {
         console.log('Connected: ' + frame);
@@ -240,6 +240,7 @@ function disconnect() {
         stompClient.disconnect();
     }
     console.log("Disconnected");
+
 }
 let commentSubmitButton = document.getElementById("parentWriteCommentSubmit1");
 let isAddCommentClick = false;

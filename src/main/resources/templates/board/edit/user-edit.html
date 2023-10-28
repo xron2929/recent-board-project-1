@@ -3,8 +3,8 @@
     <!-- scale 조정 -->
     <title>글 조회</title>
 
-    <link rel="stylesheet" href="/css/board/edit/user-edit.css"  type="text/css"/>
-    <link rel="stylesheet" href="/ckeditor/ckeditor-board-edit.css"  type="text/css" id="advertisementCss"/>
+    <link rel="stylesheet" href="/css/board/edit/user-edit.css" th:href="${@environment.getProperty('SERVER_DOMAIN_URL')}/css/board/edit/user-edit.css" type="text/css"/>
+    <link rel="stylesheet" href="/ckeditor/ckeditor-board-edit.css" th:href="${@environment.getProperty('SERVER_DOMAIN_URL')}/ckeditor/ckeditor-board-edit.css" type="text/css" id="advertisementCss"/>
 
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -64,6 +64,6 @@
 <!-- jquery 덜어내려고 지움 -->
 <!-- <script src="/js/jquery-3.6.0.min.js"></script>-->
 <!-- <script src="/js/bootstrap.min.js"></script> -->
-<script src="/ckeditor/ckeditor.js"></script>
-<script src = "/js/board/edit/user-edit-script.js"></script>
+<script src="/ckeditor/ckeditor.js" th:src="${@environment.getProperty('SERVER_DOMAIN_URL')}/ckeditor/ckeditor.js"></script>
+<script src = "/js/board/edit/user-edit-script.js" th:src="${@environment.getProperty('SERVER_DOMAIN_URL')}/js/board/edit/user-edit-script.js"></script>
 </body>

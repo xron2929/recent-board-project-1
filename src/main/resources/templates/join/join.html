@@ -1,7 +1,7 @@
 <head xmlns="http://www.w3.org/1999/html">
     <!-- scale 조정 -->
     <title>글 조회</title>
-    <link rel="stylesheet" href="/css/join/join.css"  type="text/css" id="advertisementCss"/>
+    <link rel="stylesheet" href="/css/join/join.css" th:href="${@environment.getProperty('SERVER_DOMAIN_URL')}/css/join/join.css" type="text/css" id="advertisementCss"/>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
@@ -112,5 +112,5 @@
 </body>
 <script defer src="https://cdn.jsdelivr.net/npm/sockjs-client@1.5.0/dist/sockjs.min.js"></script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
-<script defer src="/js/join/join-script.js"></script>
+<script defer src="/js/join/join-script.js" th:src="${@environment.getProperty('SERVER_DOMAIN_URL')}/js/join/join-script.js"></script>
 

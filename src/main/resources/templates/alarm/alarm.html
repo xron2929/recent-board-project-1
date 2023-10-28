@@ -1,7 +1,7 @@
 <head>
   <!-- scale 조정 -->
   <title>글 조회</title>
-  <link rel="stylesheet" href="/css/alarm/alarm.css"  type="text/css" id="advertisementCss">
+  <link rel="stylesheet" href="/css/alarm/alarm.css" th:href="${@environment.getProperty('SERVER_DOMAIN_URL')}/css/alarm/alarm.css"  type="text/css" id="advertisementCss">
 
   <meta charset="UTF-8">
   <meta name="google" content="notranslate">
@@ -82,7 +82,7 @@
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-<script defer src="/js/alarm/alarm.js"></script>
+<script defer src="/js/alarm/alarm.js" th:src="${@environment.getProperty('SERVER_DOMAIN_URL')}/js/alarm/alarm.js"></script>
 
 
 <!-- 여기서 media query 추가로 만들면 될 것 같다 -->

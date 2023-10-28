@@ -1,7 +1,7 @@
 <head>
     <!-- scale 조정 -->
     <title>글 조회</title>
-    <link rel="stylesheet" href="/css/statistics/statistic.css"  type="text/css" id="advertisementCss"/>
+    <link rel="stylesheet" href="/css/statistics/statistic.css" th:href="${@environment.getProperty('SERVER_DOMAIN_URL')}/css/statistics/statistic.css" type="text/css" id="advertisementCss"/>
 
     <meta charset="UTF-8"/>
     <meta name="google" content="notranslate"/>
@@ -67,6 +67,7 @@
     .then(function (response) {
         return response.json();
     }).then(function(response) {
+
         femaleCount = response.femaleCount;
         femalePercent = response.femalePercent;
         maleCount = response.maleCount;

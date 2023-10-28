@@ -21,7 +21,7 @@ setUrl().then(function(data) {
 
 // setUri + connet 부터 일단 제작
 function connect() {
-    const socket = new SockJS('http://localhost:8080/my-websocket-endpoint');
+    const socket = new SockJS(domainUri+"my-websocket-endpoint");
     stompClient = Stomp.over(socket);
     console.log(socket);
     console.log(stompClient);
@@ -33,7 +33,7 @@ function connect() {
     });
     // 이거 연결하는 동시에 queue/messages2도 같이 등록해서 알림 서비스 n개 만들어봐야될듯
     // ㅇㅇ..
-    const socket2 = new SockJS('http://localhost:8080/my-websocket-endpoint2');
+    const socket2 = new SockJS(domainUri+"my-websocket-endpoint2");
     stompClient2 = Stomp.over(socket2);
     stompClient2.connect({}, function(frame) {
         console.log('Connected: ' + frame);

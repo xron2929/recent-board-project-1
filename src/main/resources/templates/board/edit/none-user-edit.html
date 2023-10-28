@@ -9,7 +9,7 @@ csrf 할꺼면 이거 키고 테스트 할꺼면 항상 꺼야 한다는 점
     <!-- scale 조정 -->
     <title>글 조회22</title>
 
-    <link rel="stylesheet" href="/css/board/edit/none-user-edit.css"  type="text/css"/>
+    <link rel="stylesheet" href="/css/board/edit/none-user-edit.css"  th:href="${@environment.getProperty('SERVER_DOMAIN_URL')}/css/board/edit/none-user-edit.css" type="text/css"/>
     <link rel="stylesheet" href="/ckeditor/ckeditor-board-edit.css"  type="text/css" id="advertisementCss"/>
 
     <meta charset="UTF-8"/>
@@ -71,8 +71,8 @@ csrf 할꺼면 이거 키고 테스트 할꺼면 항상 꺼야 한다는 점
 <!-- jquery 덜어내려고 지움 -->
 <!-- <script src="/js/jquery-3.6.0.min.js"></script>-->
 <!-- <script src="/js/bootstrap.min.js"></script> -->
-<script src="/ckeditor/ckeditor.js"></script>
-<script src = "/js/board/edit/none-user-edit-script.js"></script>
+<script src="/ckeditor/ckeditor.js" th:src="${@environment.getProperty('SERVER_DOMAIN_URL')}/ckeditor/ckeditor.js"></script>
+<script src = "/js/board/edit/none-user-edit-script.js" th:src="${@environment.getProperty('SERVER_DOMAIN_URL')}/js/board/edit/none-user-edit-script.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.5.0/dist/sockjs.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 
