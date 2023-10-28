@@ -81,7 +81,7 @@ public class EditBoardMapper {
         System.out.println("board.getMember() = " + board.getMember());
         System.out.println("board1.getContent() = " + board1.getContent());
     }
-    public void insertNoneUserBoard(HttpServletRequest request,NoneUserBoardSaveDataDto userBoardSaveDataDto) {
+    public void insertNoneUserBoard( HttpServletRequest request,NoneUserBoardSaveDataDto userBoardSaveDataDto) {
         System.out.println("UserBoardSaveDataDto - userBoardSaveDataDto.getNickname() = " + userBoardSaveDataDto.getNickname());
         System.out.println(" EditBoardMapper.insertNoneUserBoard() uuidCookie = " + cookieManager.getUUidCookie(request));
         System.out.println("boardRequestDto.getUsername() = " + userBoardSaveDataDto.getContent());
