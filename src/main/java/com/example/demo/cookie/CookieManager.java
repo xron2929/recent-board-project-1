@@ -10,8 +10,6 @@ import java.util.Arrays;
 
 public class CookieManager {
 
-
-
     public void makeSessionSecurityCookie(String key, String value, HttpServletResponse response) {
 
         Cookie cookie = new Cookie(key,value);

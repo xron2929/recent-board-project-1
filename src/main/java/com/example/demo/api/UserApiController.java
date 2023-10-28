@@ -57,6 +57,7 @@ public class UserApiController {
 
         String isExistence = authenticationManager.checkAuthenticationManager(request, response);
         if(isExistence == "null") {
+            System.out.println("isExistence = " + isExistence);
             return UserIdAndNickname.builder().userId(cookieManager.getUUidCookie(request))
                     .nickname(cookieManager.getUUidCookie(request)).build();
         }
@@ -144,7 +145,6 @@ public class UserApiController {
         responseAuthenticationDto.setRole("권한 에러");
         return responseAuthenticationDto;
     }
-
 
 
 }
