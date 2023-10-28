@@ -2,7 +2,9 @@
     <!-- scale 조정 -->
     <title>글 조회</title>
     <link rel="stylesheet" href="/css/boards/advertise/advertise-boards.css"  type="text/css" id="advertisementCss"
-          th:href="${@environment.getProperty('SERVER_DOMAIN_URL')}/css/boards/advertise/advertise-boards.css"/>
+            th:href="${cssDomainUrl}" />
+
+    />
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta name="google" content="notranslate"/>
@@ -38,7 +40,7 @@
 </Header>
 <section>
     <div class="bodyHeader">
-        <form action="http://localhost:8080/board/search" th:action="${@environment.getProperty('SERVER_DOMAIN_URL')}/board/search"
+        <form action="http://localhost:8080/board/search" th:action="${searchDomainUrl}"
               accept-charset="utf-8" method="get" id="inline" >
             <input type="text" name="pageQuantity" value="1" hidden>
             <input type="text" name="boardQuantity" value="20" hidden>
@@ -50,7 +52,7 @@
                     각각 가로(음수면 왼쪽, 양수면 오른쪽), 세로(음수면 위, 양수면 아래), 색상까지있고 (색상 전에 번짐 정도 정할 수 있다)
             -->
         </form>
-        <form action="http://localhost:8080/edit" th:action="${@environment.getProperty('SERVER_DOMAIN_URL')}/board/write" accept-charset="utf-8" method="get" class="inline">
+        <form action="http://localhost:8080/edit" th:action="${writeDomainUrl}" accept-charset="utf-8" method="get" class="inline">
             <input type="submit" id="writeButton" value="글쓰기" style="cursor:hand">
         </form>
         <!-- 나중에 @postMapping 쓰면 됨  https://donggu1105.tistory.com/61
@@ -102,7 +104,7 @@
 <script defer src="https://cdn.jsdelivr.net/npm/sockjs-client@1.5.0/dist/sockjs.min.js"></script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 <script defer src="/js/boards/un-search/un-search-script.js"
-        th:src="${@environment.getProperty('SERVER_DOMAIN_URL')}/js/boards/un-search/un-search-script.js"></script>
+        th:src="${jsDomainUrl}"></script>
 
 <!-- 여기서 media query 추가로 만들면 될 것 같다 -->
 

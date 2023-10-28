@@ -12,9 +12,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
@@ -22,6 +24,8 @@ import java.util.List;
 
 @Controller
 public class HomeController {
+    @Value("${server.domain.url}")
+    private String serverDomainUrl;
     @Autowired
     UserService memberService;
     @Autowired
@@ -36,7 +40,13 @@ public class HomeController {
 
     @GetMapping
     @ApiOperation("루트 뷰(게시판 목록들이 포함된)를 반환")
-    public String root(@RequestParam(defaultValue = "1") Long pageQuantity, @RequestParam(defaultValue = "20") Long boardQuantity) {
+    public String root(@RequestParam(defaultValue = "1") Long pageQuantity, @RequestParam(defaultValue = "20") Long boardQuantity, Model model) {
+        model.addAttribute("serverDomainUrl", serverDomainUrl);
+        model.addAttribute("cssDomainUrl", serverDomainUrl+"/css/boards/advertise/advertise-boards.css");
+        model.addAttribute("jsDomainUrl", serverDomainUrl+"/js/boards/un-search/un-search-script.js");
+        model.addAttribute("searchDomainUrl", serverDomainUrl+"/board/search");
+        model.addAttribute("writeDomainUrl", serverDomainUrl+"/board/write");
+
         return "boards/un-search/un-search";
     }
 
