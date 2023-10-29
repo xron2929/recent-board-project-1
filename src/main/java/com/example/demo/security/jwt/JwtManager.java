@@ -41,6 +41,7 @@ public class JwtManager {
 
     public String getAccessToken(HttpServletRequest request)  {
         if(request.getCookies()== null) {
+            System.out.println("JwtManager.getAccessToken - request.getCookies() = null ");
             return null;
         }
         Date now = (new Date());
@@ -91,6 +92,7 @@ public class JwtManager {
     }
     public String getRefreshToken(HttpServletRequest request) throws JsonProcessingException {
         if(request.getCookies()== null) {
+            System.out.println("JwtManager.getRefreshToken - request.getCookies() = null ");
             return null;
         }
 

@@ -10,6 +10,8 @@ import java.util.Arrays;
 
 public class CookieManager {
 
+
+
     public void makeSessionSecurityCookie(String key, String value, HttpServletResponse response) {
 
         Cookie cookie = new Cookie(key,value);
@@ -52,6 +54,7 @@ public class CookieManager {
     public String getUUidCookie(HttpServletRequest request) {
 
         if(request.getCookies()== null) {
+            System.out.println("CookieManager.getUUidCookie - request.getCookies() = null ");
             return null;
         }
         String uuid = Arrays.stream(request.getCookies())
