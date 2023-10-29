@@ -68,7 +68,8 @@ function setUrl() {
     })
 }
 let jwtTimeData = {
-    method:'GET'
+    method:'GET',
+
 }
 fetch(domainUri+"jwt/time",jwtTimeData)
     .then((response) => {

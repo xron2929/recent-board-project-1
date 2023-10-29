@@ -2,6 +2,7 @@ package com.example.demo.cookie;
 
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseCookie;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -13,24 +14,46 @@ public class CookieManager {
 
 
     public void makeSessionSecurityCookie(String key, String value, HttpServletResponse response) {
-
+    /*
         Cookie cookie = new Cookie(key,value);
         cookie.setSecure(true);
         cookie.setHttpOnly(true);
         cookie.setPath("/");
 
         response.addCookie(cookie);
+
+     */
+        ResponseCookie cookie = ResponseCookie.from(key, value)
+                .path("/")
+                .sameSite("None")
+                .httpOnly(true)
+                .secure(false)
+                .build();
+
+        response.addHeader("Set-Cookie", cookie.toString());
     }
     public void makeSecurityCookie(String key, String value,int second, HttpServletResponse response) {
-
+    /*
         Cookie cookie = new Cookie(key,value);
         cookie.setMaxAge(second);
         cookie.setSecure(true);
         cookie.setHttpOnly(true);
         cookie.setPath("/");
         response.addCookie(cookie);
+
+     */
+        ResponseCookie cookie = ResponseCookie.from(key, value)
+                .path("/")
+                .sameSite("None")
+                .maxAge(second)
+                .httpOnly(true)
+                .secure(true)
+                .build();
+
+        response.addHeader("Set-Cookie", cookie.toString());
     }
     public void makeNotSecurityCookie(String key, String value,int second, HttpServletResponse response) {
+        /*
         response.setHeader("Access-Control-Max-Age", "0");
         Cookie cookie = new Cookie(key,value);
         cookie.setMaxAge(second);
@@ -40,8 +63,20 @@ public class CookieManager {
         cookie.setPath("/");
 
         response.addCookie(cookie);
+
+         */
+        ResponseCookie cookie = ResponseCookie.from(key, value)
+                .path("/")
+                .sameSite("None")
+                .maxAge(second)
+                .httpOnly(true)
+                .secure(false)
+                .build();
+
+        response.addHeader("Set-Cookie", cookie.toString());
     }
     public void makeZeroSecondCookie(String key,HttpServletResponse response) {
+        /*
         response.setHeader("Access-Control-Max-Age", "0");
         Cookie cookie = new Cookie(key,null);
         cookie.setMaxAge(0);
@@ -50,7 +85,19 @@ public class CookieManager {
         cookie.setPath("/");
 
         response.addCookie(cookie);
+
+         */
+        ResponseCookie cookie = ResponseCookie.from(key, null)
+                .path("/")
+                .sameSite("None")
+                .maxAge(0)
+                .httpOnly(true)
+                .secure(false)
+                .build();
+
+        response.addHeader("Set-Cookie", cookie.toString());
     }
+
     public String getUUidCookie(HttpServletRequest request) {
 
         if(request.getCookies()== null) {

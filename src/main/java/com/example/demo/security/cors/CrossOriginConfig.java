@@ -26,6 +26,7 @@ public class CrossOriginConfig {
         config.setAllowCredentials(true);
         config.setAllowedOrigins(Arrays.asList("http://localhost:3001", portDomainUrl));
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
+        config.addExposedHeader("Set-Cookie");
 
         // config.setAllowedMethods(List.of("*"));
         config.setAllowedHeaders(Arrays.asList("*"));
