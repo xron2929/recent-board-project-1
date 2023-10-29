@@ -27,7 +27,7 @@ public class CookieManager {
                 .path("/")
                 .sameSite("None")
                 .httpOnly(true)
-                .secure(false)
+                .secure(true)
                 .build();
 
         response.addHeader("Set-Cookie", cookie.toString());
@@ -92,7 +92,7 @@ public class CookieManager {
                 .sameSite("None")
                 .maxAge(0)
                 .httpOnly(true)
-                .secure(false)
+                .secure(true)
                 .build();
 
         response.addHeader("Set-Cookie", cookie.toString());
