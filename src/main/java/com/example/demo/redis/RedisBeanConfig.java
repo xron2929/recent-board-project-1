@@ -13,6 +13,7 @@ public class RedisBeanConfig {
         this.redisTemplate = redisTemplate;
     }
     private RedisTemplate<String,Object> redisTemplate;
+
     @Bean
     public AdditionalInformationRedisTemplate additionalInformationRedisTemplate() {
         return new AdditionalInformationRedisTemplate(redisTemplate);

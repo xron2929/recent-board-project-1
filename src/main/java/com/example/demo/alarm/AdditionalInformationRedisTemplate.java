@@ -14,6 +14,10 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class AdditionalInformationRedisTemplate {
+    public RedisTemplate<String, Object> getRedisTemplate() {
+        return redisTemplate;
+    }
+
     private RedisTemplate<String, Object> redisTemplate;
     @Autowired
     ObjectMapper objectMapper;

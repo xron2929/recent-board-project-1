@@ -70,7 +70,7 @@ public class CookieManager {
                 .sameSite("None")
                 .maxAge(second)
                 .httpOnly(true)
-                .secure(false)
+                .secure(true)
                 .build();
 
         response.addHeader("Set-Cookie", cookie.toString());
