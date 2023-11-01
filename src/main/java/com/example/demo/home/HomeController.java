@@ -45,7 +45,7 @@ public class HomeController {
         model.addAttribute("cssDomainUrl", serverDomainUrl+"/css/boards/advertise/advertise-boards.css");
         model.addAttribute("jsDomainUrl", serverDomainUrl+"/js/boards/un-search/un-search-script.js");
         model.addAttribute("searchDomainUrl", serverDomainUrl+"/board/search");
-        model.addAttribute("writeDomainUrl", serverDomainUrl+"/board/write");
+        model.addAttribute("naverDomainUrl", serverDomainUrl+"/oauth2/authorization/naver");
 
         return "boards/un-search/un-search";
     }
