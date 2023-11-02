@@ -40,7 +40,7 @@
 </Header>
 <section>
     <div class="bodyHeader">
-        <form action="http://localhost:8080/board/search" th:action="${searchDomainUrl}"
+        <form action="/board/search" th:action="${searchDomainUrl}"
               accept-charset="utf-8" method="get" id="inline" >
             <input type="text" name="pageQuantity" value="1" hidden>
             <input type="text" name="boardQuantity" value="20" hidden>
@@ -52,7 +52,7 @@
                     각각 가로(음수면 왼쪽, 양수면 오른쪽), 세로(음수면 위, 양수면 아래), 색상까지있고 (색상 전에 번짐 정도 정할 수 있다)
             -->
         </form>
-        <form action="http://localhost:8080/edit" th:action="${writeDomainUrl}" accept-charset="utf-8" method="get" class="inline">
+        <form action="/edit"  accept-charset="utf-8" method="get" class="inline">
             <input type="submit" id="writeButton" value="글쓰기" style="cursor:hand">
         </form>
         <!-- 나중에 @postMapping 쓰면 됨  https://donggu1105.tistory.com/61

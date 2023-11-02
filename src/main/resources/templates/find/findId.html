@@ -13,7 +13,7 @@
 </body>
 </html>
 <script>
-    let domainUri = "http://localhost:8080";
+    // let domainUri = "http://localhost:8080";
     let email = document.getElementById("email");
     let certificationCode = document.getElementById("certificationCode");
     const getEmail = () => {
@@ -28,7 +28,7 @@
                 "email":email.value
             })
         }
-        let url = domainUri + "/email/findId";
+        let url =  "/email/findId";
         fetch(url, params)
             .then(function (response) {
                 //  console.log(response.json());

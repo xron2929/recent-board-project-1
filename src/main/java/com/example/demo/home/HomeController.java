@@ -42,7 +42,8 @@ public class HomeController {
     @ApiOperation("루트 뷰(게시판 목록들이 포함된)를 반환")
     public String root(@RequestParam(defaultValue = "1") Long pageQuantity, @RequestParam(defaultValue = "20") Long boardQuantity, Model model) {
         model.addAttribute("serverDomainUrl", serverDomainUrl);
-        model.addAttribute("cssDomainUrl", serverDomainUrl+"/css/boards/advertise/advertise-boards.css");
+
+
         model.addAttribute("jsDomainUrl", serverDomainUrl+"/js/boards/un-search/un-search-script.js");
         model.addAttribute("searchDomainUrl", serverDomainUrl+"/board/search");
         model.addAttribute("naverDomainUrl", serverDomainUrl+"/oauth2/authorization/naver");
