@@ -163,7 +163,7 @@ public class JoinDslRepository {
                 .fetchOne();
     }
 
-    public List<CommentReadDataDto> findByIdsSubQuery(List<Long> commentId) {
+    public List<CommentReadDataDto> findByIdsSubQueryParentComment(List<Long> commentId) {
         commentId.forEach(comment-> System.out.println("comment = " + comment));
         JPAQueryFactory queryFactory = new JPAQueryFactory(em);
         return queryFactory.select(Projections.constructor(CommentReadDataDto.class,

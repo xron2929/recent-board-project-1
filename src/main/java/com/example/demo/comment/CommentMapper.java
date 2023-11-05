@@ -40,6 +40,7 @@ public class CommentMapper {
         }
         System.out.println("board.getTitle() = " + board.getTitle());
         String content = commentViewDto.getContent();
+
         ParentComment parentComment = new ParentComment(content,board,user);
         return parentComment;
     }

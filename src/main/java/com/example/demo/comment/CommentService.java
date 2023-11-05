@@ -22,7 +22,7 @@ public class CommentService {
     @Autowired CommentMapper commentMapper;
     @Autowired
     CookieManager cookieManager;
-    // 이거 데이터 수정해야됨
+
     public void saveParentComment(CommentSaveViewDto commentViewDto, HttpServletRequest request) throws Exception {
         String uuidCookie = cookieManager.getUUidCookie(request);
         ParentComment comment = commentMapper.saveMemberAndComment(commentViewDto,uuidCookie);
@@ -41,8 +41,8 @@ public class CommentService {
     }
 
     public List<CommentReadDataDto> readTenParentComment(CommentReadViewDto commentViewDto) throws Exception {
-        List<Long> byIdsSubQuery = commentDslRepository.findByIdsSubQuery(commentViewDto.getStartId(), commentViewDto.getBoardId());
-        return joinDslRepository.findByIdsSubQuery(byIdsSubQuery);
+        List<Long> byIdsSubQuery = commentDslRepository.findByIdsSubQueryParentComment(commentViewDto.getStartId(), commentViewDto.getBoardId());
+        return joinDslRepository.findByIdsSubQueryParentComment(byIdsSubQuery);
     }
 
 }

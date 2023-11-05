@@ -19,7 +19,7 @@ public class CommentDslRepository {
     @PersistenceContext
     EntityManager em;
 
-    public void save(CommentSaveDataDto commentInsertDataDto) {
+    public void saveParentComment(CommentSaveDataDto commentInsertDataDto) {
         JPAQueryFactory queryFactory = new JPAQueryFactory(em);
         queryFactory.insert(parentComment)
                 .set(parentComment.member.id, commentInsertDataDto.getMember().getId())
@@ -35,14 +35,14 @@ public class CommentDslRepository {
     }
 
     @Transactional
-    public void delete(Set<Long> boardIds) {
+    public void deleteParentComment(Set<Long> boardIds) {
         JPAQueryFactory queryFactory = new JPAQueryFactory(em);
         queryFactory.delete(parentComment)
                 .where(parentComment.board.id.in(boardIds))
                 .execute();
     }
 
-    public List<Long>findByIdsSubQuery(Long startId,Long boardId) {
+    public List<Long>findByIdsSubQueryParentComment(Long startId,Long boardId) {
         JPAQueryFactory queryFactory = new JPAQueryFactory(em);
         System.out.println("startId = " + startId);
         System.out.println("boardId = " + boardId);

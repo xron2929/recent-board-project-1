@@ -62,7 +62,7 @@ public class ImageService {
         });
 
         imageDataRepository.delete(deleteBoardImages);
-        commentDslRepository.delete(deleteBoardImages);
+        commentDslRepository.deleteParentComment(deleteBoardImages);
         // board -> image 조회가 맞음
         System.out.println("deleteBoardImages.size() = " + deleteBoardImages.size());
         boardRepository.deleteAllByIdInBatch(deleteBoardImages);
@@ -100,7 +100,7 @@ public class ImageService {
         }
 
         commentDslRepository.delete(deleteBoardImages);
-        imageDataRepository.delete(deleteBoardImages);
+        imageDataRepository.deleteParentComment(deleteBoardImages);
 
         boardRepository.deleteAllByIdInBatch(deleteBoardImages);
         fileDeleter.deleteFiles(files);
