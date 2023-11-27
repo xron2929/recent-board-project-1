@@ -12,13 +12,13 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Set;
 
-import static com.example.demo.comment.QParentComment.parentComment;
+
 
 @Repository
 public class CommentDslRepository {
     @PersistenceContext
     EntityManager em;
-
+/*
     public void saveParentComment(CommentSaveDataDto commentInsertDataDto) {
         JPAQueryFactory queryFactory = new JPAQueryFactory(em);
         queryFactory.insert(parentComment)
@@ -26,11 +26,11 @@ public class CommentDslRepository {
                 .set(parentComment.board.id, commentInsertDataDto.getBoard().getId())
                 .set(parentComment.content, commentInsertDataDto.getContent())
                 .execute();
-                /*
+
                 .set(QImageStore.imageStore.createdDate, imageStore.getCreatedDate())
                 .set(QImageStore.imageStore.board, imageStore.getBoard())
                 .set(QImageStore.imageStore.filePath, imageStore.getFilePath());
-                 */
+
 
     }
 
@@ -46,6 +46,7 @@ public class CommentDslRepository {
         JPAQueryFactory queryFactory = new JPAQueryFactory(em);
         System.out.println("startId = " + startId);
         System.out.println("boardId = " + boardId);
+
         return queryFactory
                 .select(parentComment.id)
                 .from(parentComment)
@@ -55,6 +56,8 @@ public class CommentDslRepository {
                 .offset(startId)
                 .fetch();
     }
+    */
+
 }
 
 

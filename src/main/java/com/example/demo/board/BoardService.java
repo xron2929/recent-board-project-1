@@ -26,7 +26,7 @@ public class BoardService {
     @Autowired private BoardDslRepository boardJpaRepository;
     @Autowired private JoinDslRepository joinDslRepository;
     @Autowired private DeleteBoardRepository deleteBoardRepository;
-    @Autowired private BoardMapper boardMapper;
+
     @Autowired
     UserJoinRepository userJoinRepository;
     @Autowired

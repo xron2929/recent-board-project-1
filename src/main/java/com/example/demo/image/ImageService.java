@@ -4,6 +4,7 @@ package com.example.demo.image;
 import com.example.demo.board.BoardDslRepository;
 import com.example.demo.board.BoardRepository;
 import com.example.demo.comment.CommentDslRepository;
+import com.example.demo.mongo.ParentCommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -26,6 +27,8 @@ public class ImageService {
     BoardDslRepository boardJpaRepository;
     @Autowired
     CommentDslRepository commentDslRepository;
+    @Autowired
+    ParentCommentService parentCommentService;
     @Autowired
     BoardRepository boardRepository;
     @Autowired
@@ -62,7 +65,8 @@ public class ImageService {
         });
 
         imageDataRepository.delete(deleteBoardImages);
-        commentDslRepository.deleteParentComment(deleteBoardImages);
+        parentCommentService.deleteParentCommentByBoardIds(deleteBoardImages);
+        // commentDslRepository.deleteParentComment(deleteBoardImages);
         // board -> image 조회가 맞음
         System.out.println("deleteBoardImages.size() = " + deleteBoardImages.size());
         boardRepository.deleteAllByIdInBatch(deleteBoardImages);
@@ -99,8 +103,8 @@ public class ImageService {
             deleteBoardImages.add(imageBoardDto.getBoardId());
         }
 
-        commentDslRepository.delete(deleteBoardImages);
-        imageDataRepository.deleteParentComment(deleteBoardImages);
+        parentCommentService.deleteParentCommentByBoardIds(deleteBoardImages);
+        imageDataRepository.delete(deleteBoardImages);
 
         boardRepository.deleteAllByIdInBatch(deleteBoardImages);
         fileDeleter.deleteFiles(files);

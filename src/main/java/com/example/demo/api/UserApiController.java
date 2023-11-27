@@ -83,6 +83,8 @@ public class UserApiController {
         System.out.println("//dsfsdf");
         System.out.println("accessToken = " + accessToken);
         UserRequestDto userRequestDto = jwtManager.getUserRequestDto(accessToken);
+        DefaultMember findUser = userService.findUserByUserId(userRequestDto.getUserId());
+        userRequestDto.setNickname(findUser.getNickname());
         return UserIdAndNickname.builder()
                 .userId(userRequestDto.getUserId())
                 .nickname(userRequestDto.getNickname()).build();

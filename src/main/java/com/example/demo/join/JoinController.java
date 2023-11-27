@@ -63,7 +63,7 @@ public class JoinController {
     public String addSession(@ModelAttribute @Validated ResponseOauthDto responseOauthDto, HttpServletResponse response,
                              HttpServletRequest request, BindingResult bindingResult) throws JsonProcessingException {
         if(bindingResult.hasErrors()) {
-            return "redirect:/first/oauth/join";
+            return "redirect:first/oauth/join";
         }
 
         long age = responseOauthDto.getAge();

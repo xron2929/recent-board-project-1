@@ -11,6 +11,6 @@ import lombok.Setter;
 @Getter
 public class CommentReadViewDto {
     private Long boardId;
-    private Long startId;
+
 
 }

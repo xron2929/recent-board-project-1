@@ -110,6 +110,11 @@ public class BoardReadController {
             System.out.println("ReadController -  조회자는 비회원 글 작성자는 site 회원" );
             return "다른 사용자";
         }
+        if(accessToken == null && userAuthority.equals(RoleStatus.ROLE_ADMIN.name())) {
+            System.out.println("ReadController -  조회자는 비회원 글 작성자는 admin" );
+            return "다른 사용자";
+        }
+
         String authorityName = jwtManager.getAuthorityName(accessToken);
         if(authorityName == null && userAuthority.equals(RoleStatus.ROLE_ANONYMOUS.name())) {
             System.out.println("ReadController -  유저 아님 " );

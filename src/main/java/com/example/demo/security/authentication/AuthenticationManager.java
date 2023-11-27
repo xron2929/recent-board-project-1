@@ -41,6 +41,7 @@ public class AuthenticationManager {
         }
         if (accessToken == null) {
             UserRequestDto userRequestDto = jwtManager.getUserRequestDto(refreshToken);
+
             jwtManager.setAccessToken(request, response, userRequestDto);
         }
         UserRequestDto userRequestDto1 = jwtManager.getUserRequestDto(accessToken);

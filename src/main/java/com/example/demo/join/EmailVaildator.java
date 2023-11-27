@@ -2,7 +2,6 @@ package com.example.demo.join;
 
 import com.example.demo.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 // @Component
 public class EmailVaildator {

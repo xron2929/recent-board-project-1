@@ -82,10 +82,11 @@ public class UserService {
     public void userAndUserAuthoritySave(DefaultMember defaultMember) {
         // 일,다수 넣고
         // 다수에 다 1개 집어넣던지
-        defaultMember.getUserAuthorities().forEach(userAuthority -> System.out.println("userAuthority.getUserId() = " + userAuthority.getUserId()));
+
         defaultMember.getUserAuthorities().forEach(userAuthority -> userAuthority.setUserId(defaultMember));
         List<String> userAuthorityNames = defaultMember.getUserAuthorities().stream().map(UserAuthority::getAuthority).map(Authority::getAuthorityName)
                 .collect(Collectors.toList());
+        defaultMember.getUserAuthorities().forEach(userAuthority -> System.out.println("userAuthority.getUserId() = " + userAuthority.getUserId()));
         for(String authorityName : userAuthorityNames) {
             if(authorityName.equals(RoleStatus.ROLE_SITE_USER.name())) {
                 siteMemberRepository.save((SiteMember) defaultMember);

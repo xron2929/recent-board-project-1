@@ -3,7 +3,7 @@ package com.example.demo.api;
 
 import com.example.demo.board.BoardService;
 import com.example.demo.comment.CommentService;
-import com.example.demo.entityjoin.CommentSaveViewDto;
+import com.example.demo.entityjoin.ParentCommentSaveViewDto;
 import com.example.demo.user.UserJoinRepository;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,10 +29,10 @@ public class CommentApiController {
     @ApiOperation("해당 boardId에 댓글 등록")
     @ResponseBody
     public String addComment(@RequestParam Long boardId, @PathVariable Long pathComment) throws Exception {
-        List<CommentSaveViewDto> commentSaveViewDtos = new ArrayList<>();
+        List<ParentCommentSaveViewDto> parentCommentSaveViewDtos = new ArrayList<>();
         for (int i = 0; i < pathComment; i++) {
-            CommentSaveViewDto commentReadViewDto =
-                    CommentSaveViewDto.builder()
+            ParentCommentSaveViewDto commentReadViewDto =
+                    ParentCommentSaveViewDto.builder()
                             .nickname("sdf")
                             .boardId(boardId)
                             .userId(UUID.randomUUID().toString())
@@ -40,30 +40,30 @@ public class CommentApiController {
                             .content("랜덤으로 생성").build();
 
             //commentService.saveParentComment(commentReadViewDto);
-            commentSaveViewDtos.add(commentReadViewDto);
+            parentCommentSaveViewDtos.add(commentReadViewDto);
         }
-        commentService.saveParentComments(commentSaveViewDtos);
+        commentService.saveParentComments(parentCommentSaveViewDtos);
         return "ok";
     }
     @GetMapping("/make/comment/divide/{pathComment}")
     @ApiOperation("모든 BoardId에 parentComment 갯수만큼 나눠서 등록")
     @ResponseBody
     public String addComment(@PathVariable Long pathComment) throws Exception {
-        List<CommentSaveViewDto> commentSaveViewDtos = new ArrayList<>();
+        List<ParentCommentSaveViewDto> parentCommentSaveViewDtos = new ArrayList<>();
         Long boardCount = boardService.findBoardOnlyCount();
         for (int i = 0; i < pathComment; i++) {
             long boardId = (i % boardCount)+1l;
-            CommentSaveViewDto commentReadViewDto =
-                    CommentSaveViewDto.builder()
+            ParentCommentSaveViewDto commentReadViewDto =
+                    ParentCommentSaveViewDto.builder()
                             .nickname("sdf")
                             .boardId(boardId)
                             .userId(UUID.randomUUID().toString())
                             .password("sdf")
                             .content("랜덤으로 생성").build();
             //commentService.saveParentComment(commentReadViewDto);
-            commentSaveViewDtos.add(commentReadViewDto);
+            parentCommentSaveViewDtos.add(commentReadViewDto);
         }
-        commentService.saveParentComments(commentSaveViewDtos);
+        commentService.saveParentComments(parentCommentSaveViewDtos);
         return "ok";
     }
 }

@@ -56,8 +56,8 @@ public class DefaultMember implements Serializable {
     @BatchSize(size = 1000)
     protected List<Board> boards = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member")
-    protected List<ParentComment> Comments = new ArrayList<>();
+    // @OneToMany(mappedBy = "member")
+    // protected List<ParentComment> Comments = new ArrayList<>();
 
 
 

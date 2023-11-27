@@ -1,6 +1,7 @@
 package com.example.demo.entityjoin;
 
 import com.example.demo.board.QBoard;
+
 import com.example.demo.user.MemberBoardQueryDTO;
 import com.example.demo.user.UserIdAndPasswordDto;
 import com.example.demo.user.defaultuser.QDefaultMember;
@@ -12,10 +13,13 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.xml.stream.events.Comment;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.demo.board.QBoard.board;
-import static com.example.demo.comment.QParentComment.parentComment;
+
+
 import static com.example.demo.user.defaultuser.QDefaultMember.defaultMember;
 import static com.example.demo.user.noneuser.QNoneMember.noneMember;
 import static com.example.demo.userAuthority.QUserAuthority.userAuthority;
@@ -35,6 +39,7 @@ insert는 해당 컬럼의 보조컬럼들까지 업데이트 하는 거라 생�
 public class JoinDslRepository {
     @PersistenceContext
     private EntityManager em;
+
     public List<MemberBoardQueryDTO>findByUserIds(Long startId,Long boardQuantity) {
         JPAQueryFactory queryFactory = new JPAQueryFactory(em);
         return queryFactory.select(Projections.constructor(MemberBoardQueryDTO.class,
@@ -144,10 +149,10 @@ public class JoinDslRepository {
         return queryFactory
                 .select(Projections.constructor(NoneUserUuidANdTitleAndPasswordDto.class, defaultMember.userId,
                         board.title,
-                        noneMember.userId
-                        ,noneMember.password))
+                        defaultMember.userId
+                        ,defaultMember.password))
                 .from(board)
-                .leftJoin(noneMember).on(board.member.id.eq(noneMember.id))
+                .leftJoin(defaultMember).on(board.member.id.eq(defaultMember.id))
                 .where(board.id.eq(id))
                 .fetchOne();
     }
@@ -162,16 +167,31 @@ public class JoinDslRepository {
                 .where(board.id.eq(boardId).and(board.isSecret.eq(false)))
                 .fetchOne();
     }
+/*
+    public List<AllCommentReadDataDto> findByIdsSubQueryParentComment(List<Long> commentId) {
+        commentId.forEach(comment -> System.out.println("comment = " + comment));
 
-    public List<CommentReadDataDto> findByIdsSubQueryParentComment(List<Long> commentId) {
-        commentId.forEach(comment-> System.out.println("comment = " + comment));
         JPAQueryFactory queryFactory = new JPAQueryFactory(em);
-        return queryFactory.select(Projections.constructor(CommentReadDataDto.class,
-                        parentComment.member.nickname,parentComment.content,parentComment.member.nickname))
+
+
+        List<CommentReadDataDto> ChildCommentReadDataDtos = queryFactory.select(Projections.constructor(CommentReadDataDto.class,
+                        parentComment.member.userId, parentComment.content, parentComment.member.nickname
+                ))
                 .from(parentComment)
-                .leftJoin(parentComment.member, QDefaultMember.defaultMember)
+                .leftJoin(parentComment.member, defaultMember)
                 .where(parentComment.id.in(commentId))
                 .fetch();
+        List<CommentReadDataDto> ParentcommentReadDataDtos = queryFactory.select(Projections.constructor(CommentReadDataDto.class,
+                        childComment.member.userId, childComment.content, childComment.member.nickname
+                ))
+                .from(parentComment)
+                .leftJoin(parentComment.member, defaultMember)
+                .leftJoin(parentComment.childComments, childComment)
+                .leftJoin(childComment.member, defaultMember)
+                .where(parentComment.id.in(commentId))
+                .fetch();
+        List<AllCommentReadDataDto> allCommentReadDataDtos = new ArrayList<>();
+        return null;
     }
     public List<CommentReadDataDto> readTenParentComment2(Long startId,Long boardId) {
         JPAQueryFactory queryFactory = new JPAQueryFactory(em);
@@ -197,5 +217,5 @@ public class JoinDslRepository {
                 .fetch();
 
     }
-
+*/
 }

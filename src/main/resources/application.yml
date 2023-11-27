@@ -3,11 +3,14 @@
 spring:
   data:
     mongodb:
+      test:
+        connectionString: mongodb://svc.sel3.cloudtype.app:32690/test?authSource=admin
       authentication-database: admin
-      # uri : mongodb://svc.sel3.cloudtype.app:31273
+      # uri : svc.sel3.cloudtype.app:32690
+      #
       host: svc.sel3.cloudtype.app
-      port: 31273
-      username: root
+      port: 32690
+      username: admin
       password: 1234
       database: test
   batch:

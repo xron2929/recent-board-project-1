@@ -10,6 +10,8 @@ import com.example.demo.board.BoardService;
 import com.example.demo.cookie.CookieManager;
 import com.example.demo.gender.Gender;
 import com.example.demo.image.AmazonS3Config;
+import com.example.demo.mongo.ChildCommentService;
+import com.example.demo.mongo.ParentCommentService;
 import com.example.demo.role.RoleStatus;
 import com.example.demo.security.SecurityConfig;
 import com.example.demo.security.authentication.AuthenticationConfig;
@@ -31,6 +33,8 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.event.EventListener;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.data.mongodb.config.EnableMongoAuditing;
+import org.springframework.data.mongodb.config.EnableReactiveMongoAuditing;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -68,10 +72,16 @@ public class Demo4Application {
     @Autowired
     AlarmService alarmService;
     @Autowired
+    ParentCommentService parentCommentService;
+    @Autowired
+    ChildCommentService childCommentService;
+    @Autowired
     AdditionalInformationRedisTemplate redisTemplate;
 
     @EventListener(ApplicationReadyEvent.class)
     void saveAdmin() {
+         parentCommentService.dropCollection();
+         childCommentService.dropCollection();
         Authority authority = new Authority(RoleStatus.ROLE_ANONYMOUS.name());
         Authority authority2 = new Authority(RoleStatus.ROLE_ADMIN.name());
         Authority authority3 = new Authority(RoleStatus.ROLE_SITE_USER.name());

@@ -38,8 +38,8 @@ public class Board extends BaseTimeEntity {
     @JoinColumn(name="member_id")
     private DefaultMember member;
     // 저자
-    @OneToMany(mappedBy = "board",orphanRemoval = true,cascade = CascadeType.REMOVE)
-    private List<ParentComment> comments = new ArrayList<>();
+    // @OneToMany(mappedBy = "board",orphanRemoval = true,cascade = CascadeType.REMOVE)
+    // private List<ParentComment> comments = new ArrayList<>();
     // 게시글 하나가 덧글을 가져오지만 덧글은 게시글을 가져오지 않음
     @OneToMany(mappedBy = "board",orphanRemoval = true,cascade = CascadeType.REMOVE)
     private List<ImageStore> images = new ArrayList<>();

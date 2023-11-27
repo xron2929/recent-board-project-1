@@ -3,13 +3,15 @@
 spring:
   data:
     mongodb:
-      authentication-database: admin
-      # uri : mongodb://svc.sel3.cloudtype.app:31273
-      host: svc.sel3.cloudtype.app
-      port: 31273
-      username: root
-      password: 1234
-      database: test
+        test:
+          connectionString: mongodb://svc.sel3.cloudtype.app:32690/test?authSource=admin
+        authentication-database: admin
+      # uri : mongodb://svc.sel3.cloudtype.app:32690
+        host: svc.sel3.cloudtype.app
+        port: 32690
+        username: admin
+        password: 1234
+        database: test
   batch:
     jdbc:
       initialize-schema: always
