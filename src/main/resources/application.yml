@@ -103,7 +103,7 @@ jwt:
   secretkey: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK
 logging.level:
   org.hibernate.SQL: debug
-redirect-url: ${SERVER_URL}/oauth2/authorization/
+redirect-url: ${SERVER_URL}oauth2/authorization/
 
 cloud:
   aws:

@@ -58,7 +58,7 @@
             }
 
             transData.value = trans.value;
-            alert("transData.value = "+transData.value);
+            // alert("transData.value = "+transData.value);
             addSession.submit();
         })
 
@@ -87,7 +87,7 @@
         return fetch(url,param).then(function(response) {
             return response.text();
         }).then(function (response) {
-            alert(response)
+            // alert(response)
             if (response !== "ok") {
                 return false;
             }
