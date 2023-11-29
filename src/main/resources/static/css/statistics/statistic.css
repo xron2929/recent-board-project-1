@@ -129,6 +129,7 @@ section {
 #boardWriteLineChart {
     width: 30vw;
     height: 50vh;
+    margin-top:70px;
 }
 
 .inline {
