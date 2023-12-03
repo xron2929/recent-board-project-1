@@ -14,7 +14,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import static com.example.demo.board.QBoard.board;
-import static com.example.demo.userAuthority.QUserAuthority.userAuthority;
+
 @Repository
 public class BoardDslRepository {
     @PersistenceContext

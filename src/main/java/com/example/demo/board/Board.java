@@ -2,17 +2,14 @@ package com.example.demo.board;
 
 
 import com.example.demo.baseTime.BaseTimeEntity;
-import com.example.demo.comment.ParentComment;
-import com.example.demo.image.ImageStore;
+import com.example.demo.board.image.ImageStore;
 import com.example.demo.user.defaultuser.DefaultMember;
 import lombok.*;
 import org.hibernate.annotations.BatchSize;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Getter

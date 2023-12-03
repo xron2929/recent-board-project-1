@@ -1,7 +1,7 @@
 package com.example.demo.board;
 
-import com.example.demo.cookie.CookieManager;
-import com.example.demo.entityjoin.NoneUserBoardSaveDataDto;
+import com.example.demo.util.cookie.CookieManager;
+import com.example.demo.boradAndUser.NoneUserBoardSaveDataDto;
 import com.example.demo.role.RoleStatus;
 import com.example.demo.security.authentication.AuthenticationManager;
 import com.example.demo.security.jwt.JwtManager;

@@ -6,7 +6,7 @@ import com.example.demo.board.BoardService;
 import com.example.demo.entityjoin.ChildCommentSaveViewDto;
 import com.example.demo.entityjoin.ParentCommentSaveViewDto;
 import com.example.demo.entityjoin.UserAndBoardAndParentCommentDto;
-import com.example.demo.entityjoin.UserAndBoardDto;
+import com.example.demo.boradAndUser.UserAndBoardDto;
 import com.example.demo.user.UserService;
 import com.example.demo.user.defaultuser.DefaultMember;
 import org.bson.types.ObjectId;

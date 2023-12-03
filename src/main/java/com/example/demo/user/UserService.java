@@ -1,8 +1,10 @@
 package com.example.demo.user;
 
 
+import com.example.demo.boradAndUser.MemberBoardQueryDTO;
+import com.example.demo.boradAndUser.UserJoinRepository;
 import com.example.demo.role.RoleStatus;
-import com.example.demo.authority.Authority;
+import com.example.demo.user.authority.Authority;
 import com.example.demo.board.BoardDslRepository;
 import com.example.demo.user.defaultuser.DefaultMember;
 import com.example.demo.user.defaultuser.UserRepository;
@@ -10,31 +12,27 @@ import com.example.demo.user.noneuser.NoneMember;
 import com.example.demo.user.noneuser.NoneMemberRepository;
 import com.example.demo.user.oauthuser.OauthMember;
 import com.example.demo.user.oauthuser.OauthMemberRepository;
-import com.example.demo.user.oauthuser.OauthUserDslRepository;
 import com.example.demo.user.siteuser.SiteMember;
 import com.example.demo.user.siteuser.SiteMemberRepository;
-import com.example.demo.userAuthority.UserAuthorityRepository;
-import com.example.demo.entityjoin.JoinDslRepository;
-import com.example.demo.userAuthority.UserAuthority;
+import com.example.demo.user.userAuthority.UserAuthorityRepository;
+import com.example.demo.user.userAuthority.UserAuthority;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 @EnableCaching
 @Transactional
 public class UserService {
-
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    UserJoinRepository userJoinRepository;
     @Autowired
     SiteMemberRepository siteMemberRepository;
     @Autowired
@@ -44,12 +42,8 @@ public class UserService {
     @Autowired
     UserAuthorityRepository userAuthorityRepository;
     @Autowired
-    OauthUserDslRepository oauthUserDslRepository;
+    UserDslRepository userDslRepository;
 
-    @Autowired
-    UserJoinRepository userJoinRepository;
-    @Autowired
-    JoinDslRepository userAndBoardDslRepository;
     @Autowired
     BoardDslRepository boardJpaRepository;
     @Autowired
@@ -61,14 +55,14 @@ public class UserService {
     public DefaultMember createUser(DefaultMember user) {
         return userRepository.save(user);
     }
-    // 이거 변경이 자주 안 일어나면 User 캐시로 달아야 하는데 달지는 않게 될듯
+
     @Transactional(readOnly = true)
     public DefaultMember findByUserIdEager(String userId) {
-        return userJoinRepository.findBymember(userId);
+        return userDslRepository.findBymember(userId);
     }
     public DefaultMember findUserByUserId(String userId) {
         System.out.println("findUserByUserId - userId = " + userId);
-        DefaultMember user = userJoinRepository.findByDefaultMember(userId);
+        DefaultMember user = userDslRepository.findByDefaultMember(userId);
         System.out.println("user = " + user);
         // System.out.println("  ???sdf " );
         if(user != null) {
@@ -110,8 +104,8 @@ public class UserService {
         if(userRepository.findByUserId(userId) == null) return false;
         return true;
     }
-    public List<MemberBoardQueryDTO> findBoards(long startBoardId,long boardQuantity) {
-        List<MemberBoardQueryDTO> findBoards = userAndBoardDslRepository.findByUserIds(startBoardId,boardQuantity);
+    public List<MemberBoardQueryDTO> findBoards(long startBoardId, long boardQuantity) {
+         List<MemberBoardQueryDTO> findBoards = userJoinRepository.findByUserIds(startBoardId,boardQuantity);
         return findBoards;
     }
     public DefaultMember saveUser(DefaultMember user) {
@@ -125,10 +119,10 @@ public class UserService {
         System.out.println("Userservice.updateUser - user.getId()  = " + user.getId());
         System.out.println("Userservice.updateUser - user.getUserId() = " + user.getUserId());
         System.out.println("Userservice.updateUser - user.getPassword() = " + user.getPassword());
-        userJoinRepository.saveMember(user.getId(),user.getUserId(),user.getPassword());
+        userDslRepository.saveMember(user.getId(),user.getUserId(),user.getPassword());
     }
     public boolean isAdmin(String userId) {
-        if(userJoinRepository.getAdminCount(userId)>0) {
+        if(userDslRepository.getAdminCount(userId)>0) {
             System.out.println("isAdmin - success");
             return true;
         }
@@ -136,16 +130,10 @@ public class UserService {
         return false;
     }
     public String findPassword(String userId) {
-        return userJoinRepository.findPassword(userId);
-    }
-    public boolean isExistenceUserIdOrEmailOrPhoneNumber(String userId, String email, String phoneNumber) {
-        if(oauthUserDslRepository.getUserIdOrEmailOrPhoneNumber(userId,email,phoneNumber)>0) {
-            return true;
-        }
-        return false;
+        return userDslRepository.findPassword(userId);
     }
     public String findByPhoneNumberOrNickname(String phoneNumber,String nickname) {
-        List<String> duplicatePhoneNumberAndNicknameResults = userJoinRepository.findByPhoneNumberOrNickname(phoneNumber, nickname);
+        List<String> duplicatePhoneNumberAndNicknameResults = userDslRepository.findByPhoneNumberOrNickname(phoneNumber, nickname);
 
         for (String duplicatePhoneNumberAndNicknameResult:duplicatePhoneNumberAndNicknameResults) {
             if (!duplicatePhoneNumberAndNicknameResult.equals(null) && !duplicatePhoneNumberAndNicknameResult.isBlank()) {
@@ -156,9 +144,12 @@ public class UserService {
         return null;
     }
     public String findUserIdByEmail(String email) {
-        return userJoinRepository.findUserIdByEmail(email);
+        return userDslRepository.findUserIdByEmail(email);
     }
     public void changeUserPasswordByEmailAndUserId(String changePassword,String email,String userId) {
-        userJoinRepository.changeUserPasswordByEmailAndUserId(passwordEncoder.encode(changePassword),email,userId);
+        userDslRepository.changeUserPasswordByEmailAndUserId(passwordEncoder.encode(changePassword),email,userId);
+    }
+    public SiteMember findBySiteMemberId(String memberId) {
+        return userDslRepository.findBySiteMemberId(memberId);
     }
 }

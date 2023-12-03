@@ -1,17 +1,18 @@
 package com.example.demo.comment;
 
 
-import com.example.demo.authority.Authority;
+import com.example.demo.boradAndUser.UserAndBoardDto;
+import com.example.demo.user.authority.Authority;
 import com.example.demo.board.Board;
 import com.example.demo.board.BoardService;
-import com.example.demo.cookie.CookieManager;
+import com.example.demo.util.cookie.CookieManager;
 import com.example.demo.entityjoin.*;
-import com.example.demo.request.RequestIpApi;
+import com.example.demo.util.request.RequestIpApi;
 import com.example.demo.role.RoleStatus;
 import com.example.demo.user.UserService;
 import com.example.demo.user.defaultuser.DefaultMember;
 import com.example.demo.user.noneuser.NoneMember;
-import com.example.demo.userAuthority.UserAuthority;
+import com.example.demo.user.userAuthority.UserAuthority;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -99,7 +100,6 @@ public class CommentController {
         System.out.println("content = " + noneUserParentCommentDto.getContent());
         List<UserAuthority> userAuthorities = new ArrayList<>();
         userAuthorities.add(new UserAuthority(new Authority(RoleStatus.ROLE_ANONYMOUS.name())));
-        RequestIpApi requestIpApi = new RequestIpApi();
         CookieManager cookieManager = new CookieManager();
         NoneMember user = NoneMember.builder()
                 .nickname(noneUserParentCommentDto.getNickname())

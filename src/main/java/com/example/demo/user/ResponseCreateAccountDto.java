@@ -1,8 +1,8 @@
 package com.example.demo.user;
 
 
-import com.example.demo.authority.Authority;
-import com.example.demo.userAuthority.UserAuthority;
+import com.example.demo.user.authority.Authority;
+import com.example.demo.user.userAuthority.UserAuthority;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

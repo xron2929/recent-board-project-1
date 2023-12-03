@@ -1,10 +1,10 @@
 package com.example.demo.exception;
 
 import com.example.demo.board.FirstBoardException;
-import com.example.demo.join.IsNotExistenceEmailContentException;
-import com.example.demo.join.SpecialSymbolException;
-import com.example.demo.join.IsNotEqualEmailException;
-import com.example.demo.join.isExistenceUserDataException;
+import com.example.demo.user.join.IsNotExistenceEmailContentException;
+import com.example.demo.user.join.SpecialSymbolException;
+import com.example.demo.user.join.IsNotEqualEmailException;
+import com.example.demo.user.join.isExistenceUserDataException;
 import com.example.demo.statistics.ConvertNameException;
 import com.example.demo.statistics.TimerException;
 import org.springframework.http.HttpStatus;

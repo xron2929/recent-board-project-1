@@ -1,7 +1,8 @@
 package com.example.demo.comment;
 
 
-import com.example.demo.cookie.CookieManager;
+import com.example.demo.boradAndUser.UserAndBoardDto;
+import com.example.demo.util.cookie.CookieManager;
 import com.example.demo.entityjoin.*;
 import com.example.demo.mongo.ChildCommentService;
 import com.example.demo.mongo.ParentCommentService;

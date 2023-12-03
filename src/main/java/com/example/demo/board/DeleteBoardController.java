@@ -1,9 +1,8 @@
 package com.example.demo.board;
 
 import com.example.demo.role.RoleStatus;
-import com.example.demo.image.ImageService;
-import com.example.demo.entityjoin.DeleteBoardDto;
-import com.example.demo.entityjoin.NoneUserBoardSaveDataDto;
+import com.example.demo.board.image.ImageService;
+import com.example.demo.boradAndUser.NoneUserBoardSaveDataDto;
 import com.example.demo.security.authentication.AuthenticationManager;
 import com.example.demo.security.jwt.JwtManager;
 import com.example.demo.security.jwt.UserRequestDto;

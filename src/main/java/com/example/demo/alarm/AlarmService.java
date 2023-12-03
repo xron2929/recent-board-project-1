@@ -1,5 +1,7 @@
 package com.example.demo.alarm;
 
+import com.example.demo.util.BoardCalculator;
+import com.example.demo.util.BoardQueryDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -50,17 +52,8 @@ public class AlarmService {
     public Long getAlarmSize(String userId) {
         return redisTemplate.getSize(userId);
     }
+
     public List<Alarm> findAlarmData(Pageable pageable, String boardWriterId) {
-        System.out.println("pageable.getPageSize() = " + pageable.getPageSize());
-        System.out.println("pageable.getPageSize() = " + pageable.getPageNumber());
-        BoardCalculator boardCalculator = new BoardCalculator();
-        BoardQueryDto boardQueryDto = new
-                BoardQueryDto(pageable.getPageNumber(),pageable.getPageSize());
-        BoardQueryDto calculate = boardCalculator.calculate(boardQueryDto);
-        Long startBoardQuantity = calculate.getStartBoardQuantity();
-        System.out.println("startBoardQuantity = " + startBoardQuantity);
-        System.out.println("boardWriterId = " + boardWriterId);
-        System.out.println("pageable.getPageNumber()*pageable.getPageSize() = " + pageable.getPageNumber()*pageable.getPageSize());
         List<Alarm> alarms = redisTemplate.getAlarms(pageable.getPageSize() * pageable.getPageNumber(), ((pageable.getPageNumber()+1) * pageable.getPageSize()-1), boardWriterId);
         return alarms;
     }

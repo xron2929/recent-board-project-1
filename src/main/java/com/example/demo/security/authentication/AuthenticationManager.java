@@ -1,16 +1,14 @@
 package com.example.demo.security.authentication;
 
-import com.example.demo.cookie.CookieManager;
+import com.example.demo.util.cookie.CookieManager;
 import com.example.demo.security.jwt.JwtManager;
 import com.example.demo.security.jwt.UserRequestDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j

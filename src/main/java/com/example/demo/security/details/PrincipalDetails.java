@@ -1,9 +1,9 @@
 package com.example.demo.security.details;
 
 
-import com.example.demo.authority.Authority;
+import com.example.demo.user.authority.Authority;
 import com.example.demo.user.defaultuser.DefaultMember;
-import com.example.demo.userAuthority.UserAuthority;
+import com.example.demo.user.userAuthority.UserAuthority;
 import lombok.Data;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
