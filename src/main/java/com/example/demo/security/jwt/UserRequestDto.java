@@ -1,15 +1,12 @@
 package com.example.demo.security.jwt;
 
 
-import com.example.demo.gender.Gender;
+import com.example.demo.user.gender.Gender;
 import com.example.demo.user.siteuser.SiteMember;
-import com.example.demo.userAuthority.UserAuthority;
+import com.example.demo.user.userAuthority.UserAuthority;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
 import java.util.List;
 

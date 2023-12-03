@@ -14,10 +14,12 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.demo.authority.QAuthority.authority;
+
 import static com.example.demo.board.QBoard.board;
+import static com.example.demo.user.authority.QAuthority.authority;
 import static com.example.demo.user.defaultuser.QDefaultMember.defaultMember;
-import static com.example.demo.userAuthority.QUserAuthority.userAuthority;
+import static com.example.demo.user.userAuthority.QUserAuthority.userAuthority;
+
 
 @Repository
 public class StatisticRepository {

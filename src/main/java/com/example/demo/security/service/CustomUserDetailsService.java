@@ -6,9 +6,9 @@ import com.example.demo.security.jwt.JwtManager;
 import com.example.demo.security.jwt.UserRequestDto;
 import com.example.demo.user.defaultuser.DefaultMember;
 import com.example.demo.user.siteuser.SiteMember;
-import com.example.demo.user.UserJoinRepository;
+import com.example.demo.boradAndUser.UserJoinRepository;
 import com.example.demo.user.UserService;
-import com.example.demo.userAuthority.UserAuthority;
+import com.example.demo.user.userAuthority.UserAuthority;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +30,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Slf4j
 public class CustomUserDetailsService implements UserDetailsService {
+    @Autowired
     private final UserService userService;
     @Autowired
     JwtManager jwtManager;
@@ -39,12 +40,13 @@ public class CustomUserDetailsService implements UserDetailsService {
     HttpServletResponse response;
     @Autowired
     UserJoinRepository userJoinRepository;
+
     @Override
     @Transactional
     public UserDetails loadUserByUsername(final String username) {
         System.out.println(" ??? username =" + username);
         log.info("load");
-        SiteMember user = userJoinRepository.findBySiteMemberId(username);
+        SiteMember user = userService.findBySiteMemberId(username);
         System.out.println("CustomUserDetailsService - loadUserByUsername: user.getPhoneNumber() = " + user.getPhoneNumber());
         System.out.println("CustomUserDetailsService - loadUserByUsername: user.getEmail() = " + user.getEmail());
 

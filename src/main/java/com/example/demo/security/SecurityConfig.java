@@ -1,10 +1,8 @@
 package com.example.demo.security;
 
 
-import com.example.demo.cookie.CookieManager;
-import com.example.demo.security.cors.CrossOriginConfig;
+import com.example.demo.util.cookie.CookieManager;
 import com.example.demo.security.jwt.JwtManager;
-import com.example.demo.security.service.CustomUserDetailsService;
 import com.example.demo.security.service.PrincipalOauth2UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,31 +11,22 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
-import org.springframework.security.config.annotation.web.configurers.CorsConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.firewall.HttpStatusRequestRejectedHandler;
 import org.springframework.security.web.firewall.RequestRejectedHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.CorsUtils;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -98,6 +87,7 @@ public class SecurityConfig {
                 .mvcMatchers("/*","/","/**","/first/oauth/join/**","/facebook/check/**", "/test/**","/add/session/*","/add/session/**","/login/**","/login_proc/**","/members/**", "/item/**",  "/users/**","/facebook/api/**","/**").permitAll()
                 // /**하면 다 허용되니까 /*으로 뒤에 파라미터 들어가는 것만 허용함
                 .mvcMatchers("/admin/**").hasRole("ADMIN")
+
                 .anyRequest()
                 // .authenticated();
                 .permitAll();

@@ -1,8 +1,8 @@
 package com.example.demo.security.jwt;
 
-import com.example.demo.authority.Authority;
-import com.example.demo.cookie.CookieManager;
-import com.example.demo.userAuthority.UserAuthority;
+import com.example.demo.user.authority.Authority;
+import com.example.demo.util.cookie.CookieManager;
+import com.example.demo.user.userAuthority.UserAuthority;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
@@ -151,16 +151,16 @@ public class JwtManager {
         // UserRequestDto userRequestDto = claims.get("userRequestDto", UserRequestDto.class);
         return remainingSeconds;
     }
-    public TokenStatus validation(String refreshToken) throws JsonProcessingException {
-        System.out.println("JwtManager - validation refreshToken " + refreshToken);
-        if(refreshToken == null) {
+    public TokenStatus validation(String token) throws JsonProcessingException {
+        System.out.println("JwtManager - validation token " + token);
+        if(token == null) {
             return TokenStatus.NONE;
         }
         try{
-            if(refreshToken.isBlank()) {
+            if(token.isBlank()) {
                 throw new IllegalArgumentException("토큰이 잘못되었습니다");
             }
-            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(refreshToken);
+            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return TokenStatus.TIME_SAFE;
             // 컨트롤러에서 처리하는게 나을 것 같아서 나중에 리팩토링
         }  catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {

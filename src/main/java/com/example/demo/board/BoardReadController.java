@@ -1,9 +1,9 @@
 package com.example.demo.board;
 
 
+import com.example.demo.boradAndUser.MemberBoardQueryDTO;
 import com.example.demo.role.RoleStatus;
-import com.example.demo.entityjoin.BoardResponseDslDto;
-import com.example.demo.entityjoin.BoardResponseDto;
+import com.example.demo.boradAndUser.BoardResponseDto;
 import com.example.demo.feedback.FeedBackCount;
 import com.example.demo.feedback.FeedBackCountService;
 import com.example.demo.feedback.JoinStatus;
@@ -12,21 +12,29 @@ import com.example.demo.security.jwt.JwtManager;
 import com.example.demo.security.jwt.TokenStatus;
 import com.example.demo.security.jwt.UserRequestDto;
 import com.example.demo.user.UserIdAndPasswordDto;
+import com.example.demo.user.UserService;
+import com.example.demo.util.BoardCalculator;
+import com.example.demo.util.BoardQueryDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
 public class BoardReadController {
+    @Autowired
+    UserService userService;
     @Autowired
     BoardService boardService;
     @Autowired
@@ -39,6 +47,8 @@ public class BoardReadController {
     PasswordEncoder bCryptPasswordEncoder;
     @Autowired
     FeedBackCountService feedBackCountApi;
+    @Value("${server.domain.url}")
+    private String serverDomainUrl;
     @GetMapping("/boards/{boardId}")
     @ApiOperation("board 뷰 반환")
     // @ResponseBody
@@ -128,12 +138,6 @@ public class BoardReadController {
         if(userAuthority.equals(RoleStatus.ROLE_OAUTH_USER.name())) {
             UserIdAndPasswordDto userIdAndPassword = boardService.findUserIdAndPassword(boardId);
             UserRequestDto userRequestDto = jwtManager.getUserRequestDto(accessToken);
-            System.out.println("READCONTROLLER-BUG2");
-            System.out.println("ReadController - userId = " + userRequestDto.getUserId());
-            System.out.println("ReadController - board.getUserId() = " + userIdAndPassword.getUserId());
-            System.out.println("userIdAndPassword.getPassword() = " + userIdAndPassword.getPassword());
-            System.out.println("userRequestDto.getPassword() = " + userRequestDto.getPassword());
-            System.out.println("userRequestDto.getUserId().equals(userIdAndPassword.getUserId()) = " + userRequestDto.getUserId().equals(userIdAndPassword.getUserId()));
             if(isEqaulUserNameAndPassword(userIdAndPassword,userRequestDto)) {
                 System.out.println("ReadController -  같은 사용자 " );
                 return "ok";
@@ -141,6 +145,33 @@ public class BoardReadController {
         }
         return "다른 사용자";
     }
+
+    @GetMapping
+    @ApiOperation("루트 뷰(게시판 목록들이 포함된)를 반환")
+    public String root(@RequestParam(defaultValue = "1") Long pageQuantity, @RequestParam(defaultValue = "20") Long boardQuantity, Model model) {
+        model.addAttribute("serverDomainUrl", serverDomainUrl);
+
+
+        model.addAttribute("jsDomainUrl", serverDomainUrl+"/js/boards/un-search/un-search-script.js");
+        model.addAttribute("searchDomainUrl", serverDomainUrl+"/board/search");
+        model.addAttribute("naverDomainUrl", serverDomainUrl+"/oauth2/authorization/naver");
+
+        return "boards/un-search/un-search";
+    }
+
+    @GetMapping("/boards")
+    @ApiOperation("pageQuantity, boardQuantity 바탕으로 boards 데이터 목록을 반환")
+    @ResponseBody
+    public List<MemberBoardQueryDTO> getBoardQueryDtos(@RequestParam(defaultValue="1") int pageQuantity, @RequestParam(defaultValue="20") int boardQuantity) {
+
+
+        BoardCalculator boardCalculator = new BoardCalculator();
+        BoardQueryDto boardQueryDto = boardCalculator.calculate(pageQuantity,boardQuantity);
+        System.out.println("boardQueryDto = " + boardQueryDto);
+        List<MemberBoardQueryDTO> boards = userService.findBoards(boardQueryDto.getStartBoardQuantity(),boardQueryDto.getBoardQuantity());
+        return boards;
+    }
+
     private boolean isEqaulUserNameAndPassword(UserIdAndPasswordDto userIdAndPasswordDto, UserRequestDto userRequestDto) {
         if(!bCryptPasswordEncoder.matches("겟인데요",userRequestDto.getPassword())) {
             System.out.println("error1");

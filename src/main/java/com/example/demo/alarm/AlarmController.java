@@ -1,18 +1,20 @@
 package com.example.demo.alarm;
 
 import com.example.demo.board.BoardService;
-import com.example.demo.cookie.CookieManager;
+import com.example.demo.util.UserIdAndValidationDtoAndAccessToken;
+import com.example.demo.util.UserManager;
+import com.example.demo.util.ValidationStatus;
+import com.example.demo.util.cookie.CookieManager;
 import com.example.demo.entityjoin.NoneUserUuidANdTitleAndPasswordDto;
-import com.example.demo.entityjoin.TitleAndUserIdDto;
+import com.example.demo.boradAndUser.TitleAndUserIdDto;
 import com.example.demo.security.jwt.JwtManager;
-import com.example.demo.security.jwt.UserRequestDto;
 import com.example.demo.user.UserService;
+import com.example.demo.util.PageDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,7 +33,7 @@ public class AlarmController {
     @Autowired
     NoneUserAlarmService noneUserAlarmService;
     @Autowired
-    PasswordEncoder passwordEncoder;
+    UserManager userManager;
     @GetMapping("/alarm")
     @ApiOperation("alarm 뷰 반환")
     public String getAlarmView(@RequestParam(defaultValue = "0") Long page) {
@@ -42,29 +44,15 @@ public class AlarmController {
     @ApiOperation("해당 id의 alarm 목록 찾기")
     @ResponseBody
     public List<Alarm> getData(HttpServletRequest request, @PathVariable int page) throws JsonProcessingException {
-        String userId = null;
-        String password = null;
+        UserIdAndValidationDtoAndAccessToken userIdAndValidationDtoAndAccessToken = userManager.getUserIdAndValidationDtoAndAccessToken(request);
+        String dbPassword = null;
+        if(userIdAndValidationDtoAndAccessToken.getValidationStatus()!= ValidationStatus.NONE_USER_ACCOUNT) {
+            dbPassword = userService.findPassword(userIdAndValidationDtoAndAccessToken.getUserId());
+        }
+        UserIdAndValidationDtoAndAccessToken userAccountStatus = userManager.getUserAccountStatus(request, userIdAndValidationDtoAndAccessToken, dbPassword);
         Pageable pageable = PageRequest.of(page-1, 10);
-        String accessToken = jwtManager.getAccessToken(request);
-        if(accessToken == null) {
-            userId = cookieManager.getUUidCookie(request);
-            return alarmService.findAlarmData(pageable, userId);
-        }
-        UserRequestDto userRequestDto = jwtManager.getUserRequestDto(accessToken);
-        userId = userRequestDto.getUserId();
-        password = userRequestDto.getPassword();
-        System.out.println("AlarmController - userId = " + userId);
-        System.out.println("AlarmController - password = " + password);
-
-        // password가 상황마다 달라서 다른 방법 써야됨
-        if(passwordEncoder.matches("겟인데요",userRequestDto.getPassword())) {
-            System.out.println("isExistUserIdAndPassword - success");
-            // offset 처리를 추가로 해야됨
-            return alarmService.findAlarmData(pageable, userId);
-        }
-        String password1 = userService.findPassword(userId);
-        if(password.equals(password1)) {
-            return alarmService.findAlarmData(pageable, userId);
+        if(userAccountStatus.getValidationStatus() != null && userAccountStatus.getValidationStatus() != ValidationStatus.ERROR_ACCOUNT) {
+            return alarmService.findAlarmData(pageable, userIdAndValidationDtoAndAccessToken.getUserId());
         }
         return null;
     }

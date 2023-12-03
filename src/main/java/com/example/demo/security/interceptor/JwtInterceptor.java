@@ -1,7 +1,7 @@
 package com.example.demo.security.interceptor;
 
 
-import com.example.demo.cookie.CookieManager;
+import com.example.demo.util.cookie.CookieManager;
 import com.example.demo.security.jwt.JwtManager;
 import com.example.demo.security.jwt.TokenStatus;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -2,8 +2,7 @@ package com.example.demo.user.defaultuser;
 
 
 import com.example.demo.board.Board;
-import com.example.demo.comment.ParentComment;
-import com.example.demo.userAuthority.UserAuthority;
+import com.example.demo.user.userAuthority.UserAuthority;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
