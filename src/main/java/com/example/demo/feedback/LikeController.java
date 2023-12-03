@@ -1,6 +1,6 @@
 package com.example.demo.feedback;
 
-import com.example.demo.request.RequestIpApi;
+import com.example.demo.util.request.RequestIpApi;
 import com.example.demo.security.jwt.JwtManager;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

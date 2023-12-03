@@ -1,7 +1,7 @@
 package com.example.demo.security.interceptor;
 
 
-import com.example.demo.cookie.CookieManager;
+import com.example.demo.util.cookie.CookieManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

@@ -2,7 +2,7 @@ package com.example.demo.comment;
 
 
 import com.example.demo.board.QBoard;
-import com.example.demo.entityjoin.CommentSaveDataDto;
+
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;

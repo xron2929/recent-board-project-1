@@ -1,19 +1,18 @@
 package com.example.demo.security.service;
 
 
-import com.example.demo.authority.Authority;
-import com.example.demo.gender.Gender;
+import com.example.demo.user.authority.Authority;
+import com.example.demo.user.UserService;
+import com.example.demo.user.gender.Gender;
 import com.example.demo.security.jwt.*;
 import com.example.demo.user.defaultuser.DefaultMember;
 import com.example.demo.user.defaultuser.UserRepository;
 import com.example.demo.user.oauthuser.OauthMember;
-import com.example.demo.user.oauthuser.OauthUserFirstJoinDto;
-import com.example.demo.userAuthority.UserAuthorityRepository;
-import com.example.demo.cookie.CookieManager;
+import com.example.demo.user.userAuthority.UserAuthorityRepository;
+import com.example.demo.util.cookie.CookieManager;
 import com.example.demo.security.details.PrincipalDetails;
 import com.example.demo.security.provider.*;
-import com.example.demo.user.*;
-import com.example.demo.userAuthority.UserAuthority;
+import com.example.demo.user.userAuthority.UserAuthority;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;

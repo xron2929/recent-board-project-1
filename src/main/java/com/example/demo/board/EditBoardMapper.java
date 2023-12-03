@@ -1,19 +1,19 @@
 package com.example.demo.board;
 
 
-import com.example.demo.api.MemberApi;
-import com.example.demo.authority.Authority;
-import com.example.demo.cookie.CookieManager;
-import com.example.demo.entityjoin.NoneUserBoardSaveDataDto;
-import com.example.demo.entityjoin.UserBoardSaveDataDto;
-import com.example.demo.request.RequestIpApi;
+import com.example.demo.user.api.UserAuthorityCheckApi;
+import com.example.demo.user.authority.Authority;
+import com.example.demo.util.cookie.CookieManager;
+import com.example.demo.boradAndUser.NoneUserBoardSaveDataDto;
+import com.example.demo.boradAndUser.UserBoardSaveDataDto;
+import com.example.demo.util.request.RequestIpApi;
 import com.example.demo.role.RoleStatus;
 import com.example.demo.security.jwt.JwtManager;
 import com.example.demo.security.jwt.UserRequestDto;
 import com.example.demo.user.UserService;
 import com.example.demo.user.defaultuser.DefaultMember;
 import com.example.demo.user.noneuser.NoneMember;
-import com.example.demo.userAuthority.UserAuthority;
+import com.example.demo.user.userAuthority.UserAuthority;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -37,7 +37,7 @@ public class EditBoardMapper {
     @Autowired
     JwtManager jwtManager;
     @Autowired
-    MemberApi memberApi;
+    UserAuthorityCheckApi adminApi;
     @Autowired
     RequestIpApi requestIpApi;
     public void setNoneUserBoardUpdateDataDto(NoneUserBoardSaveDataDto noneuserBoardSaveDataDto) {
@@ -57,7 +57,7 @@ public class EditBoardMapper {
 
         UserRequestDto userRequestDto = jwtManager.getUserRequestDto(refreshToken);
         DefaultMember userByUserId = userService.findUserByUserId(userRequestDto.getUserId());
-        boolean testData = memberApi.checkAuthority(userByUserId, userBoardSaveDataDto);
+        boolean testData = adminApi.checkAuthority(userByUserId, userBoardSaveDataDto);
         System.out.println(" EditBoardMapper - setUserBoardUpdateDataDto() testData = "+testData);
         if(testData) {
             // Member user = new Member(boardSaveDataDto.getId(),boardSaveDataDto.getAuthor(), boardSaveDataDto.getPassword());

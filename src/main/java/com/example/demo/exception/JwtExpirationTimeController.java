@@ -1,7 +1,7 @@
 package com.example.demo.exception;
 
 
-import com.example.demo.cookie.CookieManager;
+import com.example.demo.util.cookie.CookieManager;
 import com.example.demo.security.authentication.AuthenticationManager;
 import com.example.demo.security.jwt.JwtManager;
 import com.example.demo.security.jwt.RefreshTokenManager;

@@ -1,8 +1,7 @@
 package com.example.demo.user.siteuser;
 
 
-import com.example.demo.gender.Gender;
-import com.example.demo.security.jwt.Trans;
+import com.example.demo.user.gender.Gender;
 import com.example.demo.user.defaultuser.DefaultMember;
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,7 +1,8 @@
 package com.example.demo.board;
 
-import com.example.demo.entityjoin.BoardSearchDataDto;
-import com.example.demo.entityjoin.JoinDslRepository;
+import com.example.demo.boradAndUser.BoardSearchDataDto;
+import com.example.demo.boradAndUser.UserJoinRepository;
+import com.example.demo.user.UserDslRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,12 +15,12 @@ public class BoardSearchService {
     @Autowired
     BoardDslRepository boardJpaRepository;
     @Autowired
-    JoinDslRepository joinDslRepository;
+    UserJoinRepository userJoinRepository;
     @Autowired
     BoardPageCalculator boardPageCalculator;
     @Transactional
     public List<BoardSearchDataDto> boardSearch(Long pageQuantity, Long boardQuantity, String keyword){
-        return joinDslRepository.selectFindById(pageQuantity-1,boardQuantity,"%"+keyword+"%");
+        return userJoinRepository.selectFindById(pageQuantity-1,boardQuantity,"%"+keyword+"%");
     }
     @Transactional
     public BoardPageApiDTO boardSearchPage (Long currentPageQuantity,Long boardQuantity,String keyword){

@@ -2,7 +2,7 @@ package com.example.demo.user;
 
 import com.example.demo.user.oauthuser.OauthMember;
 import com.example.demo.user.siteuser.SiteMember;
-import com.example.demo.userAuthority.UserAuthority;
+import com.example.demo.user.userAuthority.UserAuthority;
 import lombok.Data;
 import lombok.Getter;
 
