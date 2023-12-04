@@ -167,8 +167,7 @@ public class UserController {
             return responseAuthenticationDto;
         }
         UserRequestDto userRequestDto = jwtManager.getUserRequestDto(accessToken);
-        userManager.getResponseAuthenticationDto(responseAuthenticationDto,userRequestDto);
-        responseAuthenticationDto.setRole("권한 에러");
+        responseAuthenticationDto = userManager.getResponseAuthenticationDto(responseAuthenticationDto,userRequestDto);
         return responseAuthenticationDto;
     }
     @GetMapping("/home")
