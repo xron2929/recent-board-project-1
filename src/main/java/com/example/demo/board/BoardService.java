@@ -92,8 +92,9 @@ public class BoardService {
     public UserIdAndPasswordDto findUserIdAndPassword(Long boardId) {
         return userJoinRepository.findUserIdAndPassword(boardId);
     }
-    public String getUserAuthority(Long boardId) {
-        return userJoinRepository.getAuthority(boardId);
+
+    public UserAuthorityAndUserIdDto getAuthorityAndUserId(Long boardId) {
+        return userJoinRepository.getAuthorityAndUserId(boardId);
     }
     public TitleAndUserIdDto findUserDto(Long boardId) {
         System.out.println("error1");

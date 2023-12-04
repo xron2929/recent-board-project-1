@@ -1,6 +1,7 @@
 package com.example.demo.boradAndUser;
 
 import com.example.demo.board.QBoard;
+import com.example.demo.board.UserAuthorityAndUserIdDto;
 import com.example.demo.boradAndUser.*;
 import com.example.demo.entityjoin.NoneUserUuidANdTitleAndPasswordDto;
 import com.example.demo.user.UserIdAndPasswordDto;
@@ -123,6 +124,17 @@ UserJoinRepository {
         JPAQueryFactory queryFactory = new JPAQueryFactory(em);
         return queryFactory
                 .select(userAuthority.authority.authorityName)
+                .from(board)
+                .leftJoin(board.member, defaultMember)
+                .innerJoin(defaultMember.userAuthorities, userAuthority)
+                .where(board.id.eq(boardId))
+                .limit(1)
+                .fetchOne();
+    }
+    public UserAuthorityAndUserIdDto getAuthorityAndUserId(Long boardId) {
+        JPAQueryFactory queryFactory = new JPAQueryFactory(em);
+        return queryFactory
+                .select(Projections.constructor(UserAuthorityAndUserIdDto.class,userAuthority.authority.authorityName,defaultMember.userId))
                 .from(board)
                 .leftJoin(board.member, defaultMember)
                 .innerJoin(defaultMember.userAuthorities, userAuthority)

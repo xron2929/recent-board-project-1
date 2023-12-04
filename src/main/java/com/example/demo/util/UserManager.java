@@ -1,10 +1,13 @@
 package com.example.demo.util;
 
 
+import com.example.demo.board.UserAuthorityAndUserIdDto;
 import com.example.demo.role.RoleStatus;
 import com.example.demo.security.jwt.JwtManager;
 import com.example.demo.security.jwt.TokenStatus;
 import com.example.demo.security.jwt.UserRequestDto;
+import com.example.demo.user.IsAllowedAuthorityStatus;
+import com.example.demo.user.UserIdAndIsAllowedAuthorityStatus;
 import com.example.demo.user.userAuthority.UserAuthority;
 import com.example.demo.util.cookie.CookieManager;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -31,6 +34,29 @@ public class UserManager {
         String accessToken = jwtManager.getAccessToken(request);
         return getAndValidateUser(accessToken,dbPassword);
         // password가 상황마다 달라서 다른 방법 써야됨
+    }
+
+    public UserIdAndIsAllowedAuthorityStatus checkUserIdAndValidation(UserAuthorityAndUserIdDto userAuthorityAndUserIdDto, HttpServletRequest request) throws JsonProcessingException {
+        String accessToken = jwtManager.getAccessToken(request);
+        TokenStatus tokenValidation = jwtManager.validation(accessToken);
+        String boardReadUserId;
+        if (tokenValidation == TokenStatus.NONE || tokenValidation == TokenStatus.TOKEN_ERROR) {
+            boardReadUserId = cookieManager.getUUidCookie(request);
+            if(userAuthorityAndUserIdDto.getUserAuthority().equals(RoleStatus.ROLE_ANONYMOUS.name())&&
+                    userAuthorityAndUserIdDto.getUserId().equals(boardReadUserId)) {
+                return new UserIdAndIsAllowedAuthorityStatus(boardReadUserId, IsAllowedAuthorityStatus.SAME_USER_ACCOUNT);
+            }
+            return new UserIdAndIsAllowedAuthorityStatus(boardReadUserId, IsAllowedAuthorityStatus.UN_SAME_USER_ACCOUNT);
+        }
+        String boardReadAuthority = jwtManager.getAuthorityName(accessToken);
+        UserRequestDto boardReadUserRequestDto = jwtManager.getUserRequestDto(accessToken);
+        if(boardReadAuthority.equals(RoleStatus.ROLE_ADMIN.name())) {
+            return new UserIdAndIsAllowedAuthorityStatus(boardReadUserRequestDto.getUserId(), IsAllowedAuthorityStatus.HIGHER_READER_ACCOUNT);
+        }
+        if(boardReadUserRequestDto.getUserId().equals(userAuthorityAndUserIdDto.getUserId()) && boardReadAuthority.equals(userAuthorityAndUserIdDto.getUserAuthority())) {
+            return new UserIdAndIsAllowedAuthorityStatus(boardReadUserRequestDto.getUserId(), IsAllowedAuthorityStatus.SAME_USER_ACCOUNT);
+        }
+        return new UserIdAndIsAllowedAuthorityStatus(boardReadUserRequestDto.getUserId(), IsAllowedAuthorityStatus.UN_SAME_USER_ACCOUNT);
     }
     public UserIdAndValidationDtoAndAccessToken getUserIdAndValidationDtoAndAccessToken(HttpServletRequest request) throws JsonProcessingException {
         String accessToken = jwtManager.getAccessToken(request);

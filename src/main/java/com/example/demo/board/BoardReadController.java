@@ -11,10 +11,13 @@ import com.example.demo.security.authentication.AuthenticationManager;
 import com.example.demo.security.jwt.JwtManager;
 import com.example.demo.security.jwt.TokenStatus;
 import com.example.demo.security.jwt.UserRequestDto;
+import com.example.demo.user.IsAllowedAuthorityStatus;
+import com.example.demo.user.UserIdAndIsAllowedAuthorityStatus;
 import com.example.demo.user.UserIdAndPasswordDto;
 import com.example.demo.user.UserService;
 import com.example.demo.util.BoardCalculator;
 import com.example.demo.util.BoardQueryDto;
+import com.example.demo.util.UserManager;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.ApiOperation;
@@ -41,6 +44,8 @@ public class BoardReadController {
     ObjectMapper objectMapper;
     @Autowired
     JwtManager jwtManager;
+    @Autowired
+    UserManager userManager;
     @Autowired
     AuthenticationManager authenticationManager;
     @Autowired
@@ -103,48 +108,21 @@ public class BoardReadController {
     @ApiOperation("board 조회 때 해당 board의 권한 조회(websocket의 권한때문에 조회함) ")
     @ResponseBody
     public String getUserAuthority(@RequestParam Long boardId, HttpServletRequest request) throws JsonProcessingException {
-        String userAuthority = boardService.getUserAuthority(boardId);
-        System.out.println(" ReadController - userAuthority = " + userAuthority);
-        System.out.println("ReadController - userAuthority.equals(RoleStatus.ROLE_OAUTH_USER) = " + userAuthority.equals(RoleStatus.ROLE_OAUTH_USER.name()));
-        System.out.println("ReadController - userAuthority == RoleStatus.ROLE_OAUTH_USER = " + userAuthority == RoleStatus.ROLE_OAUTH_USER.name());
-        String accessToken = jwtManager.getAccessToken(request);
-        if(accessToken == null && userAuthority.equals(RoleStatus.ROLE_ANONYMOUS.name())) {
-            System.out.println("ReadController -  유저 아님 " );
-            return "ok";
-        }
-        if(accessToken == null && userAuthority.equals(RoleStatus.ROLE_OAUTH_USER.name())) {
-            System.out.println("ReadController -  조회자는 비회원 글 작성자는 oauth 회원" );
-            return "다른 사용자";
-        }
-        if(accessToken == null && userAuthority.equals(RoleStatus.ROLE_SITE_USER.name())) {
-            System.out.println("ReadController -  조회자는 비회원 글 작성자는 site 회원" );
-            return "다른 사용자";
-        }
-        if(accessToken == null && userAuthority.equals(RoleStatus.ROLE_ADMIN.name())) {
-            System.out.println("ReadController -  조회자는 비회원 글 작성자는 admin" );
-            return "다른 사용자";
-        }
+        UserAuthorityAndUserIdDto userAuthorityAndUserIdDto = boardService.getAuthorityAndUserId(boardId);
 
-        String authorityName = jwtManager.getAuthorityName(accessToken);
-        if(authorityName == null && userAuthority.equals(RoleStatus.ROLE_ANONYMOUS.name())) {
-            System.out.println("ReadController -  유저 아님 " );
+        UserIdAndIsAllowedAuthorityStatus userIdAndIsAllowedAuthorityStatus = userManager.checkUserIdAndValidation(userAuthorityAndUserIdDto,request);
+        if(userIdAndIsAllowedAuthorityStatus.getIsAllowedAuthorityStatus() == IsAllowedAuthorityStatus.SAME_USER_ACCOUNT) {
             return "ok";
         }
-        if(authorityName.equals(RoleStatus.ROLE_ADMIN.name())) {
-            System.out.println("ReadController -  운영자 " );
+        if(userIdAndIsAllowedAuthorityStatus.getIsAllowedAuthorityStatus() == IsAllowedAuthorityStatus.UN_SAME_USER_ACCOUNT) {
+            return "다른 사용자";
+        }
+        if(userIdAndIsAllowedAuthorityStatus.getIsAllowedAuthorityStatus() == IsAllowedAuthorityStatus.HIGHER_READER_ACCOUNT) {
             return "ok";
         }
-        System.out.println("READCONTROLLER-BUG1");
-        if(userAuthority.equals(RoleStatus.ROLE_OAUTH_USER.name())) {
-            UserIdAndPasswordDto userIdAndPassword = boardService.findUserIdAndPassword(boardId);
-            UserRequestDto userRequestDto = jwtManager.getUserRequestDto(accessToken);
-            if(isEqaulUserNameAndPassword(userIdAndPassword,userRequestDto)) {
-                System.out.println("ReadController -  같은 사용자 " );
-                return "ok";
-            }
-        }
-        return "다른 사용자";
+        return "에러";
     }
+
 
     @GetMapping
     @ApiOperation("루트 뷰(게시판 목록들이 포함된)를 반환")
