@@ -73,6 +73,23 @@ public class JwtManager {
         cookieManager.makeSecurityCookie("accessToken",jwtToken,1 * 24 * 60 * 60,response);
         return jwtToken;
     }
+    public String setAccessToken(UserRequestDto userRequestDto) throws JsonProcessingException {
+
+        Date now = (new Date());
+
+        objectMapper.registerModule(new Hibernate5Module());
+        String userRequestDtoJson = objectMapper.writeValueAsString(userRequestDto);
+
+        String jwtToken = Jwts.builder()
+                .setHeaderParam(Header.TYPE, Header.JWT_TYPE) // 헤더에 JWT 타입 나타내는 거인듯ㅗ
+                .setIssuedAt(now) // (3) //토큰 발급 시간
+                .setExpiration(new Date(now.getTime() + Duration.ofDays(1).toMillis())) // (4) 햔재시간+30분동안
+                .claim("userRequestDto", userRequestDtoJson) // (5)
+                .signWith(key, SignatureAlgorithm.HS256) // 암호화(압축화)
+                .compact(); // 이걸로 response 추가하는듯?
+        return jwtToken;
+    }
+
     public String setRefreshToken(HttpServletRequest request,HttpServletResponse response,
                                   UserRequestDto userRequestDto) throws JsonProcessingException {
         Date now = (new Date());

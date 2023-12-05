@@ -7,11 +7,11 @@ import lombok.Getter;
 @Data
 @Getter
 public class UserAuthorityAndUserIdDto {
+    private String userAuthorityName;
     private String userId;
-    private UserAuthority userAuthority;
 
-    public UserAuthorityAndUserIdDto(String userId, UserAuthority userAuthority) {
+    public UserAuthorityAndUserIdDto(String userAuthorityName, String userId) {
+        this.userAuthorityName = userAuthorityName;
         this.userId = userId;
-        this.userAuthority = userAuthority;
     }
 }

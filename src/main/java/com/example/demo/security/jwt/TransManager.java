@@ -3,7 +3,7 @@ package com.example.demo.security.jwt;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class TransApi {
+public class TransManager {
     public Trans getTrans(String inputTransData) {
         log.info("trans= '{}'",inputTransData);
         System.out.println(inputTransData=="남성");

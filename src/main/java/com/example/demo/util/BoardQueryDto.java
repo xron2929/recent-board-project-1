@@ -10,12 +10,12 @@ import lombok.Setter;
 public class BoardQueryDto {
     private int pageQuantity;
     private int boardQuantity;
-    private Long startBoardQuantity;
+    private Long prevBoardQuantity;
     @Builder
-    public BoardQueryDto(int pageQuantity, int boardQuantity, Long startBoardQuantity) {
+    public BoardQueryDto(int pageQuantity, int boardQuantity, Long prevBoardQuantity) {
         this.pageQuantity = pageQuantity;
         this.boardQuantity = boardQuantity;
-        this.startBoardQuantity = startBoardQuantity;
+        this.prevBoardQuantity = prevBoardQuantity;
     }
 }
 

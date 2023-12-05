@@ -89,7 +89,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         Oauth2UserInfo oauth2UserInfo = null;
         String url = null;
         CookieManager cookieManager = new CookieManager();
-        TransApi transApi = new TransApi();
+        TransManager transManager = new TransManager();
         if(userRequest.getClientRegistration().getRegistrationId().equals("google")) {
             System.out.println(" 구글 로그인 요청 ");
             System.out.println("oAuth2User.getAttributes() = " + oAuth2User.getAttributes());
@@ -157,6 +157,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         String nickname = Arrays.stream(request.getCookies())
                 .filter(cookie -> cookie.getName().equals("nickname"))
                 .map(cookie -> cookie.getValue()).findFirst().orElse(null);
+
         cookieManager.makeZeroSecondCookie("trans",response);
         cookieManager.makeZeroSecondCookie("nickname",response);
         // 한글 텍스트를 쿠키 상태로 가지고 있으면 인터셉터에 걸려서 끊기는 경우가 많아서 그냥 바로 삭제
@@ -239,7 +240,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         userEntity = OauthMember
                 .builder()
                 .userId(username)
-                .gender(new Gender(transApi.getTrans(trans)))
+                .gender(new Gender(transManager.getTrans(trans)))
                 .nickname(nickname)
                 .password(password)
                 .email(email)

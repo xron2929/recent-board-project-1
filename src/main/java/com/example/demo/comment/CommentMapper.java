@@ -9,6 +9,7 @@ import com.example.demo.entityjoin.UserAndBoardAndParentCommentDto;
 import com.example.demo.boradAndUser.UserAndBoardDto;
 import com.example.demo.user.UserService;
 import com.example.demo.user.defaultuser.DefaultMember;
+import com.example.demo.user.noneuser.NoneMember;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -32,13 +33,13 @@ public class CommentMapper {
         // 그거 끝나면 ChildComment도 등록하고 글 수정,삭제,업데이트 다 올려야됨
         // 그거 끝나면 다 대규모 트래픽 고려해서도 n개에 대한 처리 짜야될꺼고...
         // 리액트도 올려야됨 그래서 되게 바쁨 ㅇㅇ..
-        DefaultMember user = DefaultMember
+        NoneMember noneMember = NoneMember
                 .builder()
                 .userId(uuidCookie)
                 .nickname(parentCommentSaveViewDto.getNickname())
                 .password(parentCommentSaveViewDto.getPassword())
                 .build();
-        DefaultMember saveUser = userService.saveUser(user);
+        NoneMember saveUser = userService.saveNoneUser(noneMember);
         // System.out.println("saveUser.getPassword() = " + saveUser.getPassword());
         Board board = boardService.findAllByImageId(parentCommentSaveViewDto.getBoardId());
         if(board == null) {
@@ -47,7 +48,7 @@ public class CommentMapper {
         System.out.println("board.getTitle() = " + board.getTitle());
         String content = parentCommentSaveViewDto.getContent();
 
-        ParentComment parentComment = new ParentComment(content,user.getUserId(),user.getPassword(),board.getId());
+        ParentComment parentComment = new ParentComment(content,noneMember.getUserId(),noneMember.getPassword(),board.getId());
         return parentComment;
     }
     public ChildComment saveMemberAndComment(ChildCommentSaveViewDto childCommentSaveViewDto, String uuidCookie) throws Exception {
@@ -55,13 +56,13 @@ public class CommentMapper {
         // 그거 끝나면 ChildComment도 등록하고 글 수정,삭제,업데이트 다 올려야됨
         // 그거 끝나면 다 대규모 트래픽 고려해서도 n개에 대한 처리 짜야될꺼고...
         // 리액트도 올려야됨 그래서 되게 바쁨 ㅇㅇ..
-        DefaultMember user = DefaultMember
+        NoneMember noneMember = NoneMember
                 .builder()
                 .userId(uuidCookie)
                 .nickname(childCommentSaveViewDto.getNickname())
                 .password(childCommentSaveViewDto.getPassword())
                 .build();
-        DefaultMember saveUser = userService.saveUser(user);
+        NoneMember saveUser = userService.saveNoneUser(noneMember);
         // System.out.println("saveUser.getPassword() = " + saveUser.getPassword());
         Board board = boardService.findAllByImageId(childCommentSaveViewDto.getBoardId());
         if(board == null) {
@@ -93,12 +94,12 @@ public class CommentMapper {
     public List<ParentComment> saveCommendDtos(List<ParentCommentSaveViewDto> commentViewDtos) throws Exception {
         List<ParentComment> parentComments = new ArrayList<>();
         for (ParentCommentSaveViewDto commentViewDto:commentViewDtos){
-            DefaultMember user = DefaultMember.builder()
+            NoneMember noneMember = NoneMember.builder()
                     .nickname(commentViewDto.getNickname())
                     .userId(commentViewDto.getUserId())
                     .password(commentViewDto.getPassword())
                     .build();
-            DefaultMember saveUser = userService.saveUser(user);
+            NoneMember saveUser = userService.saveNoneUser(noneMember);
             System.out.println("saveUser.getPassword() = " + saveUser.getPassword());
             Board board = boardService.findAllByImageId(commentViewDto.getBoardId());
             if(board == null) {
@@ -107,7 +108,7 @@ public class CommentMapper {
             System.out.println("board.getContent() = " + board.getContent());
             System.out.println("board.getTitle() = " + board.getTitle());
             String content = commentViewDto.getContent();
-            ParentComment parentComment = new ParentComment(content,user.getUserId(),user.getNickname(), board.getId());
+            ParentComment parentComment = new ParentComment(content,noneMember.getUserId(),noneMember.getNickname(), board.getId());
             parentComments.add(parentComment);
         }
 

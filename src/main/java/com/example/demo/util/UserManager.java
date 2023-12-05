@@ -26,7 +26,7 @@ public class UserManager {
         this.passwordEncoder = passwordEncoder;
     }
 
-
+    // O
     public UserIdAndValidationDtoAndAccessToken getUserAccountStatus(HttpServletRequest request, UserIdAndValidationDtoAndAccessToken userIdAndValidationDtoAndAccessToken, String dbPassword) throws JsonProcessingException {
         if(userIdAndValidationDtoAndAccessToken.getValidationStatus()== ValidationStatus.NONE_USER_ACCOUNT) {
             return userIdAndValidationDtoAndAccessToken;
@@ -35,14 +35,14 @@ public class UserManager {
         return getAndValidateUser(accessToken,dbPassword);
         // password가 상황마다 달라서 다른 방법 써야됨
     }
-
+    // O
     public UserIdAndIsAllowedAuthorityStatus checkUserIdAndValidation(UserAuthorityAndUserIdDto userAuthorityAndUserIdDto, HttpServletRequest request) throws JsonProcessingException {
         String accessToken = jwtManager.getAccessToken(request);
         TokenStatus tokenValidation = jwtManager.validation(accessToken);
         String boardReadUserId;
         if (tokenValidation == TokenStatus.NONE || tokenValidation == TokenStatus.TOKEN_ERROR) {
             boardReadUserId = cookieManager.getUUidCookie(request);
-            if(userAuthorityAndUserIdDto.getUserAuthority().equals(RoleStatus.ROLE_ANONYMOUS.name())&&
+            if(userAuthorityAndUserIdDto.getUserAuthorityName().equals(RoleStatus.ROLE_ANONYMOUS.name())&&
                     userAuthorityAndUserIdDto.getUserId().equals(boardReadUserId)) {
                 return new UserIdAndIsAllowedAuthorityStatus(boardReadUserId, IsAllowedAuthorityStatus.SAME_USER_ACCOUNT);
             }
@@ -53,11 +53,13 @@ public class UserManager {
         if(boardReadAuthority.equals(RoleStatus.ROLE_ADMIN.name())) {
             return new UserIdAndIsAllowedAuthorityStatus(boardReadUserRequestDto.getUserId(), IsAllowedAuthorityStatus.HIGHER_READER_ACCOUNT);
         }
-        if(boardReadUserRequestDto.getUserId().equals(userAuthorityAndUserIdDto.getUserId()) && boardReadAuthority.equals(userAuthorityAndUserIdDto.getUserAuthority())) {
+        if(boardReadUserRequestDto.getUserId().equals(userAuthorityAndUserIdDto.getUserId()) &&
+                boardReadAuthority.equals(userAuthorityAndUserIdDto.getUserAuthorityName())) {
             return new UserIdAndIsAllowedAuthorityStatus(boardReadUserRequestDto.getUserId(), IsAllowedAuthorityStatus.SAME_USER_ACCOUNT);
         }
         return new UserIdAndIsAllowedAuthorityStatus(boardReadUserRequestDto.getUserId(), IsAllowedAuthorityStatus.UN_SAME_USER_ACCOUNT);
     }
+
     public UserIdAndValidationDtoAndAccessToken getUserIdAndValidationDtoAndAccessToken(HttpServletRequest request) throws JsonProcessingException {
         String accessToken = jwtManager.getAccessToken(request);
         TokenStatus tokenValidation = jwtManager.validation(accessToken);
@@ -102,12 +104,14 @@ public class UserManager {
         }
         return UserIdAndValidationDtoAndAccessToken.createUserIdAndValidationDto(ValidationStatus.UN_CHECK_USER_ACCOUNT,userId);
     }
+    // O
     public UserIdAndValidationDtoAndAccessToken validateSiteOrAdminPassword(String userId, String password, String dbPassword) {
-        if(password.equals(dbPassword)) {
+        if(passwordEncoder.matches(password,dbPassword)) {
             return UserIdAndValidationDtoAndAccessToken.createUserIdAndValidationDto(ValidationStatus.USER_ACCOUNT,userId);
         }
         return UserIdAndValidationDtoAndAccessToken.createUserIdAndValidationDto(ValidationStatus.ERROR_ACCOUNT,userId);
     }
+    // O
     public ResponseAuthenticationDto getResponseAuthenticationDto(ResponseAuthenticationDto responseAuthenticationDto,UserRequestDto userRequestDto) {
         List<UserAuthority> userAuthorities = userRequestDto.getUserAuthorities();
         for (UserAuthority userAuthority:userAuthorities) {
@@ -131,7 +135,7 @@ public class UserManager {
         responseAuthenticationDto.setRole("권한 에러");
         return responseAuthenticationDto;
     }
-
+    // 필요한 테스트코드 6개
 
 }
 

@@ -6,7 +6,7 @@ import com.example.demo.user.email.EmailTemplate;
 import com.example.demo.user.gender.Gender;
 import com.example.demo.user.gender.GenderService;
 import com.example.demo.security.jwt.Trans;
-import com.example.demo.security.jwt.TransApi;
+import com.example.demo.security.jwt.TransManager;
 import com.example.demo.security.jwt.UserRequestDto;
 import com.example.demo.user.ResponseOauthDto;
 import com.example.demo.user.UserService;
@@ -44,6 +44,8 @@ public class JoinController {
     GenderService genderService;
     @Autowired
     EmailValidator emailValidator;
+    @Autowired
+    TransManager transManager;
     private static final String SPECIAL_SYMBOLS[] = {
             "-","^","+","-","=","*","/"
     };
@@ -117,14 +119,11 @@ public class JoinController {
         String emailData = emailTemplate.emailGetRedisTime("회원가입"+joinDto.getEmail());
         String duplicatePhoneNumberAndNicknameResult = userService.findByPhoneNumberOrNickname(joinDto.getPhoneNumber(), joinDto.getNickname());
         emailValidator.isExistencePhoneNumberOrNickname(duplicatePhoneNumberAndNicknameResult);
-
         Authority authority = new Authority("ROLE_SITE_USER");
         UserAuthority userAuthority = new UserAuthority(authority);
-
-        TransApi transApi = new TransApi();
-        Trans trans = transApi.getTrans(userRequestDto.getTrans());
+        Trans trans = transManager.getTrans(userRequestDto.getTrans());
         SiteMember user = setSiteUser(trans,userRequestDto,userAuthority);
-        SiteMember findUser = userService.saveSiteMember(user);
+        SiteMember findUser = userService.saveSiteUser(user);
 
         userAuthority.setUserId(findUser);
         userAuthorityService.saveAuthority(userAuthority);

@@ -7,7 +7,7 @@ public class BoardCalculator {
         // 카운트 쿼리 가져오고
         // 얘네 DTO로 묶기
         BoardQueryDto boardQueryDto = BoardQueryDto.builder()
-                .startBoardQuantity((pageQuantity - 1l) * boardQuantity)
+                .prevBoardQuantity((pageQuantity - 1l) * boardQuantity)
                 .boardQuantity(boardQuantity)
                 .pageQuantity(pageQuantity)
                 .build();

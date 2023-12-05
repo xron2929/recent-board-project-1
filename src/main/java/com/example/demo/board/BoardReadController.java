@@ -146,7 +146,7 @@ public class BoardReadController {
         BoardCalculator boardCalculator = new BoardCalculator();
         BoardQueryDto boardQueryDto = boardCalculator.calculate(pageQuantity,boardQuantity);
         System.out.println("boardQueryDto = " + boardQueryDto);
-        List<MemberBoardQueryDTO> boards = userService.findBoards(boardQueryDto.getStartBoardQuantity(),boardQueryDto.getBoardQuantity());
+        List<MemberBoardQueryDTO> boards = userService.findBoards(boardQueryDto.getPrevBoardQuantity(),boardQueryDto.getBoardQuantity());
         return boards;
     }
 

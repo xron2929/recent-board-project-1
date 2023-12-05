@@ -1,5 +1,7 @@
 package com.example.demo.board;
 
+import com.example.demo.user.UserService;
+import com.example.demo.user.defaultuser.DefaultMember;
 import com.example.demo.util.cookie.CookieManager;
 import com.example.demo.boradAndUser.NoneUserBoardSaveDataDto;
 import com.example.demo.role.RoleStatus;
@@ -29,7 +31,8 @@ public class BoardWriteController {
     AuthenticationManager authenticationManager;
     @Autowired
     BoardService boardService;
-
+    @Autowired
+    UserService userService;
     @Autowired
     CookieManager cookieManager;
     @GetMapping("/write")
@@ -100,7 +103,14 @@ public class BoardWriteController {
             System.out.println("성공");
             System.out.println("boardEditUserDto.getContent() = " + boardEditUserDto.getContent());
             System.out.println("boardEditUserDto.getTitle() = " + boardEditUserDto.getTitle());
-            editBoardMapper.insertUserBoard(boardEditUserDto,userRequestDto);
+            DefaultMember user = userService.findUserByUserId(userRequestDto.getUserId());
+            System.out.println("user.getId() = " + user.getId());
+            Board board = new Board(boardEditUserDto.getId(),boardEditUserDto.getTitle(), boardEditUserDto.getContent(),
+                    user,boardEditUserDto.isSecret());
+            Board board1 = boardService.saveBoard(board);
+            System.out.println("board1.getTitle() = " + board1.getTitle());
+            System.out.println("board.getMember() = " + board.getMember());
+            System.out.println("board1.getContent() = " + board1.getContent());
             System.out.println("writeUser - userName = " + boardEditUserDto.getUsername());
             return "ok";
         }

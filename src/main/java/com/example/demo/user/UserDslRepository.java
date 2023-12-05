@@ -48,15 +48,6 @@ public class UserDslRepository {
                 .fetchOne();
     }
 
-    public SiteMember findBySiteMemberId(String memberId) {
-        JPAQueryFactory queryFactory = new JPAQueryFactory(em);
-        return queryFactory
-                .select(siteMember)
-                .from(siteMember)
-                .innerJoin(siteMember.userAuthorities, userAuthority)
-                .where(siteMember.userId.eq(memberId))
-                .fetchOne();
-    }
 
     public DefaultMember findBymember(String memberId) {
         System.out.println("memberId = " + memberId);

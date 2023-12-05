@@ -4,6 +4,7 @@ import com.example.demo.role.RoleStatus;
 import com.example.demo.board.Board;
 import com.example.demo.board.BoardPageApiDTO;
 import com.example.demo.board.BoardService;
+import com.example.demo.user.noneuser.NoneMember;
 import com.example.demo.util.cookie.CookieManager;
 import com.example.demo.log.Trace;
 import com.example.demo.security.jwt.JwtManager;
@@ -47,11 +48,11 @@ public class BoardAPIController {
         if(!authorityName.equals(RoleStatus.ROLE_ADMIN.name())) {
             return "권환 부족";
         }
-        DefaultMember member = DefaultMember.builder().userId("sdfds").password("dsfds").build();
-        userService.saveUser(member);
+        NoneMember noneMember = NoneMember.builder().userId("sdfds").password("dsfds").build();
+        userService.saveNoneUser(noneMember);
         List<Board> boards = new ArrayList<>();
         for (int i = 1; i <= boardQuantity; i++) {
-            boards.add(new Board(member,String.valueOf(i),"임시 생성",false));
+            boards.add(new Board(noneMember,String.valueOf(i),"임시 생성",false));
         }
         boardService.saveAll(boards);
         return "ok";

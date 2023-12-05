@@ -104,15 +104,24 @@ public class UserService {
         if(userRepository.findByUserId(userId) == null) return false;
         return true;
     }
+    public void deleteSiteUser(SiteMember siteMember) {
+        siteMemberRepository.delete(siteMember);
+    }
     public List<MemberBoardQueryDTO> findBoards(long startBoardId, long boardQuantity) {
          List<MemberBoardQueryDTO> findBoards = userJoinRepository.findByUserIds(startBoardId,boardQuantity);
         return findBoards;
     }
-    public DefaultMember saveUser(DefaultMember user) {
-        return userRepository.save(user);
+    public NoneMember saveNoneUser(NoneMember user) {
+        return noneMemberRepository.save(user);
     }
-    public SiteMember saveSiteMember(SiteMember user) {
-        return siteMemberRepository.save(user);
+    public SiteMember saveSiteUser(SiteMember user) throws RuntimeException{
+        SiteMember siteMember = siteMemberRepository.findByUserId(user.getUserId()).orElse(null);
+        System.out.println("siteMember = " + siteMember);
+        if(siteMember == null) {
+            return siteMemberRepository.save(user);
+        }
+        throw new RuntimeException("사이트 또는 어드민 회원은 동일한 userId를 가진 테이블을 삽입할 수 없습니다.");
+
     }
 
     public void updateUser(DefaultMember user) {
@@ -150,6 +159,6 @@ public class UserService {
         userDslRepository.changeUserPasswordByEmailAndUserId(passwordEncoder.encode(changePassword),email,userId);
     }
     public SiteMember findBySiteMemberId(String memberId) {
-        return userDslRepository.findBySiteMemberId(memberId);
+        return siteMemberRepository.findByUserId(memberId).orElse(null);
     }
 }
