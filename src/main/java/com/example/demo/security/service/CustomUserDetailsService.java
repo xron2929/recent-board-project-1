@@ -73,15 +73,19 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         try {
             String accessToken = jwtManager.setAccessToken(request, response, userRequestDto);
+            UserRequestDto findUserRequestDto = jwtManager.getUserRequestDto(accessToken);
             String refreshToken = jwtManager.setRefreshToken(request, response, userRequestDto);
             System.out.println("accessToken = " + accessToken);
+
             attributes.put("accessToken",accessToken);
             attributes.put("refreshToken",refreshToken);
         } catch (Exception e) {
             System.out.println("e = " + e);
         }
         System.out.println("user = " + user);
+
         user.getUserAuthorities().stream().map(UserAuthority::getAuthority).forEach(authority -> System.out.println(". authority.getAuthorityName() = " + authority.getAuthorityName()));
+
         return new PrincipalDetails(user,attributes);
     }
 }

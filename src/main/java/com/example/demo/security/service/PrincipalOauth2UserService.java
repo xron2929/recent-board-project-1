@@ -5,7 +5,6 @@ import com.example.demo.user.authority.Authority;
 import com.example.demo.user.UserService;
 import com.example.demo.user.gender.Gender;
 import com.example.demo.security.jwt.*;
-import com.example.demo.user.defaultuser.DefaultMember;
 import com.example.demo.user.defaultuser.UserRepository;
 import com.example.demo.user.oauthuser.OauthMember;
 import com.example.demo.user.siteuser.SiteMember;
@@ -201,7 +200,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
                         .phoneNumber(userEntity.getPhoneNumber())
                         .userAuthorities(userAuthorities)
                         .build();
-
+                System.out.println("loginUserRequestDto.userAuthorities = " + loginUserRequestDto.getUserAuthorities());
                 accessToken = jwtManager.setAccessToken(request,response,loginUserRequestDto);
                 jwtManager.setRefreshToken(request,response,loginUserRequestDto);
                 Authentication authentication = getAuthentication(loginUserRequestDto.getUserId(), accessToken);
@@ -281,14 +280,17 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
 
     public Authentication getAuthentication(String userId,String accessToken) throws JsonProcessingException {
         UserRequestDto userRequestDto = jwtManager.getUserRequestDto(accessToken);
+        System.out.println("getAuthentication-UserRequestDto.getUserAuthorities = " + userRequestDto.getUserAuthorities());
         OauthMember oauthMember = userService.findByOauthMemberId(userId);
         System.out.println("oauthMember = " + oauthMember);
         // 얘를 db에서 가져와야됨
         // User user = UserRequestDto.from(userRequestDto);
+        oauthMember.setUserAuthorities(userRequestDto.getUserAuthorities());
         PrincipalDetails principalDetails = new PrincipalDetails(oauthMember);
         Map<String, Object> userAttributes = new HashMap<>();
         userAttributes.put("accessToken", accessToken);
         principalDetails.setAttributes(userAttributes);
+
         log.info("principalDetails22 = '{}'",principalDetails);
         return new UsernamePasswordAuthenticationToken(principalDetails,accessToken,principalDetails.getAuthorities());
     }
