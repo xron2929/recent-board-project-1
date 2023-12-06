@@ -72,6 +72,10 @@ public class UserService {
         }
         return user;
     }
+    public SiteMember findSiteUserByUserId(String userId) {
+        SiteMember user = siteMemberRepository.findByUserId(userId).orElse(null);
+        return user;
+    }
 
     public Long userAndUserAuthoritySave(DefaultMember defaultMember) {
         // 일,다수 넣고

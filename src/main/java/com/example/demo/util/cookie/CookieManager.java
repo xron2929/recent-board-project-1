@@ -30,7 +30,7 @@ public class CookieManager {
                 .secure(true)
                 .build();
 
-        response.addHeader("Set-Cookie", cookie.toString());
+        response.setHeader("Set-Cookie", cookie.toString());
     }
     public void makeSecurityCookie(String key, String value,int second, HttpServletResponse response) {
     /*
