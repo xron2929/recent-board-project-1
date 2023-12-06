@@ -164,11 +164,9 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         // 한글 텍스트를 쿠키 상태로 가지고 있으면 인터셉터에 걸려서 끊기는 경우가 많아서 그냥 바로 삭제
         // 다시 생성
         // 만약 있다면 그대로 반환
-        String accessToken = new String();
-        String refreshToken = new String();
+
         log.info("loadUser");
-        accessToken = jwtManager.getAccessToken(request);
-        log.info("accessToken = {}",accessToken);
+
         UserRequestDto joinUserRequestDto = UserRequestDto
                 .builder()
                 .email(email)
@@ -185,9 +183,10 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
                 .forEach(authorityName -> log.info("authorityName = {}",authorityName));
 
 
-        System.out.println("real accessToken = " + accessToken);
+
 
         if(userEntity != null) {
+            String accessToken = new String();
             try {
 
                 UserRequestDto loginUserRequestDto = UserRequestDto
@@ -203,7 +202,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
                         .build();
 
                 accessToken = jwtManager.setAccessToken(request,response,loginUserRequestDto);
-                refreshToken = jwtManager.setRefreshToken(request,response,loginUserRequestDto);
+                jwtManager.setRefreshToken(request,response,loginUserRequestDto);
                 Authentication authentication = getAuthentication(loginUserRequestDto.getUserId(), accessToken);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
                 System.out.println("SecurityContextHolder.getContext().getAuthentication() = " + SecurityContextHolder.getContext().getAuthentication());
@@ -240,7 +239,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         System.out.println("age = " + age);
         System.out.println("phoneNumber = " + phoneNumber);
         System.out.println(" 첫 회원 가입 ");
-        onlyJoinUsingToken(joinUserRequestDto);
+
         // userEntity = new Member(username,password,email,provider,providerId,age,phoneNumber,userAuthorities);
         userEntity = OauthMember
                 .builder()
@@ -254,7 +253,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
                 .phoneNumber(phoneNumber)
                 .userAuthorities(userAuthorities)
                 .build();
-
+        String accessToken = onlyJoinUsingToken(joinUserRequestDto);
         userEntity.getUserAuthorities().forEach(userAuthority1 -> userAuthority1.getAuthority().getAuthorityName());
         userEntity.setModifiedAt(LocalDateTime.now());
         // userRepository.save(userEntity);
@@ -263,7 +262,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         cookieManager.makeZeroSecondCookie("age",response);
         userService.userAndUserAuthoritySave(userEntity);
         try {
-            Authentication authentication = getAuthentication(userRequestDto.getUserId(),accessToken);
+            Authentication authentication = getAuthentication(joinUserRequestDto.getUserId(),accessToken);
             SecurityContextHolder.getContext().setAuthentication(authentication);
             Authentication authentication1 = SecurityContextHolder.getContext().getAuthentication();
             System.out.println("authentication1 = " + authentication1);
@@ -291,7 +290,8 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         log.info("principalDetails22 = '{}'",principalDetails);
         return new UsernamePasswordAuthenticationToken(principalDetails,accessToken,principalDetails.getAuthorities());
     }
-    public void onlyJoinUsingToken(UserRequestDto joinUserRequestDto) {
+    public String onlyJoinUsingToken(UserRequestDto joinUserRequestDto) {
+        String accessToken = new String();
         try {
 
             String refreshToken = jwtManager.getRefreshToken(request);
@@ -300,11 +300,12 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
                 log.info("success2");
                 System.out.println("joinUserRequestDto = " + joinUserRequestDto);
                 log.info("PrincipalOauth2UserService - refreshToken = {}",refreshToken);
-                String accessToken = jwtManager.setAccessToken(request,response,joinUserRequestDto);
+                accessToken = jwtManager.setAccessToken(request,response,joinUserRequestDto);
                 refreshToken = jwtManager.setRefreshToken(request,response,joinUserRequestDto);
             }
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
+        return accessToken;
     }
 }
