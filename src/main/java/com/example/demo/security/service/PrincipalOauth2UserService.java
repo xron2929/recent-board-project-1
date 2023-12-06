@@ -8,6 +8,7 @@ import com.example.demo.security.jwt.*;
 import com.example.demo.user.defaultuser.DefaultMember;
 import com.example.demo.user.defaultuser.UserRepository;
 import com.example.demo.user.oauthuser.OauthMember;
+import com.example.demo.user.siteuser.SiteMember;
 import com.example.demo.user.userAuthority.UserAuthorityRepository;
 import com.example.demo.util.cookie.CookieManager;
 import com.example.demo.security.details.PrincipalDetails;
@@ -136,7 +137,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         Authority authority = new Authority("ROLE_OAUTH_USER");
         UserAuthority userAuthority = new UserAuthority(authority);
         userAuthorities.add(userAuthority);
-        DefaultMember userEntity = userService.findUserByUserId(username);
+        OauthMember userEntity = userService.findByOauthMemberId(username);
 // userService에서 호출해서 트랜잭션관리 따로 해야될듯 ㅇㅇ..
         // 나중에 도메인이면 따로관리하긴해야하는데 타임리프로 클린 코드 해봐야될듯
         // /String phoneNumber = (String) request.getSession().getAttribute("phoneNumber");
@@ -164,10 +165,11 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         // 다시 생성
         // 만약 있다면 그대로 반환
         String accessToken = new String();
+        String refreshToken = new String();
         log.info("loadUser");
         accessToken = jwtManager.getAccessToken(request);
         log.info("accessToken = {}",accessToken);
-        UserRequestDto userRequestDto = UserRequestDto
+        UserRequestDto joinUserRequestDto = UserRequestDto
                 .builder()
                 .email(email)
                 .age(age)
@@ -178,28 +180,31 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
                 .phoneNumber(phoneNumber)
                 .userAuthorities(userAuthorities)
                 .build();
-        userRequestDto.getUserAuthorities().stream().map(userAuthority1 -> userAuthority1.getAuthority())
+        joinUserRequestDto.getUserAuthorities().stream().map(userAuthority1 -> userAuthority1.getAuthority())
                 .map(authority1 -> authority1.getAuthorityName())
                 .forEach(authorityName -> log.info("authorityName = {}",authorityName));
 
-        try {
-            String refreshToken = jwtManager.getRefreshToken(request);
-            log.info("refreshToken = {}",refreshToken);
-            if(refreshToken == null || refreshTokenManager.validaition(refreshToken,key) == false) {
-                log.info("success2");
-                System.out.println("userRequestDto = " + userRequestDto);
-                log.info("PrincipalOauth2UserService - refreshToken = {}",refreshToken);
-                accessToken = jwtManager.setAccessToken(request,response,userRequestDto);
-                refreshToken = jwtManager.setRefreshToken(request,response,userRequestDto);
-            }
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
+
         System.out.println("real accessToken = " + accessToken);
 
         if(userEntity != null) {
             try {
-                Authentication authentication = getAuthentication(userRequestDto.getUserId(), accessToken);
+
+                UserRequestDto loginUserRequestDto = UserRequestDto
+                        .builder()
+                        .email(userEntity.getEmail())
+                        .age(userEntity.getAge())
+                        .trans(userEntity.getGender().getTrans().name())
+                        .userId(userEntity.getUserId())
+                        .password(password)
+                        .nickname(userEntity.getNickname())
+                        .phoneNumber(userEntity.getPhoneNumber())
+                        .userAuthorities(userEntity.getUserAuthorities())
+                        .build();
+
+                accessToken = jwtManager.setAccessToken(request,response,loginUserRequestDto);
+                refreshToken = jwtManager.setRefreshToken(request,response,loginUserRequestDto);
+                Authentication authentication = getAuthentication(loginUserRequestDto.getUserId(), accessToken);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
                 System.out.println("SecurityContextHolder.getContext().getAuthentication() = " + SecurityContextHolder.getContext().getAuthentication());
             } catch (JsonProcessingException e) {
@@ -235,7 +240,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         System.out.println("age = " + age);
         System.out.println("phoneNumber = " + phoneNumber);
         System.out.println(" 첫 회원 가입 ");
-
+        onlyJoinUsingToken(joinUserRequestDto);
         // userEntity = new Member(username,password,email,provider,providerId,age,phoneNumber,userAuthorities);
         userEntity = OauthMember
                 .builder()
@@ -285,5 +290,21 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         principalDetails.setAttributes(userAttributes);
         log.info("principalDetails22 = '{}'",principalDetails);
         return new UsernamePasswordAuthenticationToken(principalDetails,accessToken,principalDetails.getAuthorities());
+    }
+    public void onlyJoinUsingToken(UserRequestDto joinUserRequestDto) {
+        try {
+
+            String refreshToken = jwtManager.getRefreshToken(request);
+            log.info("refreshToken = {}",refreshToken);
+            if(refreshToken == null || refreshTokenManager.validaition(refreshToken,key) == false) {
+                log.info("success2");
+                System.out.println("joinUserRequestDto = " + joinUserRequestDto);
+                log.info("PrincipalOauth2UserService - refreshToken = {}",refreshToken);
+                String accessToken = jwtManager.setAccessToken(request,response,joinUserRequestDto);
+                refreshToken = jwtManager.setRefreshToken(request,response,joinUserRequestDto);
+            }
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
     }
 }

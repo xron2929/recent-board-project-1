@@ -72,6 +72,10 @@ public class UserService {
         }
         return user;
     }
+    public SiteMember findSiteUserByUserId(String userId) {
+        SiteMember user = siteMemberRepository.findByUserId(userId).orElse(null);
+        return user;
+    }
 
     public Long userAndUserAuthoritySave(DefaultMember defaultMember) {
         // 일,다수 넣고
@@ -161,6 +165,9 @@ public class UserService {
     }
     public void changeUserPasswordByEmailAndUserId(String changePassword,String email,String userId) {
         userDslRepository.changeUserPasswordByEmailAndUserId(passwordEncoder.encode(changePassword),email,userId);
+    }
+    public OauthMember findByOauthMemberId(String memberId) {
+        return oauthMemberRepository.findByUserId(memberId).orElse(null);
     }
     public SiteMember findBySiteMemberId(String memberId) {
         return siteMemberRepository.findByUserId(memberId).orElse(null);

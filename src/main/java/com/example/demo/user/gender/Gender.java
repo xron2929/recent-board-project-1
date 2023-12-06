@@ -1,12 +1,14 @@
 package com.example.demo.user.gender;
 
 import com.example.demo.security.jwt.Trans;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor
+@Getter
 public class Gender {
     @Id
     @GeneratedValue
