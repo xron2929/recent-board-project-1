@@ -39,3 +39,18 @@ out/
 
 /src/main/resources/redis.sh
 /src/main/resources/mongo.db
+/src/main/generated/com/example/demo/alarm/QAlarm.java
+/src/main/generated/com/example/demo/alarm/QNoneUserAlarm.java
+/src/main/generated/com/example/demo/baseTime/QBaseTimeEntity.java
+/src/main/generated/com/example/demo/board/image/QImageStore.java
+/src/main/generated/com/example/demo/board/QBoard.java
+/src/main/generated/com/example/demo/board/QDeleteBoard.java
+/src/main/generated/com/example/demo/feedback/QUserDisLike.java
+/src/main/generated/com/example/demo/feedback/QUserLike.java
+/src/main/generated/com/example/demo/user/authority/QAuthority.java
+/src/main/generated/com/example/demo/user/defaultuser/QDefaultMember.java
+/src/main/generated/com/example/demo/user/gender/QGender.java
+/src/main/generated/com/example/demo/user/noneuser/QNoneMember.java
+/src/main/generated/com/example/demo/user/oauthuser/QOauthMember.java
+/src/main/generated/com/example/demo/user/siteuser/QSiteMember.java
+/src/main/generated/com/example/demo/user/userAuthority/QUserAuthority.java

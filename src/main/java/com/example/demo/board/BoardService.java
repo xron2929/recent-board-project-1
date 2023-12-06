@@ -118,8 +118,7 @@ public class BoardService {
         System.out.println("getFinalBoardId - finalBoardId = " + saveBoard.getId());
         return saveBoard.getId();
     }
-    // service는 Controller 요청자를 따라가냐? 아니면 Repository를 따라가냐?
-    // Controller를 따라가고, Repository를 가져다 쓰겠지...
+
 
 
 }

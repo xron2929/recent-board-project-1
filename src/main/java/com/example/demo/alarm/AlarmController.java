@@ -1,6 +1,9 @@
 package com.example.demo.alarm;
 
 import com.example.demo.board.BoardService;
+import com.example.demo.comment.CommentService;
+import com.example.demo.mongo.ChildCommentService;
+import com.example.demo.mongo.ParentCommentService;
 import com.example.demo.util.UserIdAndValidationDtoAndAccessToken;
 import com.example.demo.util.UserManager;
 import com.example.demo.util.ValidationStatus;
@@ -34,6 +37,10 @@ public class AlarmController {
     NoneUserAlarmService noneUserAlarmService;
     @Autowired
     UserManager userManager;
+    @Autowired
+    ParentCommentService parentCommentService;
+    @Autowired
+    ChildCommentService childCommentService;
     @GetMapping("/alarm")
     @ApiOperation("alarm 뷰 반환")
     public String getAlarmView(@RequestParam(defaultValue = "0") Long page) {
@@ -78,6 +85,7 @@ public class AlarmController {
     public String setAlarm(@RequestBody AlarmSaveDto alarmSaveDto, HttpServletRequest request) throws JsonProcessingException {
         System.out.println("호출");
        TitleAndUserIdDto titleByBoardId = boardService.findUserDto(alarmSaveDto.getBoardId());
+
         // id,password 조회 후 실제 db랑 같으면 저장
         // 사실 REdis 쓰면 이렇게 검증할 이유가 없는데,..
 

@@ -38,7 +38,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @Import({TestConfig.class})
 public class BoardDslRepositoryTest {
     @PersistenceContext EntityManager em;
-
+    @Autowired BoardService boardService;
 
     public UserAuthorityAndUserIdDto getAuthorityAndUserIdFromDBIsNotDuplication(Long boardId) {
         JPAQueryFactory queryFactory = new JPAQueryFactory(this.em);
@@ -84,6 +84,7 @@ public class BoardDslRepositoryTest {
         Exception dbDuplicateException = assertThrows(NonUniqueResultException.class, () ->
                 getAuthorityAndUserIdFromDBIsDuplication(boardId));
     }
+
 
 
 }

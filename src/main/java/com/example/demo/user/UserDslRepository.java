@@ -28,6 +28,7 @@ import static com.querydsl.core.types.dsl.Expressions.constant;
 @RequiredArgsConstructor
 public class UserDslRepository {
     private final EntityManager em;
+
     public String findDefaultMemberByBoardId(Long boardId) {
         JPAQueryFactory queryFactory = new JPAQueryFactory(em);
         return queryFactory

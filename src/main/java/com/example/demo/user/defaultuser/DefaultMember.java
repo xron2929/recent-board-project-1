@@ -48,7 +48,7 @@ public class DefaultMember implements Serializable {
     @LastModifiedDate
     protected LocalDateTime ModifiedAt;
 
-    @OneToMany(mappedBy = "userId",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "userId",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     protected List<UserAuthority> userAuthorities;
 
     @OneToMany(mappedBy = "member")
