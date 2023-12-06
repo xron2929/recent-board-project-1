@@ -189,6 +189,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
             String accessToken = new String();
             try {
 
+
                 UserRequestDto loginUserRequestDto = UserRequestDto
                         .builder()
                         .email(userEntity.getEmail())
@@ -198,7 +199,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
                         .password(password)
                         .nickname(userEntity.getNickname())
                         .phoneNumber(userEntity.getPhoneNumber())
-                        .userAuthorities(userEntity.getUserAuthorities())
+                        .userAuthorities(userAuthorities)
                         .build();
 
                 accessToken = jwtManager.setAccessToken(request,response,loginUserRequestDto);
@@ -279,11 +280,12 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
     }
 
     public Authentication getAuthentication(String userId,String accessToken) throws JsonProcessingException {
-        DefaultMember defaultMember = userService.findUserByUserId(userId);
-        System.out.println("defaultMember = " + defaultMember);
+        UserRequestDto userRequestDto = jwtManager.getUserRequestDto(accessToken);
+        OauthMember oauthMember = userService.findByOauthMemberId(userId);
+        System.out.println("oauthMember = " + oauthMember);
         // 얘를 db에서 가져와야됨
         // User user = UserRequestDto.from(userRequestDto);
-        PrincipalDetails principalDetails = new PrincipalDetails(defaultMember);
+        PrincipalDetails principalDetails = new PrincipalDetails(oauthMember);
         Map<String, Object> userAttributes = new HashMap<>();
         userAttributes.put("accessToken", accessToken);
         principalDetails.setAttributes(userAttributes);

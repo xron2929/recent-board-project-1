@@ -71,8 +71,7 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
             GrantedAuthority authority = new SimpleGrantedAuthority(c);
             collection.add(authority);
         };
-        Authentication authentication1 = SecurityContextHolder.getContext().getAuthentication();
-        log.info("authentication2 = " + authentication1);
+
         return collection;
     }
 
