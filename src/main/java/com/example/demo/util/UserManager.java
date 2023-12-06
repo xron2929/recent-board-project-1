@@ -135,7 +135,7 @@ public class UserManager {
         responseAuthenticationDto.setRole("권한 에러");
         return responseAuthenticationDto;
     }
-    // 필요한 테스트코드 6개
+
 
 }
 

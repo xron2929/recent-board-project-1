@@ -1,13 +1,11 @@
 package com.example.demo.board;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import lombok.*;
 
 @Data
 @NoArgsConstructor
+
 public class BoardEditUserDto {
     private Long id;
     private String title;
@@ -17,6 +15,15 @@ public class BoardEditUserDto {
     private String disLikeCount;
     @NonNull
     private boolean isSecret;
-
+    @Builder
+    public BoardEditUserDto(Long id, String title, String content, String username, String likeCount, String disLikeCount, @NonNull boolean isSecret) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.username = username;
+        this.likeCount = likeCount;
+        this.disLikeCount = disLikeCount;
+        this.isSecret = isSecret;
+    }
 }
 

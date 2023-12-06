@@ -73,32 +73,33 @@ public class UserService {
         return user;
     }
 
-    public void userAndUserAuthoritySave(DefaultMember defaultMember) {
+    public Long userAndUserAuthoritySave(DefaultMember defaultMember) {
         // 일,다수 넣고
         // 다수에 다 1개 집어넣던지
-
         defaultMember.getUserAuthorities().forEach(userAuthority -> userAuthority.setUserId(defaultMember));
         List<String> userAuthorityNames = defaultMember.getUserAuthorities().stream().map(UserAuthority::getAuthority).map(Authority::getAuthorityName)
                 .collect(Collectors.toList());
         defaultMember.getUserAuthorities().forEach(userAuthority -> System.out.println("userAuthority.getUserId() = " + userAuthority.getUserId()));
         for(String authorityName : userAuthorityNames) {
             if(authorityName.equals(RoleStatus.ROLE_SITE_USER.name())) {
-                siteMemberRepository.save((SiteMember) defaultMember);
-                break;
+                SiteMember saveMember = siteMemberRepository.save((SiteMember) defaultMember);
+                return saveMember.getId();
             }
             if(authorityName.equals(RoleStatus.ROLE_OAUTH_USER.name())) {
-                oauthMemberRepository.save((OauthMember) defaultMember);
-                break;
+                OauthMember saveMember = oauthMemberRepository.save((OauthMember) defaultMember);
+                return saveMember.getId();
+
             }
             if(authorityName.equals(RoleStatus.ROLE_ANONYMOUS.name())) {
                 System.out.println("???dsfs");
                 NoneMember noneMember = noneMemberRepository.save((NoneMember) defaultMember);
                 System.out.println("save = " + noneMember.getUserId());
                 System.out.println("noneMember.getPassword() = " + noneMember.getPassword());
-                break;
+                return noneMember.getId();
             }
         }
         // defaultMemberRepository.save(userAuthority);
+        return null;
     }
     public Boolean isUserExist(String userId) {
         if(userRepository.findByUserId(userId) == null) return false;
@@ -106,6 +107,9 @@ public class UserService {
     }
     public void deleteSiteUser(SiteMember siteMember) {
         siteMemberRepository.delete(siteMember);
+    }
+    public void deleteNoneUser(NoneMember noneMember) {
+        noneMemberRepository.delete(noneMember);
     }
     public List<MemberBoardQueryDTO> findBoards(long startBoardId, long boardQuantity) {
          List<MemberBoardQueryDTO> findBoards = userJoinRepository.findByUserIds(startBoardId,boardQuantity);
@@ -160,5 +164,8 @@ public class UserService {
     }
     public SiteMember findBySiteMemberId(String memberId) {
         return siteMemberRepository.findByUserId(memberId).orElse(null);
+    }
+    public NoneMember findByNoneMemberId(String memberId) {
+        return noneMemberRepository.findByUserId(memberId).orElse(null);
     }
 }

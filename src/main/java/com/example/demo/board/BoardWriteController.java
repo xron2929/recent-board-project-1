@@ -2,6 +2,7 @@ package com.example.demo.board;
 
 import com.example.demo.user.UserService;
 import com.example.demo.user.defaultuser.DefaultMember;
+import com.example.demo.user.noneuser.NoneMember;
 import com.example.demo.util.cookie.CookieManager;
 import com.example.demo.boradAndUser.NoneUserBoardSaveDataDto;
 import com.example.demo.role.RoleStatus;
@@ -84,7 +85,12 @@ public class BoardWriteController {
                     .isSecret(boardEditUserDto.isSecret()).build();
 
             System.out.println("BoardWriteController - writeNoneUser() uuidCookie = "+uuidCookie);
-            editBoardMapper.insertNoneUserBoard(request,userBoardSaveDataDto);
+            NoneMember member = editBoardMapper.setNoneUser(request,userBoardSaveDataDto);
+            Long memberId = userService.userAndUserAuthoritySave(member);
+            member.setId(memberId);
+            Board board = new Board(userBoardSaveDataDto.getId(),userBoardSaveDataDto.getTitle(),
+                    userBoardSaveDataDto.getContent(),member,userBoardSaveDataDto.isSecret());
+            boardService.saveBoard(board);
             return "ok";
         }
         System.out.println("실패");
@@ -100,9 +106,8 @@ public class BoardWriteController {
         String accessToken = authenticationManager.checkAuthenticationManager(request, response);
         UserRequestDto userRequestDto = jwtManager.getUserRequestDto(accessToken);
         if(accessToken != "null") {
-            System.out.println("성공");
-            System.out.println("boardEditUserDto.getContent() = " + boardEditUserDto.getContent());
-            System.out.println("boardEditUserDto.getTitle() = " + boardEditUserDto.getTitle());
+
+
             DefaultMember user = userService.findUserByUserId(userRequestDto.getUserId());
             System.out.println("user.getId() = " + user.getId());
             Board board = new Board(boardEditUserDto.getId(),boardEditUserDto.getTitle(), boardEditUserDto.getContent(),

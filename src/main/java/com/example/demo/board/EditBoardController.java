@@ -41,18 +41,18 @@ public class EditBoardController {
     @ApiOperation("유저의 권한에 따라 다른 뷰 반환")
     public String editBoardView(HttpServletRequest request, HttpServletResponse response, @PathVariable Long boardId) throws Exception {
 
-        Map<String,String> magnageUrlMap = new HashMap<>();
-        magnageUrlMap.put(RoleStatus.ROLE_ANONYMOUS.name(),"board/edit/none-user-edit");
-        magnageUrlMap.put(RoleStatus.ROLE_SITE_USER.name(),"board/edit/user-edit");
-        magnageUrlMap.put(RoleStatus.ROLE_OAUTH_USER.name(),"board/edit/user-edit");
-        magnageUrlMap.put(RoleStatus.ROLE_ADMIN.name(),"board/edit/user-edit");
+        Map<String,String> manageUrlMap = new HashMap<>();
+        manageUrlMap.put(RoleStatus.ROLE_ANONYMOUS.name(),"board/edit/none-user-edit");
+        manageUrlMap.put(RoleStatus.ROLE_SITE_USER.name(),"board/edit/user-edit");
+        manageUrlMap.put(RoleStatus.ROLE_OAUTH_USER.name(),"board/edit/user-edit");
+        manageUrlMap.put(RoleStatus.ROLE_ADMIN.name(),"board/edit/user-edit");
         String refreshToken = jwtManager.getRefreshToken(request);
         TokenStatus isSafeJwt = jwtManager.validation(refreshToken);
         if(isSafeJwt == TokenStatus.NONE) {
-            return magnageUrlMap.get(RoleStatus.ROLE_ANONYMOUS.name());
+            return manageUrlMap.get(RoleStatus.ROLE_ANONYMOUS.name());
         }
         authenticationManager.checkAuthenticationManager(request, response);
-        String authenticationView = authenticationManager.getAuthenticationView(request, response, magnageUrlMap);
+        String authenticationView = authenticationManager.getAuthenticationView(request, response, manageUrlMap);
         return authenticationView;
     }
 
