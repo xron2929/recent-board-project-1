@@ -39,11 +39,11 @@ nginx에서 location /api로 https://app.siteproject22.online과 연결하였다
 ### ⭐️ 스프링 시큐리티로 비밀번호 값 노출 안하려고 하였고, 엔티티 그대로 가져오는 것이 아니라 DTO 같은 값을 fetch 통신에서 리턴하여 다른 사용자의 uuid 같은 부분은 노출되지 않도록 개발
 
 ## 알람 및 쪽지 관련 기능
-알람 기능
+
 https://github.com/xron2626/recent-board-project/assets/133539339/262d10ed-b2c8-43c3-938a-e1922b34f038
 
 
-쪽지 기능 
+
 https://github.com/xron2626/recent-board-project/assets/133539339/a3078cd6-be7f-4269-8da7-7fd0cef63c6a
 
 
