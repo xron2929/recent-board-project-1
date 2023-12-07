@@ -7,7 +7,7 @@
 
 <img width="1201" alt="스크린샷 2023-12-07 오전 10 19 06" src="https://github.com/xron2626/recent-board-project/assets/133539339/dd373f04-bc34-4a64-87a5-d55efbc48e6e">
 <img width="1336" alt="스크린샷 2023-12-07 오전 11 12 11" src="https://github.com/xron2626/recent-board-project/assets/133539339/a62d03c8-c84c-48d7-9368-c6c5f329488f">
-
+<img width="1403" alt="스크린샷 2023-12-07 오전 10 07 33" src="https://github.com/xron2626/recent-board-project/assets/133539339/9046b47a-e03f-424c-a8d5-62c0ab6cd938">
 ## 화면 구성 📺
 
 |                       메인 페이지                        |                     로그인 페이지                      |
@@ -17,3 +17,4 @@
 |  |  |
 
 ---
+
