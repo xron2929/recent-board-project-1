@@ -4,9 +4,8 @@
 **1인 개발** <br/>
 **데이터베이스: mariadb,redis,mongodb(댓글 한정)**  <br/>
 **배포: cloudType**  <br/>
-**개발 목적: REST API 개발 및 보안적인 요소에 집중**<br/> 
-
-> **프론트 앤드 <-> 백엔드 통신 방식: REST API** 
+**개발 목적: REST API 개발 및 보안적인 요소에 집중**<br/>
+**프론트 앤드 <-> 백엔드 통신 방식: REST API** 
 
 ## 서버 내부 구조
 <img width="706" alt="스크린샷 2023-12-07 오후 3 20 18" src="https://github.com/xron2626/recent-board-project/assets/133539339/2d20a72e-06f3-4a13-aeda-825691d2b580">
