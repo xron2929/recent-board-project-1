@@ -40,11 +40,11 @@ nginx에서 location /api로 https://app.siteproject22.online과 연결하였다
 
 ## 알람 및 쪽지 관련 기능
 
-https://github.com/xron2626/recent-board-project/assets/133539339/262d10ed-b2c8-43c3-938a-e1922b34f038
+> https://github.com/xron2626/recent-board-project/assets/133539339/262d10ed-b2c8-43c3-938a-e1922b34f038
 
 
 
-https://github.com/xron2626/recent-board-project/assets/133539339/a3078cd6-be7f-4269-8da7-7fd0cef63c6a
+> https://github.com/xron2626/recent-board-project/assets/133539339/a3078cd6-be7f-4269-8da7-7fd0cef63c6a
 
 
 
