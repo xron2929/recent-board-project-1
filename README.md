@@ -56,10 +56,10 @@ nginx에서 location /api로 https://app.siteproject22.online과 연결하였습
 > https://github.com/xron2626/recent-board-project/assets/133539339/a3078cd6-be7f-4269-8da7-7fd0cef63c6a
 
 ## 게시판 회원 계정
-### 어드민 관리자 계정
-id:12345 비밀번호:12345
-### 일반 회원 계정
-id:12345 비밀번호:12345
+> ### 어드민 관리자 계정
+>> id:12345 비밀번호:12345
+> ### 일반 회원 계정
+>> id:12345 비밀번호:12345
 
 ## 회원과 권한을 user안의 같은 패키지 안에 묶고, board,comment를 다른 패키지로 분리해서 개발한 이유 
 
