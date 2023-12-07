@@ -10,11 +10,12 @@
 <img width="1403" alt="스크린샷 2023-12-07 오전 10 07 33" src="https://github.com/xron2626/recent-board-project/assets/133539339/9046b47a-e03f-424c-a8d5-62c0ab6cd938">
 ## 화면 구성 📺
 
+
 |                       메인 페이지                        |                     로그인 페이지                      |
 | :------------------------------------------------------: | :---------------------------------------------------------: |
-| <img width="329" src="https://bit.ly/3GvlSxR"/>  | <img width="329" src="https://bit.ly/47ZZhG5"/> | 
+| <img width="329" src="https://bit.ly/3GvlSxR"/>  | <img width="329" src="https://bit.ly/47ZZhG5"/> |
 |                      쪽지 페이지                      |                       게시글 보기 페이지                       |
-|  <img width="329" src="https://bit.ly/3TdXp7T"/> |  <img width="329" src="https://bit.ly/3NfneAM"/> |   
+| <img width="329" src="https://bit.ly/3TdXp7T"/> | <img width="329" src="https://bit.ly/3NfneAM"/> |
 
 ---
 
