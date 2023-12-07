@@ -9,7 +9,7 @@
 
 ## 서버 내부 구조
 <img width="706" alt="스크린샷 2023-12-07 오후 3 20 18" src="https://github.com/xron2626/recent-board-project/assets/133539339/2d20a72e-06f3-4a13-aeda-825691d2b580">
-url 도메인을 통해서 https://siteproject22.online을 작성할 경우 nginx에서 location /로 next.js url과 연결하고,
+> url 도메인을 통해서 https://siteproject22.online을 작성할 경우 nginx에서 location /로 next.js url과 연결하고,
 nginx에서 location /api로 https://app.siteproject22.online과 연결하였습니다.
 
 
