@@ -39,6 +39,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-batch'
     implementation 'com.amazonaws:aws-java-sdk-s3:1.12.93'
     compileOnly 'org.projectlombok:lombok'
+    implementation group: 'org.json', name: 'json', version: '20090211'
     compileOnly 'org.springframework.cloud:spring-cloud-starter-aws:2.0.1.RELEASE'
     runtimeOnly 'com.h2database:h2'
     implementation "com.querydsl:querydsl-jpa"
@@ -49,7 +50,6 @@ dependencies {
     annotationProcessor "jakarta.annotation:jakarta.annotation-api" // java.lang.NoClassDefFoundError (javax.annotation.Generated) 대응 코드
     annotationProcessor "jakarta.persistence:jakarta.persistence-api" // java.lang.NoClassDefFoundError (javax.annotation.Entity) 대응 코드
     annotationProcessor 'org.projectlombok:lombok'
-
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 }

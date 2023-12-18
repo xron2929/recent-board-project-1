@@ -2,8 +2,10 @@ package com.example.demo.alarm;
 
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 public class AlarmDto {
     public AlarmDto(Long id, String title, Long boardId,
                     String summaryCommentContent, String commentWriter,

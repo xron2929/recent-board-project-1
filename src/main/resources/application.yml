@@ -4,13 +4,12 @@ spring:
   data:
     mongodb:
       test:
-        connectionString: mongodb://svc.sel3.cloudtype.app:32690/test?authSource=admin
-      authentication-database: admin
-      # uri : svc.sel3.cloudtype.app:32690
-      #
-      host: svc.sel3.cloudtype.app
+        connectionString: mongodb+srv://admin2:1234@cluster0.gponxza.mongodb.net/?retryWrites=true&w=majority
+      authentication-database: admin2
+          # uri : mongodb://svc.sel3.cloudtype.app:32690
+      host: cluster0.gponxza.mongodb.net
       port: 32690
-      username: admin
+      username: admin2
       password: 1234
       database: test
   batch:
@@ -27,14 +26,16 @@ spring:
       matching-strategy: ant_path_matcher
 
   redis:
-    host: svc.sel4.cloudtype.app
-    port: 31803
+    host: redis-17085.c267.us-east-1-4.ec2.cloud.redislabs.com
+    port: 17085
+    password: 2W7hVt0XRwzISNr2JQY7GWO6yQjfPN3I
+    username: default
   #h2:
    # console:
     #  enabled: true
 
   datasource:
-    url: jdbc:mariadb://svc.sel3.cloudtype.app:32123/test
+    url: jdbc:mariadb://svc.gksl2.cloudtype.app:30690/test
     username: root
     password: ${DATABASE_PASSWORD}
 

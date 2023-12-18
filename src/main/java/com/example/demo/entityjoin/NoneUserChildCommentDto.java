@@ -1,7 +1,11 @@
 package com.example.demo.entityjoin;
 
 import lombok.Data;
-@Data
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Getter
+@NoArgsConstructor
 public class NoneUserChildCommentDto {
     private String password;
     private String nickname;

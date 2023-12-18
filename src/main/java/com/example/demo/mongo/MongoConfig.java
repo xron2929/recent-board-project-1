@@ -1,10 +1,7 @@
 package com.example.demo.mongo;
 
 
-import com.mongodb.ConnectionString;
-import com.mongodb.MongoClientSettings;
-import com.mongodb.MongoCredential;
-import com.mongodb.ServerAddress;
+import com.mongodb.*;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import org.springframework.beans.factory.annotation.Value;
@@ -38,10 +35,11 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
     @Override
     public MongoClient mongoClient() {
         ConnectionString connectionString = new ConnectionString(this.connectionString);
-
+        ServerApi serverApi = ServerApi.builder()
+                .version(ServerApiVersion.V1).build();
         MongoClientSettings mongoClientSettings = MongoClientSettings.builder()
                 .applyConnectionString(connectionString)
-
+                .serverApi(serverApi)
                 .build();
         return MongoClients.create(mongoClientSettings);
     }
